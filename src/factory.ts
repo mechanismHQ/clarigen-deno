@@ -1,3 +1,4 @@
+import { Clarinet } from "https://deno.land/x/clarinet@v0.28.0/index.ts";
 import { transformArgsToCV } from "./encoder.ts";
 import { ClarityAbiFunction, TypedAbiFunction } from "./types.ts";
 

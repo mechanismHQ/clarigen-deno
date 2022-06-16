@@ -17,9 +17,6 @@ import {
   ResponseOk,
 } from "./types.ts";
 
-export type OkType<R> = R extends ResponseOk<infer V, unknown> ? V : never;
-export type ErrType<R> = R extends ResponseErr<unknown, infer V> ? V : never;
-
 export type ExpectType = true | false | undefined;
 
 export interface TxCall<
@@ -69,133 +66,157 @@ export function txErr<R>(
   } as TxCallErr<R>;
 }
 
-type RoFnArgs = Parameters<Chain["callReadOnlyFn"]>;
+// type RoFnArgs = Parameters<Chain["callReadOnlyFn"]>;
 
-export type TypedReadOnlyFn<R> = ReadOnlyFn & {
-  value: R;
-};
+// export type TypedReadOnlyFn<R> = ReadOnlyFn & {
+//   value: R;
+// };
 
-export function _ro<R>(
-  payload: ContractCallTyped<unknown, R>,
-  sender: string,
-): RoFnArgs {
-  const { contract, fn, args } = payload;
-  return [
-    contract,
-    fn.name,
-    args,
-    sender,
-  ];
-}
+// export function _ro<R>(
+//   payload: ContractCallTyped<unknown, R>,
+//   sender: string,
+// ): RoFnArgs {
+//   const { contract, fn, args } = payload;
+//   return [
+//     contract,
+//     fn.name,
+//     args,
+//     sender,
+//   ];
+// }
 
-export function ro<R>(
-  chain: Chain,
-  payload: ContractCallTyped<unknown, R>,
-  sender: string,
-): TypedReadOnlyFn<R> {
-  const args = _ro(payload, sender);
-  const receipt = chain.callReadOnlyFn(...args);
-  const value = cvToValue(receipt.result, payload.fn.outputs.type);
-  return {
-    ...receipt,
-    value,
-  };
-}
+// export function ro<R>(
+//   chain: Chain,
+//   payload: ContractCallTyped<unknown, R>,
+//   sender: string,
+// ): TypedReadOnlyFn<R> {
+//   const args = _ro(payload, sender);
+//   const receipt = chain.callReadOnlyFn(...args);
+//   const value = cvToValue(receipt.result, payload.fn.outputs.type);
+//   return {
+//     ...receipt,
+//     value,
+//   };
+// }
+
+// export function rov<R>(
+//   chain: Chain,
+//   payload: ContractCallTyped<unknown, R>,
+//   sender: string,
+// ): R {
+//   const receipt = ro(chain, payload, sender);
+//   return receipt.value;
+// }
+
+// export function rovOk<R>(
+//   chain: Chain,
+//   payload: ContractCallTyped<unknown, R>,
+//   sender: string,
+// ): OkType<R> {
+//   const receipt = ro(chain, payload, sender);
+//   return validateResponse<OkType<R>>(receipt.result, payload.fn, true);
+// }
+
+// export function rovErr<R>(
+//   chain: Chain,
+//   payload: ContractCallTyped<unknown, R>,
+//   sender: string,
+// ): ErrType<R> {
+//   const receipt = ro(chain, payload, sender);
+//   return validateResponse<ErrType<R>>(receipt.result, payload.fn, false);
+// }
 
 // Minings blocks
 
-// export type TxValueType<P> = P extends TxCallOk<infer R> ? OkType<R>
-//   : P extends TxCallErr<infer R> ? ErrType<R>
-//   : P extends TxCall<infer R> ? R
+// export type TxValueType<P> = P extends TxCall<infer R, infer X>
+//   ? (X extends true ? OkType<R>
+//     : X extends false ? ErrType<R>
+//     : R)
 //   : never;
-export type TxValueType<P> = P extends TxCall<infer R, infer X>
-  ? (X extends true ? OkType<R>
-    : X extends false ? ErrType<R>
-    : R)
-  : never;
 
-type TxCalls<R extends Response<unknown, unknown>> =
-  (TxCall<R> | TxCallOk<R> | TxCallErr<R>)[];
+// type TxCalls<R extends Response<unknown, unknown>> =
+//   (TxCall<R> | TxCallOk<R> | TxCallErr<R>)[];
 
-export type ReceiptValues<T extends Readonly<unknown[]>> = {
-  readonly [I in keyof T]: TxValueType<T[I]>;
-};
+// export type ReceiptValues<T extends Readonly<unknown[]>> = {
+//   readonly [I in keyof T]: TxValueType<T[I]>;
+// };
 
-type Receipt<T> = TxReceipt & {
-  value: TxValueType<T>;
-};
+// type Receipt<T> = TxReceipt & {
+//   value: TxValueType<T>;
+// };
 
-export type Receipts<T extends readonly unknown[]> = {
-  -readonly [I in keyof T]: Receipt<T[I]>;
-  // readonly [I in keyof T]: TxReceipt & {
-  //   value: TxValueType<T[I]>;
-  // };
-};
+// export type Receipts<T extends readonly unknown[]> = {
+//   -readonly [I in keyof T]: Receipt<T[I]>;
+//   // readonly [I in keyof T]: TxReceipt & {
+//   //   value: TxValueType<T[I]>;
+//   // };
+// };
 
-export type TypedBlock<T extends readonly unknown[]> =
-  & Omit<Block, "receipts">
-  & {
-    receipts: Readonly<Receipts<T>>;
-  };
+// export type TypedBlock<T extends readonly unknown[]> =
+//   & Omit<Block, "receipts">
+//   & {
+//     receipts: Readonly<Receipts<T>>;
+//   };
 
-type UnknownTx = TxCall<unknown, ExpectType>;
+// type UnknownTx = TxCall<unknown, ExpectType>;
 
-function validateResponse<T extends UnknownTx>(
-  receipt: TxReceipt,
-  txCall: T,
-): TxValueType<T> {
-  const value = cvToValue(receipt.result, txCall.fn.outputs.type);
-  if (("isOk" in value) && (typeof txCall.expectOk !== "undefined")) {
-    const response = value as Response<unknown, unknown>;
-    const inner = response.value;
-    if (txCall.expectOk && !response.isOk) {
-      throw new Error(
-        `Tx result failed. Expected OK, received ERR ${inner}. Method: ${txCall.fn.name}.`,
-      );
-    }
-    if (txCall.expectOk === false && response.isOk) {
-      throw new Error(
-        `Tx result failed. Expected ERR, received OK ${inner}. Method: ${txCall.fn.name}.`,
-      );
-    }
-    return inner as TxValueType<T>;
-  }
-  return value as TxValueType<T>;
-}
+// function validateResponse<T>(
+//   result: string,
+//   fn: ClarityAbiFunction,
+//   expectOk?: boolean,
+// ): T {
+//   const value = cvToValue(result, fn.outputs.type);
+//   if (("isOk" in value) && (typeof expectOk !== "undefined")) {
+//     const response = value as Response<unknown, unknown>;
+//     const inner = response.value;
+//     if (expectOk && !response.isOk) {
+//       throw new Error(
+//         `Tx result failed. Expected OK, received ERR ${inner}. Method: ${fn.name}.`,
+//       );
+//     }
+//     if (expectOk === false && response.isOk) {
+//       throw new Error(
+//         `Tx result failed. Expected ERR, received OK ${inner}. Method: ${fn.name}.`,
+//       );
+//     }
+//     return inner as T;
+//   }
+//   return value;
+// }
 
-export function mineBlock<Txs extends UnknownTx[]>(
-  chain: Chain,
-  ...txs: Txs
-): TypedBlock<Txs> {
-  const block = chain.mineBlock(txs);
+// export function mineBlock<Txs extends UnknownTx[]>(
+//   chain: Chain,
+//   ...txs: Txs
+// ): TypedBlock<Txs> {
+//   const block = chain.mineBlock(txs);
 
-  const typedReceipts = block.receipts.map((r, index) => {
-    const txCall = txs[index];
-    const value = validateResponse(r, txCall);
+//   const typedReceipts = block.receipts.map((r, index) => {
+//     const txCall = txs[index];
+//     const value = validateResponse(r.result, txCall.fn, txCall.expectOk);
 
-    return {
-      ...r,
-      value,
-    };
-  }) as Receipts<Txs>;
-  return {
-    ...block,
-    receipts: typedReceipts,
-  };
-}
+//     return {
+//       ...r,
+//       value,
+//     };
+//   }) as Receipts<Txs>;
+//   return {
+//     ...block,
+//     receipts: typedReceipts,
+//   };
+// }
 
-export type Values<T extends UnknownTx[]> = {
-  [K in keyof T]: TxValueType<T[K]>;
-};
+// export type Values<T extends UnknownTx[]> = {
+//   [K in keyof T]: TxValueType<T[K]>;
+// };
 
-export function getValues<T extends UnknownTx[]>(
-  chain: Chain,
-  ...txs: T
-): Values<T> {
-  const block = chain.mineBlock(txs);
-  const values = txs.map((tx, index) => {
-    const value = cvToValue(block.receipts[index].result, tx.fn.outputs.type);
-    return value;
-  }) as Values<T>;
-  return values;
-}
+// export function getValues<T extends UnknownTx[]>(
+//   chain: Chain,
+//   ...txs: T
+// ): Values<T> {
+//   const block = chain.mineBlock(txs);
+//   const values = txs.map((tx, index) => {
+//     const value = cvToValue(block.receipts[index].result, tx.fn.outputs.type);
+//     return value;
+//   }) as Values<T>;
+//   return values;
+// }

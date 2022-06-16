@@ -139,3 +139,6 @@ export function err<Ok = never, T = unknown>(value: T): ResponseErr<Ok, T> {
     value,
   };
 }
+
+export type OkType<R> = R extends ResponseOk<infer V, unknown> ? V : never;
+export type ErrType<R> = R extends ResponseErr<unknown, infer V> ? V : never;
