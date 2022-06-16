@@ -1,5 +1,9 @@
-
 {
-    "deno.enable": true,
-    "files.eol": "\n"
+  "deno.enable": true,
+  "deno.enablePaths": ["./src", "./tests", "./test_pkg"],
+  "files.eol": "\n",
+  "editor.formatOnSave": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  }
 }

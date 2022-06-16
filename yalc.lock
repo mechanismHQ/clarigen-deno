@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "@clarigen/cli": {
+      "signature": "5322737935eb4f200e9e84b6dfb255ee",
+      "file": true
+    }
+  }
+}
