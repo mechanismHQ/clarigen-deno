@@ -1,10 +1,9 @@
 import { assertEquals } from "https://deno.land/std@0.90.0/testing/asserts.ts";
-import { accounts, contracts } from "../demo-types/single.ts";
+import { contracts } from "../artifacts/clarigen/single.ts";
 import { factory, ok, tx, txErr, txOk } from "../src/index.ts";
 
 const { contracts: { tester }, test } = factory({
   contracts,
-  accounts,
 });
 
 test({
@@ -18,7 +17,7 @@ test({
     const tupReceipt = chain.ro(tester.getTup(), alice);
     assertEquals(tupReceipt.value.a, 1n);
 
-    let { receipts } = chain.mineBlock(
+    const { receipts } = chain.mineBlock(
       txOk(tester.retError(false), alice),
       txOk(tester.num(2), alice),
       txErr(tester.retError(true), alice),
@@ -39,11 +38,18 @@ test({
     try {
       chain.rovErr(tester.num(2));
       throw new Error("Expected tx to throw");
-    } catch (error) {
-    }
+      // deno-lint-ignore no-empty
+    } catch (_error) {}
 
     const err = chain.rovErr(tester.retError(true));
     assertEquals(err, 1n);
+
+    // without block wrapper
+    const [numReceipt] = chain.mine(txOk(tester.num(2), alice));
+    assertEquals(numReceipt.value, 2n);
+
+    // just one
+    assertEquals(chain.mineOne(txOk(tester.num(2), alice)).value, 2n);
   },
 });
 

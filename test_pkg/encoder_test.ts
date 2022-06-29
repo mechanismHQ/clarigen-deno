@@ -30,7 +30,6 @@ Deno.test("decoding cv", () => {
   expectValue(types.none(), "none", null);
 
   const list = "[u128, u233]";
-  console.log("list", list);
 
   expectValue(list, { "list": { type: "uint128", length: 2 } }, [128n, 233n]);
 });

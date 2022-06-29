@@ -4,10 +4,8 @@ import {
   Chain as _Chain,
   Clarinet,
   ReadOnlyFn,
-  Tx,
   TxReceipt,
-  types,
-} from "https://deno.land/x/clarinet@v0.28.0/index.ts";
+} from "https://deno.land/x/clarinet@v0.31.0/index.ts";
 import { cvToValue } from "./encoder.ts";
 import {
   AllContracts,
@@ -131,6 +129,20 @@ export class Chain {
       receipts: typedReceipts,
     };
   }
+
+  mine<Txs extends UnknownTx[]>(
+    ...txs: Txs
+  ): Readonly<Receipts<Txs>> {
+    const block = this.mineBlock(...txs) as TypedBlock<Txs>;
+    return block.receipts;
+  }
+
+  mineOne<T extends UnknownTx>(
+    tx: T,
+  ): Receipt<T> {
+    const [receipt] = this.mine(tx);
+    return receipt;
+  }
 }
 
 type TestFunction<K> = (
@@ -147,7 +159,7 @@ interface UnitTestOptions<K> {
 }
 
 export function factory<T extends AllContracts, A extends Record<string, any>>(
-  { contracts }: { contracts: T; accounts: A },
+  { contracts }: { contracts: T },
 ) {
   const transformed = contractsFactory(contracts);
 
