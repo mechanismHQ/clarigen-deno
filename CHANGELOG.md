@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.2.4
+
+### Patch Changes
+
+- 4dd63d4: Fixed code not included in version
+
 ## 0.2.3
 
 ### Patch Changes
