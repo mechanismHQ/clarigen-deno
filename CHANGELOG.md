@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.2.3
+
+### Patch Changes
+
+- 8b4467e: Fixed camelCasing, adds variables to abi
+
 ## 0.2.2
 
 ### Patch Changes
