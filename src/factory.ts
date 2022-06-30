@@ -1,4 +1,3 @@
-import { Clarinet } from "https://deno.land/x/clarinet@v0.28.0/index.ts";
 import { transformArgsToCV } from "./encoder.ts";
 import { ClarityAbiFunction, TypedAbiFunction } from "./types.ts";
 
@@ -18,11 +17,12 @@ export type AllContracts = {
   [contractName: string]: {
     functions: ContractFunctions;
     contractName: string;
+    // deno-lint-ignore no-explicit-any
     [key: string]: any;
   };
 };
 
-export type ContractCallFunction<Args extends any[], R> = (
+export type ContractCallFunction<Args extends unknown[], R> = (
   ...args: Args
 ) => ContractCallTyped<Args, R>;
 
@@ -56,7 +56,7 @@ export function contractsFactory<T extends AllContracts>(
     >;
     const contract = contracts[contractName];
     Object.keys(contracts[contractName].functions).forEach((fnName) => {
-      const fn = (..._args: any[]) => {
+      const fn = (..._args: unknown[]) => {
         const foundFunction = contract.functions[fnName];
         const args = transformArgsToCV(foundFunction, _args);
         return {

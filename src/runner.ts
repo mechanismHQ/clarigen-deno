@@ -158,6 +158,7 @@ interface UnitTestOptions<K> {
   fn: TestFunction<K>;
 }
 
+// deno-lint-ignore no-explicit-any
 export function factory<T extends AllContracts, A extends Record<string, any>>(
   { contracts }: { contracts: T },
 ) {

@@ -5,7 +5,7 @@ const result = getSession();
 const singleFile = await generateSingleFile(result);
 
 await Deno.mkdir("./artifacts/clarigen", { recursive: true });
-await Deno.writeTextFile("./artifacts/clarigen/single.ts", singleFile);
+await Deno.writeTextFile("./artifacts/clarigen/index.ts", singleFile);
 
 // const info = JSON.parse((Deno as any).core.opSync("/api/v1/load_deployment", {
 //   // session_id: result.session_id,

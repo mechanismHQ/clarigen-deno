@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import {
   Account,
   Chain,
@@ -12,14 +13,11 @@ import {
   ErrType,
   ExpectType,
   FunctionsToContractCalls,
-  getValues,
-  mineBlock,
   OkType,
   Receipts,
   ReceiptValues,
   // ReceiptValues,
   Response,
-  ro,
   tx,
   TxCall,
   TxCallErr,

@@ -1,13 +1,12 @@
 import { getArgName, jsTypeFromAbiType } from "./declaration.ts";
 import type { Session, SessionContract } from "./index.ts";
 import { toCamelCase } from "./utils.ts";
-import * as path from "https://deno.land/std@0.144.0/path/mod.ts";
 import { types } from "./type-stub.ts";
 
 export function generateContractMeta(contract: SessionContract) {
   const abi = contract.contract_interface;
   const functionLines: string[] = [];
-  const { functions, variables, maps, ...rest } = abi;
+  const { functions, maps, ...rest } = abi;
   functions.forEach((func) => {
     let functionLine = `${toCamelCase(func.name)}: `;
     const args = func.args.map((arg) => {
@@ -33,8 +32,6 @@ export function generateContractMeta(contract: SessionContract) {
   const otherAbi = JSON.stringify(rest);
   const contractName = contract.contract_id.split(".")[1];
 
-  // const contractFile = path.relative(Deno.cwd(), contract.);
-
   return `{
   ${serializeLines("functions", functionLines)}
   ${serializeLines("maps", mapLines)}
@@ -43,7 +40,7 @@ export function generateContractMeta(contract: SessionContract) {
   }`;
 }
 
-export async function generateSingleFile(
+export function generateSingleFile(
   config: Session,
 ) {
   const contractDefs = config.contracts.map((contract) => {
@@ -64,6 +61,7 @@ export const contracts = {
   return file;
 }
 
+// deno-lint-ignore no-explicit-any
 export function serialize(obj: any) {
   return Deno.inspect(obj, {
     showHidden: false,

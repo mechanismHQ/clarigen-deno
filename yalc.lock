@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "@clarigen/cli": {
-      "signature": "bcbbf0044ed593dd549083b1ec6ccb43",
+      "signature": "34ead127f41ae730ca8cc0069558a6ef",
       "file": true
     }
   }

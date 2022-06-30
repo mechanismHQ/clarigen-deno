@@ -12,13 +12,7 @@ import type {
   Response,
 } from "./types.ts";
 import { err, ok } from "./types.ts";
-import {
-  Account,
-  Chain,
-  Clarinet,
-  Tx,
-  types,
-} from "https://deno.land/x/clarinet@v0.28.0/index.ts";
+import { types } from "https://deno.land/x/clarinet@v0.28.0/index.ts";
 
 export const isClarityAbiPrimitive = (
   val: ClarityAbiType,

@@ -30,7 +30,8 @@ export async function generateDeployment(network: string, outputDir: string) {
     );
     await Deno.writeTextFile(outputFile, contents);
     // await writeFile(outputFile, contents);
-  } catch (error) {
+  } catch (_error) {
+    //
   }
 }
 
