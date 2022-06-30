@@ -6,7 +6,7 @@ import { types } from "./type-stub.ts";
 export function generateContractMeta(contract: SessionContract) {
   const abi = contract.contract_interface;
   const functionLines: string[] = [];
-  const { functions, maps, ...rest } = abi;
+  const { functions, maps, variables, ...rest } = abi;
   functions.forEach((func) => {
     let functionLine = `${toCamelCase(func.name)}: `;
     const args = func.args.map((arg) => {
@@ -32,9 +32,19 @@ export function generateContractMeta(contract: SessionContract) {
   const otherAbi = JSON.stringify(rest);
   const contractName = contract.contract_id.split(".")[1];
 
+  const variableLines = variables.map((v) => {
+    let varLine = `${toCamelCase(v.name)}: `;
+    const type = jsTypeFromAbiType(v.type);
+    const varJSON = serialize(v);
+    varLine += `${varJSON} as TypedAbiVariable<${type}>`;
+    return varLine;
+  });
+
   return `{
   ${serializeLines("functions", functionLines)}
   ${serializeLines("maps", mapLines)}
+  ${serializeLines("variables", variableLines)}
+  constants: {},
   ${otherAbi.slice(1, -1)},
   contractName: '${contractName}',
   }`;
