@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.2.2
+
+### Patch Changes
+
+- c7273ce: Version bump to trigger deno push
+
 ## 0.2.1
 
 ### Patch Changes
