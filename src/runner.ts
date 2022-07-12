@@ -74,6 +74,7 @@ function validateResponse<T>(
 }
 
 export class Chain {
+  // Inner Clarinet chain instance
   public chain: _Chain;
   public deployer: string;
 
@@ -144,6 +145,28 @@ export class Chain {
   ): Receipt<T> {
     const [receipt] = this.mine(tx);
     return receipt;
+  }
+
+  // sub-chain accessors
+
+  public get sessionId() {
+    return this.chain.sessionId;
+  }
+
+  public get blockHeight() {
+    return this.chain.blockHeight;
+  }
+
+  mineEmptyBlock(count: number | bigint = 1) {
+    return this.chain.mineEmptyBlock(Number(count));
+  }
+
+  mineEmptyBlockUntil(height: number | bigint) {
+    return this.chain.mineEmptyBlockUntil(Number(height));
+  }
+
+  getAssetMaps() {
+    return this.chain.getAssetsMaps();
   }
 }
 
