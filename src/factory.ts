@@ -1,5 +1,10 @@
 import { transformArgsToCV } from './encoder.ts';
-import { ClarityAbiFunction, TypedAbi, TypedAbiFunction } from './types.ts';
+import {
+  ClarityAbiFunction,
+  TypedAbi,
+  TypedAbiArg,
+  TypedAbiFunction,
+} from './types.ts';
 
 export interface ContractCallTyped<Args, R> {
   _r?: R;
@@ -10,19 +15,54 @@ export interface ContractCallTyped<Args, R> {
 }
 
 export type ContractFunctions = {
-  [key: string]: TypedAbiFunction<unknown[], unknown>;
+  [key: string]: TypedAbiFunction<UnknownArgs, unknown>;
 };
 
 export type AllContracts = Record<string, TypedAbi>;
 
-export type ContractCallFunction<Args extends unknown[], R> = (
-  ...args: Args
+// Function builder types
+
+// // Args
+
+type UnknownArg = TypedAbiArg<unknown, string>;
+type UnknownArgs = UnknownArg[];
+
+type ArgsTuple<T extends UnknownArgs> = {
+  [K in keyof T]: T[K] extends TypedAbiArg<infer A, string> ? A : never;
+};
+
+type ArgsRecordUnion<T extends TypedAbiArg<unknown, string>> = T extends
+  TypedAbiArg<infer A, infer N> ? {
+  [K in T as N]: A;
+}
+  : never;
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends
+  (k: infer I) => void ? I
+  : never;
+export type Compact<T> = { [K in keyof T]: T[K] };
+
+type ArgsRecord<T extends UnknownArgs> = Compact<
+  UnionToIntersection<ArgsRecordUnion<T[number]>>
+>;
+
+type ArgsType<T extends UnknownArgs> =
+  | [ArgsRecord<T>]
+  | ArgsTuple<T>;
+
+// // Contract calls
+
+export type ContractCallFunction<
+  Args extends UnknownArgs,
+  R,
+> = (
+  ...args: ArgsType<Args>
 ) => ContractCallTyped<Args, R>;
 
 export type FnToContractCall<T> = T extends TypedAbiFunction<infer Arg, infer R>
   ? ContractCallFunction<Arg, R>
   : never;
 
+// Contract factory types
 export type FunctionsToContractCalls<T> = T extends ContractFunctions ? {
   [key in keyof T]: FnToContractCall<T[key]>;
 }
@@ -41,7 +81,7 @@ export type ContractFactory<T extends AllContracts> = {
   [key in keyof T]: FullContract<T[key]>;
 };
 
-type UnknownContractCallFunction = ContractCallFunction<unknown[], unknown>;
+type UnknownContractCallFunction = ContractCallFunction<UnknownArgs, unknown>;
 
 export interface Account {
   address: string;
@@ -76,7 +116,7 @@ export function functionsFactory<T extends ContractFunctions>(
   return Object.fromEntries(
     Object.entries(functions).map(([fnName, foundFunction]) => {
       const fn: FnToContractCall<typeof foundFunction> = (
-        ..._args: unknown[]
+        ..._args: unknown[] | [Record<string, unknown>]
       ) => {
         const args = transformArgsToCV(foundFunction, _args);
         return {

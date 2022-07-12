@@ -8,7 +8,7 @@ import {
   isClarityAbiStringUtf8,
   isClarityAbiTuple,
 } from '../encoder.ts';
-import { ClarityAbiFunction, ClarityAbiType } from '../types.ts';
+import { ClarityAbiArg, ClarityAbiFunction, ClarityAbiType } from '../types.ts';
 import { toCamelCase } from './utils.ts';
 
 export const jsTypeFromAbiType = (
@@ -68,10 +68,14 @@ export const jsTypeFromAbiType = (
   }
 };
 
+export function abiArgType(arg: ClarityAbiArg) {
+  const nativeType = jsTypeFromAbiType(arg.type, true);
+  const argName = getArgName(arg.name);
+  return `${argName}: TypedAbiArg<${nativeType}, "${argName}">`;
+}
+
 export function abiFunctionType(abiFunction: ClarityAbiFunction) {
-  const args = abiFunction.args.map((arg) => {
-    return `${getArgName(arg.name)}: ${jsTypeFromAbiType(arg.type, true)}`;
-  });
+  const args = abiFunction.args.map(abiArgType);
   const retType = jsTypeFromAbiType(abiFunction.outputs.type);
   const argsTuple = `[${args.join(', ')}]`;
   return `TypedAbiFunction<${argsTuple}, ${retType}>`;

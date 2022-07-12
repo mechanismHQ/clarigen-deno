@@ -39,23 +39,29 @@ export type ClarityAbiType =
   | ClarityAbiTypeStringUtf8
   | ClarityAbiTypeTraitReference;
 
+export interface ClarityAbiArg {
+  name: string;
+  type: ClarityAbiType;
+}
+
 export interface ClarityAbiFunction {
   name: string;
   access: 'private' | 'public' | 'read_only';
-  args: {
-    name: string;
-    type: ClarityAbiType;
-  }[];
+  args: ClarityAbiArg[];
   outputs: {
     type: ClarityAbiType;
   };
 }
 
+export type TypedAbiArg<T, N extends string> = { _t?: T; name: N };
+
 // deno-lint-ignore no-explicit-any
-export type TypedAbiFunction<T extends any[], R> = ClarityAbiFunction & {
-  _t?: T;
-  _r?: R;
-};
+export type TypedAbiFunction<T extends TypedAbiArg<unknown, string>[], R> =
+  & ClarityAbiFunction
+  & {
+    _t?: T;
+    _r?: R;
+  };
 
 export interface ClarityAbiVariable {
   name: string;
@@ -97,7 +103,7 @@ export interface ClarityAbi {
 
 export type TypedAbi = Readonly<{
   functions: {
-    [key: string]: TypedAbiFunction<unknown[], unknown>;
+    [key: string]: TypedAbiFunction<TypedAbiArg<unknown, string>[], unknown>;
   };
   variables: {
     [key: string]: TypedAbiVariable<unknown>;

@@ -25,3 +25,8 @@ export function toKebabCase(
   if (!matches) return input;
   return matches.join('-').toLowerCase();
 }
+
+export function encodeVariableName(name: string) {
+  if (/^[A-Z\-_]*$/.test(name)) return name.replaceAll('-', '_');
+  return toCamelCase(name);
+}

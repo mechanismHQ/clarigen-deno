@@ -7,7 +7,6 @@ import {
   types,
 } from 'https://deno.land/x/clarinet@v0.28.0/index.ts';
 import { assertEquals } from 'https://deno.land/std@0.90.0/testing/asserts.ts';
-import { accounts, contracts } from '../demo-types/single.ts';
 import {
   ClarityAbiFunction,
   ContractCallTyped,
@@ -28,7 +27,7 @@ import {
   txOk,
   TxValueType,
 } from '../src/index.ts';
-import { simnet } from '../artifacts/clarigen/deno/index.ts';
+import { accounts, simnet } from '../artifacts/clarigen/deno/index.ts';
 
 const { tester } = contractsFactory(simnet);
 
@@ -134,6 +133,19 @@ type MyArgsTup = ArgsTuple<MyArgs>;
 type MyArgsUnion = ArgsRecordUnion<MyArgs[number]>;
 // type MyArgsRec = Compact<UnionToIntersection<MyArgsUnion>>;
 type MyArgsRec = ArgsRecord<MyArgs>;
+
+type TupleArgs = [
+  tupleArg: Arg<{
+    'num': bigint;
+    'boolyProp': boolean;
+    'tupleProp': {
+      'subThing': boolean;
+    };
+  }, 'tupleArg'>,
+  boolArg: Arg<boolean, 'boolArg'>,
+];
+
+type TupArgsTup = ArgsType<TupleArgs>;
 
 // type Args = ArgsMap | ArgsArr;
 export type TypedAbiFunction<T extends any[] | [Record<string, any>], R> =

@@ -17,10 +17,25 @@ import type {
   ClarityAbiTypeTuple,
   ClarityAbiTypeUInt128,
   Response,
+  ResponseErr,
+  ResponseOk,
 } from './types.ts';
-import { err, ok } from './types.ts';
 import { types } from 'https://deno.land/x/clarinet@v0.28.0/index.ts';
 import { toCamelCase, toKebabCase } from './cli/utils.ts';
+
+export function ok<T, Err = never>(value: T): ResponseOk<T, Err> {
+  return {
+    isOk: true,
+    value,
+  };
+}
+
+export function err<Ok = never, T = unknown>(value: T): ResponseErr<Ok, T> {
+  return {
+    isOk: false,
+    value,
+  };
+}
 
 export const isClarityAbiPrimitive = (
   val: ClarityAbiType,
@@ -107,8 +122,44 @@ export function valueToCV(input: any, type: ClarityAbiType): string {
   );
 }
 
-export function transformArgsToCV(func: ClarityAbiFunction, args: any[]) {
+export function transformObjectArgs(
+  func: ClarityAbiFunction,
+  args: Record<string, any>,
+) {
+  return func.args.map((abiArg) => {
+    const key = findJsTupleKey(abiArg.name, args);
+    const val = args[key];
+    return valueToCV(val, abiArg.type);
+  });
+}
+
+export function transformArgsArray(func: ClarityAbiFunction, args: any[]) {
   return args.map((arg, index) => valueToCV(arg, func.args[index].type));
+}
+
+export function transformArgsToCV(
+  func: ClarityAbiFunction,
+  args: any[] | [Record<string, any>],
+) {
+  if (args.length === 0) return [];
+  const [firstArg] = args;
+  if (args.length === 1 && func.args.length !== 1) {
+    return transformObjectArgs(func, firstArg);
+  }
+  if (
+    typeof firstArg === 'object' && !Array.isArray(firstArg) &&
+    firstArg !== null
+  ) {
+    try {
+      const _doesFirstArgHaveArgNames = func.args.map((a) =>
+        findJsTupleKey(a.name, firstArg)
+      );
+      return transformObjectArgs(func, firstArg);
+    } catch (_error) {
+      //
+    }
+  }
+  return transformArgsArray(func, args);
 }
 
 function unwrap(input: string, prefix = '') {

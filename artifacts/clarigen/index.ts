@@ -38,22 +38,29 @@ export type ClarityAbiType =
   | ClarityAbiTypeStringUtf8
   | ClarityAbiTypeTraitReference;
 
+export interface ClarityAbiArg {
+  name: string;
+  type: ClarityAbiType;
+}
+
 export interface ClarityAbiFunction {
   name: string;
   access: 'private' | 'public' | 'read_only';
-  args: {
-    name: string;
-    type: ClarityAbiType;
-  }[];
+  args: ClarityAbiArg[];
   outputs: {
     type: ClarityAbiType;
   };
 }
 
-export type TypedAbiFunction<T extends any[], R> = ClarityAbiFunction & {
-  _t?: T;
-  _r?: R;
-};
+export type TypedAbiArg<T, N extends string> = { _t?: T; name: N };
+
+// deno-lint-ignore no-explicit-any
+export type TypedAbiFunction<T extends TypedAbiArg<unknown, string>[], R> =
+  & ClarityAbiFunction
+  & {
+    _t?: T;
+    _r?: R;
+  };
 
 export interface ClarityAbiVariable {
   name: string;
@@ -95,7 +102,7 @@ export interface ClarityAbi {
 
 export type TypedAbi = Readonly<{
   functions: {
-    [key: string]: TypedAbiFunction<unknown[], unknown>;
+    [key: string]: TypedAbiFunction<TypedAbiArg<unknown, string>[], unknown>;
   };
   variables: {
     [key: string]: TypedAbiVariable<unknown>;
@@ -104,6 +111,7 @@ export type TypedAbi = Readonly<{
     [key: string]: TypedAbiMap<unknown, unknown>;
   };
   constants: {
+    // deno-lint-ignore no-explicit-any
     [key: string]: any;
   };
   fungible_tokens: Readonly<ClarityAbiTypeFungibleToken[]>;
@@ -153,7 +161,10 @@ export const contracts = {
         'outputs': {
           'type': { 'response': { 'ok': 'uint128', 'error': 'none' } },
         },
-      } as TypedAbiFunction<[n: number | bigint], Response<bigint, null>>,
+      } as TypedAbiFunction<
+        [n: TypedAbiArg<number | bigint, 'n'>],
+        Response<bigint, null>
+      >,
       retError: {
         'name': 'ret-error',
         'access': 'public',
@@ -161,7 +172,10 @@ export const contracts = {
         'outputs': {
           'type': { 'response': { 'ok': 'bool', 'error': 'uint128' } },
         },
-      } as TypedAbiFunction<[withErr: boolean], Response<boolean, bigint>>,
+      } as TypedAbiFunction<
+        [withErr: TypedAbiArg<boolean, 'withErr'>],
+        Response<boolean, bigint>
+      >,
       getTup: {
         'name': 'get-tup',
         'access': 'read_only',
@@ -204,9 +218,11 @@ export const contracts = {
             }],
           },
         },
-      } as TypedAbiFunction<[i: {
-        'minHeight': bigint;
-      }], {
+      } as TypedAbiFunction<[
+        i: TypedAbiArg<{
+          'minHeight': bigint;
+        }, 'i'>,
+      ], {
         'maxHeight': bigint;
         'minHeight': bigint;
       }>,
@@ -215,10 +231,21 @@ export const contracts = {
         'access': 'read_only',
         'args': [{ 'name': 'n', 'type': 'uint128' }],
         'outputs': { 'type': 'uint128' },
-      } as TypedAbiFunction<[n: number | bigint], bigint>,
+      } as TypedAbiFunction<[n: TypedAbiArg<number | bigint, 'n'>], bigint>,
     },
     'maps': {},
-    'variables': {},
+    'variables': {
+      ERR_UNAUTHORIZED: {
+        name: 'ERR_UNAUTHORIZED',
+        type: {
+          response: {
+            ok: 'none',
+            error: 'uint128',
+          },
+        },
+        access: 'constant',
+      } as TypedAbiVariable<Response<null, bigint>>,
+    },
     constants: {},
     'fungible_tokens': [],
     'non_fungible_tokens': [],

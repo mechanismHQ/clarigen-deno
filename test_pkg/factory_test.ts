@@ -19,4 +19,12 @@ Deno.test('contracts factory', () => {
   assertEquals(call.args, [types.uint(2n)]);
   assertEquals(call.contract, testerDef.contractName);
   assertEquals(call.fn.name, 'square');
+
+  const callRecord = tester.square({ n: 2 });
+  assertEquals(callRecord.args, [types.uint(2n)]);
+
+  const callWithSingleArgTuple = tester.mergeTuple({ i: { minHeight: 1n } });
+  assertEquals(callWithSingleArgTuple.args, [
+    types.tuple({ 'min-height': 'u1' }),
+  ]);
 });

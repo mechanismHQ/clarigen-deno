@@ -1,18 +1,6 @@
+;; Test contract for testing Clarigen
 
-;; tester
-;; <add a description here>
-
-;; constants
-;;
-
-;; data maps and vars
-;;
-
-;; private functions
-;;
-
-;; public functions
-;;
+(define-constant ERR_UNAUTHORIZED (err u400))
 
 (define-read-only (square (n uint)) (* n n))
 

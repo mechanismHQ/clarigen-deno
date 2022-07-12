@@ -62,5 +62,10 @@ test({
     // tuple arguments
     const merged = chain.rov(tester.mergeTuple({ minHeight: 1n }));
     assertEquals(merged, { minHeight: 1n, maxHeight: 100000n });
+
+    const mergedResWithObjectArg = chain.rov(
+      tester.mergeTuple({ i: { minHeight: 1n } }),
+    );
+    assertEquals(mergedResWithObjectArg, { minHeight: 1n, maxHeight: 100000n });
   },
 });

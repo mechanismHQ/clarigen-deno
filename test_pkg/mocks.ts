@@ -41,4 +41,4 @@ export const tupleMock = {
       type: 'bool',
     },
   } as ClarityAbiFunction,
-};
+} as const;

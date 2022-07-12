@@ -1,7 +1,8 @@
-import { getArgName, jsTypeFromAbiType } from './declaration.ts';
+import { abiFunctionType, jsTypeFromAbiType } from './declaration.ts';
 import type { Session, SessionContract } from './index.ts';
-import { toCamelCase } from './utils.ts';
+import { encodeVariableName, toCamelCase } from './utils.ts';
 import { types } from './type-stub.ts';
+import { ClarityAbiVariable } from '../types.ts';
 
 export function generateContractMeta(contract: SessionContract) {
   const abi = contract.contract_interface;
@@ -9,14 +10,10 @@ export function generateContractMeta(contract: SessionContract) {
   const { functions, maps, variables, ...rest } = abi;
   functions.forEach((func) => {
     let functionLine = `${toCamelCase(func.name)}: `;
-    const args = func.args.map((arg) => {
-      return `${getArgName(arg.name)}: ${jsTypeFromAbiType(arg.type, true)}`;
-    });
-    const argsTuple = `[${args.join(', ')}]`;
     const funcDef = JSON.stringify(func);
     functionLine += funcDef;
-    const retType = jsTypeFromAbiType(func.outputs.type);
-    functionLine += ` as TypedAbiFunction<${argsTuple}, ${retType}>`;
+    const functionType = abiFunctionType(func);
+    functionLine += ` as ${functionType}`;
     functionLines.push(functionLine);
   });
 
@@ -32,13 +29,7 @@ export function generateContractMeta(contract: SessionContract) {
   const otherAbi = JSON.stringify(rest);
   const contractName = contract.contract_id.split('.')[1];
 
-  const variableLines = variables.map((v) => {
-    let varLine = `${toCamelCase(v.name)}: `;
-    const type = jsTypeFromAbiType(v.type);
-    const varJSON = serialize(v);
-    varLine += `${varJSON} as TypedAbiVariable<${type}>`;
-    return varLine;
-  });
+  const variableLines = encodeVariables(variables);
 
   return `{
   ${serializeLines('functions', functionLines)}
@@ -69,6 +60,16 @@ export const contracts = {
 
 `;
   return file;
+}
+
+export function encodeVariables(variables: ClarityAbiVariable[]) {
+  return variables.map((v) => {
+    let varLine = `${encodeVariableName(v.name)}: `;
+    const type = jsTypeFromAbiType(v.type);
+    const varJSON = serialize(v);
+    varLine += `${varJSON} as TypedAbiVariable<${type}>`;
+    return varLine;
+  });
 }
 
 // deno-lint-ignore no-explicit-any
