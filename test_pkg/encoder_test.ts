@@ -55,4 +55,15 @@ Deno.test("encoding and decoding cv", () => {
 
   const listEncoded = valueToCV(listNative, listType);
   assertEquals(types.list(listNative.map((n) => types.uint(n))), listEncoded);
+
+  expectDecodeEncode(
+    types.principal("ST123.example"),
+    "principal",
+    "ST123.example",
+  );
+
+  assertEquals(cvToValue("'ST123.addr", "principal"), "ST123.addr");
+  assertEquals(cvToValue("ST123.addr", "principal"), "ST123.addr");
+  assertEquals(cvToValue("'ST123.addr", "trait_reference"), "ST123.addr");
+  assertEquals(cvToValue("ST123.addr", "trait_reference"), "ST123.addr");
 });

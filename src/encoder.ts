@@ -161,9 +161,9 @@ export function cvToValue<T = any>(
   } else if (type === "int128") {
     return BigInt(input) as unknown as T;
   } else if (type === "trait_reference") {
-    return input.slice(1) as unknown as T;
+    return input.replace(/^\'/, "") as unknown as T;
   } else if (type === "principal") {
-    return input.slice(1) as unknown as T;
+    return input.replace(/^\'/, "") as unknown as T;
   } else if (type === "none") {
     return null as unknown as T;
   } else if (isClarityAbiBuffer(type)) {
