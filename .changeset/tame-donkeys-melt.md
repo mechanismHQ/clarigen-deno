@@ -2,10 +2,11 @@
 "clarigen-deno": patch
 ---
 
-Two big DX updates:
+Big DX updates:
 
 1. Contract calls support an "object" syntax
 2. Tuples are properly "camel-cased"
+3. Integer types are `number | bigint` now in all arguments
 
 ### Object vs spread:
 
@@ -55,3 +56,9 @@ Now it's much cleaner:
 const result = contract.mergeTuple({ minHeight: 1n });
 const max = result.maxHeight;
 ```
+
+### Integer types for arguments
+
+Previously, if a function had a `uint` or `int` argument, you could already pass the argument as `number | bigint`. However, if you had a type where the integer was within a type (like `(list uint)`), you could only use `bigint`.
+
+Now, you can use `number | bigint` within any argument type that has an integer.
