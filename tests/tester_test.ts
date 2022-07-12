@@ -18,6 +18,13 @@ test({
 
     const tupReceipt = chain.ro(tester.getTup(), alice);
     assertEquals(tupReceipt.value.a, 1n);
+    assertEquals(tupReceipt.value, {
+      a: 1n,
+      boolProp: true,
+      tupleProp: {
+        subProp: "asdf",
+      },
+    });
 
     const { receipts } = chain.mineBlock(
       txOk(tester.retError(false), alice),
@@ -31,8 +38,7 @@ test({
     assertEquals(receipts[3].value, ok(2n));
 
     const tup = chain.rov(tester.getTup());
-    assertEquals(tup.a, 1n);
-    assertEquals(tup.c.d, "asdf");
+    assertEquals(tup.tupleProp.subProp, "asdf");
 
     const n = chain.rovOk(tester.num(2));
     assertEquals(n, 2n);
@@ -52,5 +58,9 @@ test({
 
     // just one
     assertEquals(chain.mineOne(txOk(tester.num(2), alice)).value, 2n);
+
+    // tuple arguments
+    const merged = chain.rov(tester.mergeTuple({ minHeight: 1n }));
+    assertEquals(merged, { minHeight: 1n, maxHeight: 100000n });
   },
 });

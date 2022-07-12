@@ -18,11 +18,15 @@
 
 (define-read-only (get-tup) {
   a: u1,
-  b: true,
-  c: {
-    d: "asdf"
+  bool-prop: true,
+  tuple-prop: {
+    sub-prop: "asdf"
   }
 })
+
+(define-read-only (merge-tuple (i { min-height: uint }))
+  (merge i { max-height: u100000 })
+)
 
 (define-public (ret-error (with-err bool))
   (if with-err (err u1) (ok true))
