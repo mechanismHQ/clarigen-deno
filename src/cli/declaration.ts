@@ -47,12 +47,13 @@ export const jsTypeFromAbiType = (
   } else if (isClarityAbiTuple(val)) {
     const tupleDefs: string[] = [];
     val.tuple.forEach(({ name, type }) => {
+      const camelName = toCamelCase(name);
       const innerType = jsTypeFromAbiType(type);
-      tupleDefs.push(`"${name}": ${innerType}`);
+      tupleDefs.push(`"${camelName}": ${innerType};`);
     });
     return `{
-  ${tupleDefs.join(";\n  ")}
-    }`;
+  ${tupleDefs.join("\n  ")}
+}`;
   } else if (isClarityAbiList(val)) {
     const innerType = jsTypeFromAbiType(val.list.type);
     return `${innerType}[]`;

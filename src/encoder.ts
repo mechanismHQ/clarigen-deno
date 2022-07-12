@@ -20,6 +20,7 @@ import type {
 } from "./types.ts";
 import { err, ok } from "./types.ts";
 import { types } from "https://deno.land/x/clarinet@v0.28.0/index.ts";
+import { toCamelCase, toKebabCase } from "./cli/utils.ts";
 
 export const isClarityAbiPrimitive = (
   val: ClarityAbiType,
@@ -59,7 +60,8 @@ export function valueToCV(input: any, type: ClarityAbiType): string {
     }
     const tuple: Record<string, any> = {};
     type.tuple.forEach((key) => {
-      const val = input[key.name];
+      const jsKey = findJsTupleKey(key.name, input);
+      const val = input[jsKey];
       tuple[key.name] = valueToCV(val, key.type);
     });
     return types.tuple(tuple);
@@ -136,10 +138,17 @@ export function cvToValue<T = any>(
 ): T {
   if (isClarityAbiTuple(type)) {
     const decoded = input.expectTuple();
-
     const tuple: Record<string, any> = {};
+    const tupleReduced = Object.entries(decoded).reduce((acc, [key, val]) => {
+      const keyFixed = key.trim();
+      return {
+        ...acc,
+        [keyFixed]: val.trim(),
+      };
+    }, {} as Record<string, any>);
     type.tuple.forEach(({ name, type: _type }) => {
-      tuple[name] = cvToValue(decoded[name], _type);
+      const camelName = toCamelCase(name);
+      tuple[camelName] = cvToValue(tupleReduced[name], _type);
     });
     return tuple as unknown as T;
     // throw new Error("Unable to parse tuple yet.");
@@ -157,6 +166,8 @@ export function cvToValue<T = any>(
   } else if (type === "bool") {
     return (input === "true") as unknown as T;
   } else if (type === "uint128") {
+    // if (!input) console.log("no input", input);
+    // if (input.charAt(0) !== "u") console.log("weird uint", input);
     return BigInt(input.slice(1)) as unknown as T;
   } else if (type === "int128") {
     return BigInt(input) as unknown as T;
@@ -209,4 +220,26 @@ export function bytesToHex(uint8a: Uint8Array) {
     hexOctets[i] = byteToHexCache[uint8a[i]];
   }
   return hexOctets.join("");
+}
+
+export function findTupleKey(jsKey: string, type: ClarityAbiTypeTuple) {
+  const found = type.tuple.find((t) => {
+    const camelEq = t.name === jsKey;
+    const kebabEq = t.name === toKebabCase(jsKey);
+    return camelEq || kebabEq;
+  });
+  if (!found) throw new Error(`Invalid tuple key: ${jsKey}`);
+  return found.name;
+}
+
+export function findJsTupleKey(key: string, input: Record<string, any>) {
+  const found = Object.keys(input).find((k) => {
+    const camelEq = key === k;
+    const kebabEq = key === toKebabCase(k);
+    return camelEq || kebabEq;
+  });
+  if (!found) {
+    throw new Error(`Error encoding JS tuple: ${key} not found in input.`);
+  }
+  return found;
 }
