@@ -9,7 +9,7 @@
     "@changesets/cli": "^2.23.0"
   },
   "scripts": {
-    "release": "changeset version && git add . && git commit -m \"chore: version\" && git tag && git push origin --follow-tags"
+    "release": "changeset version && git add . && git commit -m \"chore: version\" && yarn changeset tag && git push origin --follow-tags"
   },
   "private": true
 }
