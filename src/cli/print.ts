@@ -1,4 +1,4 @@
-import { getSession } from "./index.ts";
+import { getSession } from './index.ts';
 
 const result = getSession();
 

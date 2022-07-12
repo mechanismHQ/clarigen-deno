@@ -1,6 +1,6 @@
 export type ClarityAbiTypeBuffer = { buffer: { length: number } };
-export type ClarityAbiTypeStringAscii = { "string-ascii": { length: number } };
-export type ClarityAbiTypeStringUtf8 = { "string-utf8": { length: number } };
+export type ClarityAbiTypeStringAscii = { 'string-ascii': { length: number } };
+export type ClarityAbiTypeStringUtf8 = { 'string-utf8': { length: number } };
 export type ClarityAbiTypeResponse = {
   response: { ok: ClarityAbiType; error: ClarityAbiType };
 };
@@ -12,12 +12,12 @@ export type ClarityAbiTypeList = {
   list: { type: ClarityAbiType; length: number };
 };
 
-export type ClarityAbiTypeUInt128 = "uint128";
-export type ClarityAbiTypeInt128 = "int128";
-export type ClarityAbiTypeBool = "bool";
-export type ClarityAbiTypePrincipal = "principal";
-export type ClarityAbiTypeTraitReference = "trait_reference";
-export type ClarityAbiTypeNone = "none";
+export type ClarityAbiTypeUInt128 = 'uint128';
+export type ClarityAbiTypeInt128 = 'int128';
+export type ClarityAbiTypeBool = 'bool';
+export type ClarityAbiTypePrincipal = 'principal';
+export type ClarityAbiTypeTraitReference = 'trait_reference';
+export type ClarityAbiTypeNone = 'none';
 
 export type ClarityAbiTypePrimitive =
   | ClarityAbiTypeUInt128
@@ -40,7 +40,7 @@ export type ClarityAbiType =
 
 export interface ClarityAbiFunction {
   name: string;
-  access: "private" | "public" | "read_only";
+  access: 'private' | 'public' | 'read_only';
   args: {
     name: string;
     type: ClarityAbiType;
@@ -57,7 +57,7 @@ export type TypedAbiFunction<T extends any[], R> = ClarityAbiFunction & {
 
 export interface ClarityAbiVariable {
   name: string;
-  access: "variable" | "constant";
+  access: 'variable' | 'constant';
   type: ClarityAbiType;
 }
 
@@ -145,83 +145,83 @@ export type ErrType<R> = R extends ResponseErr<unknown, infer V> ? V : never;
 
 export const contracts = {
   tester: {
-    "functions": {
+    'functions': {
       num: {
-        "name": "num",
-        "access": "public",
-        "args": [{ "name": "n", "type": "uint128" }],
-        "outputs": {
-          "type": { "response": { "ok": "uint128", "error": "none" } },
+        'name': 'num',
+        'access': 'public',
+        'args': [{ 'name': 'n', 'type': 'uint128' }],
+        'outputs': {
+          'type': { 'response': { 'ok': 'uint128', 'error': 'none' } },
         },
       } as TypedAbiFunction<[n: number | bigint], Response<bigint, null>>,
       retError: {
-        "name": "ret-error",
-        "access": "public",
-        "args": [{ "name": "with-err", "type": "bool" }],
-        "outputs": {
-          "type": { "response": { "ok": "bool", "error": "uint128" } },
+        'name': 'ret-error',
+        'access': 'public',
+        'args': [{ 'name': 'with-err', 'type': 'bool' }],
+        'outputs': {
+          'type': { 'response': { 'ok': 'bool', 'error': 'uint128' } },
         },
       } as TypedAbiFunction<[withErr: boolean], Response<boolean, bigint>>,
       getTup: {
-        "name": "get-tup",
-        "access": "read_only",
-        "args": [],
-        "outputs": {
-          "type": {
-            "tuple": [{ "name": "a", "type": "uint128" }, {
-              "name": "bool-prop",
-              "type": "bool",
+        'name': 'get-tup',
+        'access': 'read_only',
+        'args': [],
+        'outputs': {
+          'type': {
+            'tuple': [{ 'name': 'a', 'type': 'uint128' }, {
+              'name': 'bool-prop',
+              'type': 'bool',
             }, {
-              "name": "tuple-prop",
-              "type": {
-                "tuple": [{
-                  "name": "sub-prop",
-                  "type": { "string-ascii": { "length": 4 } },
+              'name': 'tuple-prop',
+              'type': {
+                'tuple': [{
+                  'name': 'sub-prop',
+                  'type': { 'string-ascii': { 'length': 4 } },
                 }],
               },
             }],
           },
         },
       } as TypedAbiFunction<[], {
-        "a": bigint;
-        "boolProp": boolean;
-        "tupleProp": {
-          "subProp": string;
+        'a': bigint;
+        'boolProp': boolean;
+        'tupleProp': {
+          'subProp': string;
         };
       }>,
       mergeTuple: {
-        "name": "merge-tuple",
-        "access": "read_only",
-        "args": [{
-          "name": "i",
-          "type": { "tuple": [{ "name": "min-height", "type": "uint128" }] },
+        'name': 'merge-tuple',
+        'access': 'read_only',
+        'args': [{
+          'name': 'i',
+          'type': { 'tuple': [{ 'name': 'min-height', 'type': 'uint128' }] },
         }],
-        "outputs": {
-          "type": {
-            "tuple": [{ "name": "max-height", "type": "uint128" }, {
-              "name": "min-height",
-              "type": "uint128",
+        'outputs': {
+          'type': {
+            'tuple': [{ 'name': 'max-height', 'type': 'uint128' }, {
+              'name': 'min-height',
+              'type': 'uint128',
             }],
           },
         },
       } as TypedAbiFunction<[i: {
-        "minHeight": bigint;
+        'minHeight': bigint;
       }], {
-        "maxHeight": bigint;
-        "minHeight": bigint;
+        'maxHeight': bigint;
+        'minHeight': bigint;
       }>,
       square: {
-        "name": "square",
-        "access": "read_only",
-        "args": [{ "name": "n", "type": "uint128" }],
-        "outputs": { "type": "uint128" },
+        'name': 'square',
+        'access': 'read_only',
+        'args': [{ 'name': 'n', 'type': 'uint128' }],
+        'outputs': { 'type': 'uint128' },
       } as TypedAbiFunction<[n: number | bigint], bigint>,
     },
-    "maps": {},
-    "variables": {},
+    'maps': {},
+    'variables': {},
     constants: {},
-    "fungible_tokens": [],
-    "non_fungible_tokens": [],
-    contractName: "tester",
+    'fungible_tokens': [],
+    'non_fungible_tokens': [],
+    contractName: 'tester',
   },
 } as const;

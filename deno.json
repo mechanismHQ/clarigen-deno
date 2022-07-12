@@ -1,0 +1,19 @@
+{
+  "fmt": {
+    "options": {
+      "singleQuote": true
+    },
+    "files": {
+      "include": ["src/", "test_pkg/", "artifacts/", "tests/"]
+    }
+  },
+  "lint": {
+    "files": {
+      "include": ["src/", "test_pkg/", "artifacts/", "tests/"]
+    },
+    "rules": {
+      "tags": ["recommended"]
+      "exclude": ["no-explicit-any"]
+    }
+  }
+}

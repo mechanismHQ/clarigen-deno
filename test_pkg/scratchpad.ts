@@ -5,10 +5,12 @@ import {
   Clarinet,
   Tx,
   types,
-} from "https://deno.land/x/clarinet@v0.28.0/index.ts";
-import { assertEquals } from "https://deno.land/std@0.90.0/testing/asserts.ts";
-import { accounts, contracts } from "../demo-types/single.ts";
+} from 'https://deno.land/x/clarinet@v0.28.0/index.ts';
+import { assertEquals } from 'https://deno.land/std@0.90.0/testing/asserts.ts';
+import { accounts, contracts } from '../demo-types/single.ts';
 import {
+  ClarityAbiFunction,
+  ContractCallTyped,
   contractsFactory,
   ErrType,
   ExpectType,
@@ -25,16 +27,17 @@ import {
   txErr,
   txOk,
   TxValueType,
-} from "../src/index.ts";
+} from '../src/index.ts';
+import { simnet } from '../artifacts/clarigen/deno/index.ts';
 
-const { tester } = contractsFactory(contracts);
+const { tester } = contractsFactory(simnet);
 
 const payload = tester.square(1);
 // console.log("payload", payload);
 
-const ok = txOk(tester.retError(false), "asdf");
-const okN = txOk(tester.num(1), "");
-const errN = txErr(tester.retError(true), "");
+const ok = txOk(tester.retError(false), 'asdf');
+const okN = txOk(tester.num(1), '');
+const errN = txErr(tester.retError(true), '');
 
 async function boolOk(): Promise<boolean> {
   return new Promise(async (resolve, reject) => {
@@ -93,3 +96,64 @@ type MyErr = ErrType<MyResp>;
 // type C = FunctionsToContractCalls<typeof contracts['tester']['functions']>;
 
 type AccountKeys = keyof typeof accounts;
+
+type ArgsMap = {
+  [name: string]: any;
+};
+
+// type ArgsArr = any[];
+type Arg<T, N extends string> = { _t?: T; name: N };
+type ArgsArr<T, N extends string> = Arg<T, N>[];
+
+type ArgsTuple<T extends ArgsArr<unknown, string>> = {
+  [K in keyof T]: T[K] extends Arg<infer A, string> ? A : never;
+};
+
+type ArgsRecordUnion<T extends Arg<unknown, string>> = T extends
+  Arg<infer A, infer N> ? {
+  [K in T as N]: A;
+}
+  : never;
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends
+  (k: infer I) => void ? I
+  : never;
+export type Compact<T> = { [K in keyof T]: T[K] };
+
+type ArgsRecord<T extends ArgsArr<unknown, string>> = Compact<
+  UnionToIntersection<ArgsRecordUnion<T[number]>>
+>;
+
+type ArgsType<T extends ArgsArr<unknown, string>> =
+  | ArgsRecord<T>
+  | ArgsTuple<T>;
+
+type MyArgs2 = ArgsType<MyArgs>;
+
+type MyArgs = [option: Arg<number, 'option'>, name: Arg<string, 'name'>];
+type MyArgsTup = ArgsTuple<MyArgs>;
+type MyArgsUnion = ArgsRecordUnion<MyArgs[number]>;
+// type MyArgsRec = Compact<UnionToIntersection<MyArgsUnion>>;
+type MyArgsRec = ArgsRecord<MyArgs>;
+
+// type Args = ArgsMap | ArgsArr;
+export type TypedAbiFunction<T extends any[] | [Record<string, any>], R> =
+  & ClarityAbiFunction
+  & {
+    _t?: T;
+    _r?: R;
+  };
+
+// export type ContractCallFnOpts<Args extends Record<string, unknown>> = (
+//   args: Args,
+// ) => ContractCallTyped<Args, R>;
+
+export type ContractCallFunction<
+  Args extends unknown[] | [Record<string, any>],
+  R,
+> = (
+  ...args: Args
+) => ContractCallTyped<Args, R>;
+
+export type FnToContractCall<T> = T extends TypedAbiFunction<infer Arg, infer R>
+  ? ContractCallFunction<Arg, R>
+  : never;

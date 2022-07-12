@@ -1,3 +1,3 @@
-import { generateDeployments } from "./deployments.ts";
+import { generateDeployments } from './deployments.ts';
 
-await generateDeployments("./artifacts/clarigen");
+await generateDeployments('./artifacts/clarigen');

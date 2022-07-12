@@ -7,36 +7,36 @@ import {
   isClarityAbiStringAscii,
   isClarityAbiStringUtf8,
   isClarityAbiTuple,
-} from "../encoder.ts";
-import { ClarityAbiType } from "../types.ts";
-import { toCamelCase } from "./utils.ts";
+} from '../encoder.ts';
+import { ClarityAbiFunction, ClarityAbiType } from '../types.ts';
+import { toCamelCase } from './utils.ts';
 
 export const jsTypeFromAbiType = (
   val: ClarityAbiType,
   isArgument = false,
 ): string => {
   if (isClarityAbiPrimitive(val)) {
-    if (val === "uint128") {
-      if (isArgument) return "number | bigint";
-      return "bigint";
-    } else if (val === "int128") {
-      if (isArgument) return "number | bigint";
-      return "bigint";
-    } else if (val === "bool") {
-      return "boolean";
-    } else if (val === "principal") {
-      return "string";
-    } else if (val === "none") {
-      return "null";
-    } else if (val === "trait_reference") {
-      return "string";
+    if (val === 'uint128') {
+      if (isArgument) return 'number | bigint';
+      return 'bigint';
+    } else if (val === 'int128') {
+      if (isArgument) return 'number | bigint';
+      return 'bigint';
+    } else if (val === 'bool') {
+      return 'boolean';
+    } else if (val === 'principal') {
+      return 'string';
+    } else if (val === 'none') {
+      return 'null';
+    } else if (val === 'trait_reference') {
+      return 'string';
     } else {
       throw new Error(
         `Unexpected Clarity ABI type primitive: ${JSON.stringify(val)}`,
       );
     }
   } else if (isClarityAbiBuffer(val)) {
-    return "Uint8Array";
+    return 'Uint8Array';
   } else if (isClarityAbiResponse(val)) {
     const ok = jsTypeFromAbiType(val.response.ok);
     const err = jsTypeFromAbiType(val.response.error);
@@ -52,26 +52,35 @@ export const jsTypeFromAbiType = (
       tupleDefs.push(`"${camelName}": ${innerType};`);
     });
     return `{
-  ${tupleDefs.join("\n  ")}
+  ${tupleDefs.join('\n  ')}
 }`;
   } else if (isClarityAbiList(val)) {
     const innerType = jsTypeFromAbiType(val.list.type);
     return `${innerType}[]`;
   } else if (isClarityAbiStringAscii(val)) {
-    return "string";
+    return 'string';
   } else if (isClarityAbiStringUtf8(val)) {
-    return "string";
-  } else if (val === "trait_reference") {
-    return "string";
+    return 'string';
+  } else if (val === 'trait_reference') {
+    return 'string';
   } else {
     throw new Error(`Unexpected Clarity ABI type: ${JSON.stringify(val)}`);
   }
 };
 
+export function abiFunctionType(abiFunction: ClarityAbiFunction) {
+  const args = abiFunction.args.map((arg) => {
+    return `${getArgName(arg.name)}: ${jsTypeFromAbiType(arg.type, true)}`;
+  });
+  const retType = jsTypeFromAbiType(abiFunction.outputs.type);
+  const argsTuple = `[${args.join(', ')}]`;
+  return `TypedAbiFunction<${argsTuple}, ${retType}>`;
+}
+
 // Check if it's a reserved word, and then camelCase
 export function getArgName(name: string) {
   const camel = toCamelCase(name);
-  const prefix = RESERVED[camel] ? "_" : "";
+  const prefix = RESERVED[camel] ? '_' : '';
   return `${prefix}${camel}`;
 }
 
@@ -85,45 +94,45 @@ function _hash(...words: string[]) {
 
 const RESERVED = _hash(
   // Keywords, ES6 11.6.2.1, http://www.ecma-international.org/ecma-262/6.0/index.html#sec-keywords
-  "break",
-  "do",
-  "in",
-  "typeof",
-  "case",
-  "else",
-  "instanceof",
-  "var",
-  "catch",
-  "export",
-  "new",
-  "void",
-  "class",
-  "extends",
-  "return",
-  "while",
-  "const",
-  "finally",
-  "super",
-  "with",
-  "continue",
-  "for",
-  "switch",
-  "yield",
-  "debugger",
-  "function",
-  "this",
-  "default",
-  "if",
-  "throw",
-  "delete",
-  "import",
-  "try",
+  'break',
+  'do',
+  'in',
+  'typeof',
+  'case',
+  'else',
+  'instanceof',
+  'var',
+  'catch',
+  'export',
+  'new',
+  'void',
+  'class',
+  'extends',
+  'return',
+  'while',
+  'const',
+  'finally',
+  'super',
+  'with',
+  'continue',
+  'for',
+  'switch',
+  'yield',
+  'debugger',
+  'function',
+  'this',
+  'default',
+  'if',
+  'throw',
+  'delete',
+  'import',
+  'try',
   // Future Reserved Words, ES6 11.6.2.2
   // http://www.ecma-international.org/ecma-262/6.0/index.html#sec-future-reserved-words
-  "enum",
-  "await",
+  'enum',
+  'await',
   // NullLiteral & BooleanLiteral
-  "null",
-  "true",
-  "false",
+  'null',
+  'true',
+  'false',
 );

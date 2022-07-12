@@ -1,24 +1,25 @@
-import { jsTypeFromAbiType } from "../src/cli/declaration.ts";
-import { ClarityAbiTypeTuple } from "../src/types.ts";
-import { assertEquals } from "https://deno.land/std@0.144.0/testing/asserts.ts";
+import { abiFunctionType, jsTypeFromAbiType } from '../src/cli/declaration.ts';
+import { ClarityAbiTypeTuple } from '../src/types.ts';
+import { assertEquals } from 'https://deno.land/std@0.144.0/testing/asserts.ts';
+import { tupleMock } from './mocks.ts';
 
-Deno.test("encoding tuple types", () => {
+Deno.test('encoding tuple types', () => {
   const tupleType: ClarityAbiTypeTuple = {
     tuple: [
-      { name: "num", type: "uint128" },
-      { name: "booly-prop", type: "bool" },
+      { name: 'num', type: 'uint128' },
+      { name: 'booly-prop', type: 'bool' },
       {
-        name: "tuple-prop",
+        name: 'tuple-prop',
         type: {
-          tuple: [{ name: "sub-thing", type: "bool" }],
+          tuple: [{ name: 'sub-thing', type: 'bool' }],
         },
       },
     ],
   };
 
   const type = jsTypeFromAbiType(tupleType);
-  const boolLine = type.split("\n")[2];
+  const boolLine = type.split('\n')[2];
   assertEquals(boolLine.trim(), '"boolyProp": boolean;');
-  const subLine = type.split("\n")[4];
+  const subLine = type.split('\n')[4];
   assertEquals(subLine.trim(), '"subThing": boolean;');
 });

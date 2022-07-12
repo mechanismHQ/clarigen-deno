@@ -1,9 +1,9 @@
-import { Session } from "./index.ts";
+import { Session } from './index.ts';
 
 export function generateDenoFile(session: Session) {
   if (session.accounts.length === 0) {
     console.warn(
-      "[Clarigen] `accounts` is empty - did you forgot to use `--allow-wallets`?",
+      '[Clarigen] `accounts` is empty - did you forgot to use `--allow-wallets`?',
     );
   }
   const accounts = Object.fromEntries(session.accounts.map((account) => {

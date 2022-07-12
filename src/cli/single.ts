@@ -1,7 +1,7 @@
-import { getArgName, jsTypeFromAbiType } from "./declaration.ts";
-import type { Session, SessionContract } from "./index.ts";
-import { toCamelCase } from "./utils.ts";
-import { types } from "./type-stub.ts";
+import { getArgName, jsTypeFromAbiType } from './declaration.ts';
+import type { Session, SessionContract } from './index.ts';
+import { toCamelCase } from './utils.ts';
+import { types } from './type-stub.ts';
 
 export function generateContractMeta(contract: SessionContract) {
   const abi = contract.contract_interface;
@@ -12,7 +12,7 @@ export function generateContractMeta(contract: SessionContract) {
     const args = func.args.map((arg) => {
       return `${getArgName(arg.name)}: ${jsTypeFromAbiType(arg.type, true)}`;
     });
-    const argsTuple = `[${args.join(", ")}]`;
+    const argsTuple = `[${args.join(', ')}]`;
     const funcDef = JSON.stringify(func);
     functionLine += funcDef;
     const retType = jsTypeFromAbiType(func.outputs.type);
@@ -30,7 +30,7 @@ export function generateContractMeta(contract: SessionContract) {
   });
 
   const otherAbi = JSON.stringify(rest);
-  const contractName = contract.contract_id.split(".")[1];
+  const contractName = contract.contract_id.split('.')[1];
 
   const variableLines = variables.map((v) => {
     let varLine = `${toCamelCase(v.name)}: `;
@@ -41,9 +41,9 @@ export function generateContractMeta(contract: SessionContract) {
   });
 
   return `{
-  ${serializeLines("functions", functionLines)}
-  ${serializeLines("maps", mapLines)}
-  ${serializeLines("variables", variableLines)}
+  ${serializeLines('functions', functionLines)}
+  ${serializeLines('maps', mapLines)}
+  ${serializeLines('variables', variableLines)}
   constants: {},
   ${otherAbi.slice(1, -1)},
   contractName: '${contractName}',
@@ -55,7 +55,7 @@ export function generateSingleFile(
 ) {
   const contractDefs = session.contracts.map((contract) => {
     const meta = generateContractMeta(contract);
-    const id = contract.contract_id.split(".")[1];
+    const id = contract.contract_id.split('.')[1];
     const keyName = toCamelCase(id);
     return `${keyName}: ${meta}`;
   });
@@ -64,7 +64,7 @@ export function generateSingleFile(
 ${types}
 
 export const contracts = {
-  ${contractDefs.join(",\n")}
+  ${contractDefs.join(',\n')}
 } as const;
 
 `;
@@ -86,6 +86,6 @@ export function serialize(obj: any) {
 
 function serializeLines(key: string, lines: string[]) {
   return `"${key}": {
-    ${lines.join(",\n    ")}
+    ${lines.join(',\n    ')}
   },`;
 }

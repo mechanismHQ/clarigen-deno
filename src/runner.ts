@@ -4,8 +4,8 @@ import {
   Clarinet,
   ReadOnlyFn,
   TxReceipt,
-} from "https://deno.land/x/clarinet@v0.31.0/index.ts";
-import { cvToValue } from "./encoder.ts";
+} from 'https://deno.land/x/clarinet@v0.31.0/index.ts';
+import { cvToValue } from './encoder.ts';
 import {
   Account,
   Accounts,
@@ -13,9 +13,9 @@ import {
   ContractCallTyped,
   contractsFactory,
   Simnet,
-} from "./factory.ts";
-import { ExpectType, TxCall } from "./tx.ts";
-import { ClarityAbiFunction, ErrType, OkType, Response } from "./types.ts";
+} from './factory.ts';
+import { ExpectType, TxCall } from './tx.ts';
+import { ClarityAbiFunction, ErrType, OkType, Response } from './types.ts';
 
 type Call<R> = ContractCallTyped<unknown, R>;
 
@@ -42,7 +42,7 @@ export type Receipts<T extends readonly unknown[]> = {
 };
 
 export type TypedBlock<T extends readonly unknown[]> =
-  & Omit<Block, "receipts">
+  & Omit<Block, 'receipts'>
   & {
     receipts: Readonly<Receipts<T>>;
   };
@@ -55,7 +55,7 @@ function validateResponse<T>(
   expectOk?: boolean,
 ): T {
   const value = cvToValue(result, fn.outputs.type);
-  if (("isOk" in value) && (typeof expectOk !== "undefined")) {
+  if (('isOk' in value) && (typeof expectOk !== 'undefined')) {
     const response = value as Response<unknown, unknown>;
     const inner = response.value;
     if (expectOk && !response.isOk) {
@@ -80,7 +80,7 @@ export class Chain {
 
   constructor(chain: _Chain, accounts: Map<unknown, Account>) {
     this.chain = chain;
-    this.deployer = accounts.get("deployer")!.address;
+    this.deployer = accounts.get('deployer')!.address;
   }
 
   ro<R>(payload: Call<R>, sender?: string): TypedReadOnlyFn<R> {

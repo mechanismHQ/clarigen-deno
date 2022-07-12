@@ -1,6 +1,6 @@
-import { Tx } from "https://deno.land/x/clarinet@v0.28.0/index.ts";
-import { ContractCallTyped } from "./factory.ts";
-import { ClarityAbiFunction } from "./types.ts";
+import { Tx } from 'https://deno.land/x/clarinet@v0.28.0/index.ts';
+import { ContractCallTyped } from './factory.ts';
+import { ClarityAbiFunction } from './types.ts';
 
 export type ExpectType = true | false | undefined;
 

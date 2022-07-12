@@ -1,5 +1,5 @@
-import { Account } from "https://deno.land/x/clarinet@v0.31.0/index.ts";
-import { ClarityAbi } from "../types.ts";
+import { Account } from 'https://deno.land/x/clarinet@v0.31.0/index.ts';
+import { ClarityAbi } from '../types.ts';
 
 export interface SessionContract {
   contract_id: string;
@@ -8,7 +8,7 @@ export interface SessionContract {
   dependencies: string[];
 }
 
-export type SessionAccount = Omit<Account, "mnemonic" | "derivation">;
+export type SessionAccount = Omit<Account, 'mnemonic' | 'derivation'>;
 
 export interface Session {
   session_id: number;
@@ -19,8 +19,8 @@ export interface Session {
 export function getSession(): Session {
   const result = JSON.parse(
     // deno-lint-ignore no-explicit-any
-    (Deno as any).core.opSync("api/v1/new_session", {
-      name: "Clarigen: session",
+    (Deno as any).core.opSync('api/v1/new_session', {
+      name: 'Clarigen: session',
       loadDeployment: true,
       // deploymentPath: "./deployments/default.simnet-plan.yaml",
     }),

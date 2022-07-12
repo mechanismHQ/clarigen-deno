@@ -1,6 +1,6 @@
-import { assertEquals } from "https://deno.land/std@0.90.0/testing/asserts.ts";
-import { accounts, simnet } from "../artifacts/clarigen/deno/index.ts";
-import { factory, ok, tx, txErr, txOk } from "../src/index.ts";
+import { assertEquals } from 'https://deno.land/std@0.90.0/testing/asserts.ts';
+import { accounts, simnet } from '../artifacts/clarigen/deno/index.ts';
+import { factory, ok, tx, txErr, txOk } from '../src/index.ts';
 
 // addr by compiled accounts
 const _alice = accounts.wallet_1.address;
@@ -8,10 +8,10 @@ const _alice = accounts.wallet_1.address;
 const { contracts: { tester }, test } = factory(simnet);
 
 test({
-  name: "Running type-safe clarinet tests",
+  name: 'Running type-safe clarinet tests',
   fn(chain, a) {
     // addr by Map interface - backwards compat and better types
-    const alice = a.get("wallet_1").address;
+    const alice = a.get('wallet_1').address;
 
     const sq = chain.ro(tester.square(2), alice);
     assertEquals(sq.value, 4n);
@@ -22,7 +22,7 @@ test({
       a: 1n,
       boolProp: true,
       tupleProp: {
-        subProp: "asdf",
+        subProp: 'asdf',
       },
     });
 
@@ -38,14 +38,14 @@ test({
     assertEquals(receipts[3].value, ok(2n));
 
     const tup = chain.rov(tester.getTup());
-    assertEquals(tup.tupleProp.subProp, "asdf");
+    assertEquals(tup.tupleProp.subProp, 'asdf');
 
     const n = chain.rovOk(tester.num(2));
     assertEquals(n, 2n);
 
     try {
       chain.rovErr(tester.num(2));
-      throw new Error("Expected tx to throw");
+      throw new Error('Expected tx to throw');
       // deno-lint-ignore no-empty
     } catch (_error) {}
 

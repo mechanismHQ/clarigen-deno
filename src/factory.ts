@@ -1,5 +1,5 @@
-import { transformArgsToCV } from "./encoder.ts";
-import { ClarityAbiFunction, TypedAbi, TypedAbiFunction } from "./types.ts";
+import { transformArgsToCV } from './encoder.ts';
+import { ClarityAbiFunction, TypedAbi, TypedAbiFunction } from './types.ts';
 
 export interface ContractCallTyped<Args, R> {
   _r?: R;
@@ -29,12 +29,12 @@ export type FunctionsToContractCalls<T> = T extends ContractFunctions ? {
   : never;
 
 export type ContractsToContractCalls<T> = T extends AllContracts ? {
-  [key in keyof T]: FunctionsToContractCalls<T[key]["functions"]>;
+  [key in keyof T]: FunctionsToContractCalls<T[key]['functions']>;
 }
   : never;
 
 export type FullContract<T> = T extends TypedAbi
-  ? FunctionsToContractCalls<T["functions"]> & T & { identifier: string }
+  ? FunctionsToContractCalls<T['functions']> & T & { identifier: string }
   : never;
 
 export type ContractFactory<T extends AllContracts> = {
