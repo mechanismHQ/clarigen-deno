@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.3.7
+
+### Patch Changes
+
+- Updated type stubs to remove unnecessary code
+
 ## 0.3.6
 
 ### Patch Changes

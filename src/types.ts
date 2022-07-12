@@ -54,7 +54,6 @@ export interface ClarityAbiFunction {
 
 export type TypedAbiArg<T, N extends string> = { _t?: T; name: N };
 
-// deno-lint-ignore no-explicit-any
 export type TypedAbiFunction<T extends TypedAbiArg<unknown, string>[], R> =
   & ClarityAbiFunction
   & {
@@ -111,8 +110,7 @@ export type TypedAbi = Readonly<{
     [key: string]: TypedAbiMap<unknown, unknown>;
   };
   constants: {
-    // deno-lint-ignore no-explicit-any
-    [key: string]: any;
+    [key: string]: unknown;
   };
   fungible_tokens: Readonly<ClarityAbiTypeFungibleToken[]>;
   non_fungible_tokens: Readonly<ClarityAbiTypeNonFungibleToken[]>;
