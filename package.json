@@ -1,6 +1,6 @@
 {
   "name": "clarigen-deno",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "main": "index.js",
   "author": "''",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "@changesets/cli": "^2.23.0"
   },
   "scripts": {
-    "version": "changeset version && git add . && git commit -m \"chore: version\" && git tag && git push origin --follow-tags"
+    "release": "changeset version && git add . && git commit -m \"chore: version\" && git tag && git push origin --follow-tags"
   },
   "private": true
 }
