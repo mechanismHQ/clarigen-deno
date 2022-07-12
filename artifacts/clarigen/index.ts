@@ -220,7 +220,7 @@ export const contracts = {
         },
       } as TypedAbiFunction<[
         i: TypedAbiArg<{
-          'minHeight': bigint;
+          'minHeight': number | bigint;
         }, 'i'>,
       ], {
         'maxHeight': bigint;

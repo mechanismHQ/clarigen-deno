@@ -27,6 +27,14 @@ Deno.test('encoding tuple types', () => {
   assertEquals(boolLine.trim(), '"boolyProp": boolean;');
   const subLine = type.split('\n')[4];
   assertEquals(subLine.trim(), '"subThing": boolean;');
+
+  const numLine = type.split('\n')[1];
+  assertEquals(numLine.trim(), '"num": bigint;');
+
+  const [_, numLineArg] = jsTypeFromAbiType(tupleType, true).split('\n').map((
+    l,
+  ) => l.trim());
+  assertEquals(numLineArg, '"num": number | bigint;');
 });
 
 Deno.test({
@@ -36,7 +44,7 @@ Deno.test({
     assertEquals(
       argType,
       `tupleArg: TypedAbiArg<{
-  "num": bigint;
+  "num": number | bigint;
   "boolyProp": boolean;
   "tupleProp": {
   "subThing": boolean;

@@ -1,4 +1,5 @@
 import { assertEquals } from 'https://deno.land/std@0.90.0/testing/asserts.ts';
+import { types } from 'https://deno.land/x/clarinet@v0.31.0/index.ts';
 import { accounts, simnet } from '../artifacts/clarigen/deno/index.ts';
 import { factory, ok, tx, txErr, txOk } from '../src/index.ts';
 
@@ -67,5 +68,8 @@ test({
       tester.mergeTuple({ i: { minHeight: 1n } }),
     );
     assertEquals(mergedResWithObjectArg, { minHeight: 1n, maxHeight: 100000n });
+
+    const tupleArgWithInt = tester.mergeTuple({ minHeight: 1 });
+    assertEquals(tupleArgWithInt.args[0], types.tuple({ 'min-height': 'u1' }));
   },
 });
