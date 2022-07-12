@@ -4,7 +4,7 @@
     "@changesets/changelog-github",
     { "repo": "mechanismHQ/clarigen-deno" }
   ],
-  "commit": true,
+  "commit": false,
   "fixed": [],
   "linked": [],
   "access": "restricted",
