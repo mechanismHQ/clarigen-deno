@@ -67,24 +67,8 @@ export const contracts = {
   ${contractDefs.join(",\n")}
 } as const;
 
-${generateAccounts(session)}
-
-export const simnet = {
-  contracts,
-  accounts,
-} as const;
-
 `;
   return file;
-}
-
-export function generateAccounts(session: Session) {
-  const accounts = Object.fromEntries(session.accounts.map((account) => {
-    const { name, ...rest } = account;
-    return [name, rest];
-  }));
-
-  return `export const accounts = ${JSON.stringify(accounts)} as const;`;
 }
 
 // deno-lint-ignore no-explicit-any
