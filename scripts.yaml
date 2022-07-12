@@ -22,3 +22,13 @@ scripts:
     allow:
       - read
       - write
+
+  build:
+    cmd:
+      - vr type-stubs
+      - vr clarigen
+
+  test-all:
+    pll:
+      - deno test test_pkg
+      - clarinet test

@@ -6,14 +6,8 @@ import {
   TxReceipt,
 } from 'https://deno.land/x/clarinet@v0.31.0/index.ts';
 import { cvToValue } from './encoder.ts';
-import {
-  Account,
-  Accounts,
-  AllContracts,
-  ContractCallTyped,
-  contractsFactory,
-  Simnet,
-} from './factory.ts';
+import { Account, Accounts, contractsFactory, Simnet } from './factory.ts';
+import { AllContracts, ContractCallTyped } from './factory-types.ts';
 import { ExpectType, TxCall } from './tx.ts';
 import { ClarityAbiFunction, ErrType, OkType, Response } from './types.ts';
 
