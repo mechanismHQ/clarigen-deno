@@ -1,7 +1,7 @@
 export const types = `
 export type ClarityAbiTypeBuffer = { buffer: { length: number } };
-export type ClarityAbiTypeStringAscii = { "string-ascii": { length: number } };
-export type ClarityAbiTypeStringUtf8 = { "string-utf8": { length: number } };
+export type ClarityAbiTypeStringAscii = { 'string-ascii': { length: number } };
+export type ClarityAbiTypeStringUtf8 = { 'string-utf8': { length: number } };
 export type ClarityAbiTypeResponse = {
   response: { ok: ClarityAbiType; error: ClarityAbiType };
 };
@@ -13,12 +13,12 @@ export type ClarityAbiTypeList = {
   list: { type: ClarityAbiType; length: number };
 };
 
-export type ClarityAbiTypeUInt128 = "uint128";
-export type ClarityAbiTypeInt128 = "int128";
-export type ClarityAbiTypeBool = "bool";
-export type ClarityAbiTypePrincipal = "principal";
-export type ClarityAbiTypeTraitReference = "trait_reference";
-export type ClarityAbiTypeNone = "none";
+export type ClarityAbiTypeUInt128 = 'uint128';
+export type ClarityAbiTypeInt128 = 'int128';
+export type ClarityAbiTypeBool = 'bool';
+export type ClarityAbiTypePrincipal = 'principal';
+export type ClarityAbiTypeTraitReference = 'trait_reference';
+export type ClarityAbiTypeNone = 'none';
 
 export type ClarityAbiTypePrimitive =
   | ClarityAbiTypeUInt128
@@ -41,7 +41,7 @@ export type ClarityAbiType =
 
 export interface ClarityAbiFunction {
   name: string;
-  access: "private" | "public" | "read_only";
+  access: 'private' | 'public' | 'read_only';
   args: {
     name: string;
     type: ClarityAbiType;
@@ -51,6 +51,7 @@ export interface ClarityAbiFunction {
   };
 }
 
+// deno-lint-ignore no-explicit-any
 export type TypedAbiFunction<T extends any[], R> = ClarityAbiFunction & {
   _t?: T;
   _r?: R;
@@ -58,7 +59,7 @@ export type TypedAbiFunction<T extends any[], R> = ClarityAbiFunction & {
 
 export interface ClarityAbiVariable {
   name: string;
-  access: "variable" | "constant";
+  access: 'variable' | 'constant';
   type: ClarityAbiType;
 }
 
@@ -105,6 +106,7 @@ export type TypedAbi = Readonly<{
     [key: string]: TypedAbiMap<unknown, unknown>;
   };
   constants: {
+    // deno-lint-ignore no-explicit-any
     [key: string]: any;
   };
   fungible_tokens: Readonly<ClarityAbiTypeFungibleToken[]>;

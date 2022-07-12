@@ -4,16 +4,17 @@
       "singleQuote": true
     },
     "files": {
-      "include": ["src/", "test_pkg/", "artifacts/", "tests/"]
+      "include": ["src/", "test_pkg/", "artifacts/", "tests/", "scripts/"]
     }
   },
   "lint": {
     "files": {
-      "include": ["src/", "test_pkg/", "artifacts/", "tests/"]
+      "include": ["src/", "test_pkg/", "artifacts/", "tests/", "scripts/"]
     },
     "rules": {
-      "tags": ["recommended"]
-      "exclude": ["no-explicit-any"]
+      "tags": ["recommended"],
+      "exclude": ["no-explicit-any"],
+      "include": ["eqeqeq", "no-const-assign", "no-throw-literal"]
     }
   }
 }

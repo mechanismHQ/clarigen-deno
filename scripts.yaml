@@ -14,3 +14,11 @@ scripts:
       - write
 
   test: deno test test_pkg
+
+  type-stubs:
+    cmd:
+      - scripts/generate-type-stubs.ts
+      - deno fmt src/cli/type-stub.ts
+    allow:
+      - read
+      - write
