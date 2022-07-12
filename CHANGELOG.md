@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.3.5
+
+### Patch Changes
+
+- [`f7e827d`](https://github.com/mechanismHQ/clarigen-deno/commit/f7e827d9eb1b092c0dbfce8796a261a4bb63d46b) Thanks [@hstove](https://github.com/hstove)! - Added instance methods to `Chain` to support the full Clarinet api
+
 ## 0.3.4
 
 ### Patch Changes
