@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.3.2
+
+### Patch Changes
+
+- [`2b6cca8`](https://github.com/mechanismHQ/clarigen-deno/commit/2b6cca8bfdbf4599c35ee5596fe7f513876ae155) Thanks [@hstove](https://github.com/hstove)! - Adds changeset Github action
+
 ## 0.3.1
 
 ### Patch Changes
