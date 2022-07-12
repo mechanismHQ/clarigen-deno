@@ -1,5 +1,13 @@
 # clarigen-deno
 
+## 0.3.3
+
+### Patch Changes
+
+- [`c8d6b4a`](https://github.com/mechanismHQ/clarigen-deno/commit/c8d6b4ad6124285569ef7de9955c572e11724c51) Thanks [@hstove](https://github.com/hstove)! - Removed 'commit' option for changesets
+
+* [`2f14353`](https://github.com/mechanismHQ/clarigen-deno/commit/2f14353391bfc2226f3dedbea045759c67d1d8d2) Thanks [@hstove](https://github.com/hstove)! - Fixed an issue decoding principals
+
 ## 0.3.2
 
 ### Patch Changes
