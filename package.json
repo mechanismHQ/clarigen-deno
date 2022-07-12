@@ -8,5 +8,6 @@
     "@changesets/changelog-github": "^0.4.5",
     "@changesets/cli": "^2.23.0",
     "@clarigen/cli": "file:.yalc/@clarigen/cli"
-  }
+  },
+  "private": true
 }
