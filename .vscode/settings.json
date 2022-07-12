@@ -1,6 +1,6 @@
 {
   "deno.enable": true,
-  "deno.enablePaths": ["./src", "./tests", "./test_pkg"],
+  "deno.enablePaths": ["./src", "./tests", "./test_pkg", "./artifacts/clarigen/deno"],
   "files.eol": "\n",
   "editor.formatOnSave": true,
   "deno.unstable": true,

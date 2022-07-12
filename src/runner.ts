@@ -1,5 +1,4 @@
 import {
-  Account,
   Block,
   Chain as _Chain,
   Clarinet,
@@ -8,9 +7,12 @@ import {
 } from "https://deno.land/x/clarinet@v0.31.0/index.ts";
 import { cvToValue } from "./encoder.ts";
 import {
+  Account,
+  Accounts,
   AllContracts,
   ContractCallTyped,
   contractsFactory,
+  Simnet,
 } from "./factory.ts";
 import { ExpectType, TxCall } from "./tx.ts";
 import { ClarityAbiFunction, ErrType, OkType, Response } from "./types.ts";
@@ -145,33 +147,46 @@ export class Chain {
   }
 }
 
-type TestFunction<K> = (
+type ValOf<A extends Accounts, K extends keyof A> = A[K];
+class AccountMap<A extends Accounts> extends Map {
+  public a: A;
+  constructor(accounts: A) {
+    super();
+    this.a = accounts;
+  }
+
+  get<K extends keyof A>(key: K): ValOf<A, K> {
+    return this.a[key];
+  }
+}
+
+type TestFunction<A extends Accounts> = (
   chain: Chain,
-  accounts: Map<K, Account>,
+  accounts: AccountMap<A>,
 ) => void | Promise<void>;
 
-interface UnitTestOptions<K> {
+interface UnitTestOptions<A extends Accounts> {
   name: string;
   only?: true;
   ignore?: true;
   // beforeContractsDeployment?: BeforeHookFunction;
-  fn: TestFunction<K>;
+  fn: TestFunction<A>;
 }
 
-// deno-lint-ignore no-explicit-any
-export function factory<T extends AllContracts, A extends Record<string, any>>(
-  { contracts }: { contracts: T },
+export function factory<T extends AllContracts, A extends Accounts>(
+  simnet: Simnet<T, A>,
 ) {
-  const transformed = contractsFactory(contracts);
+  const transformed = contractsFactory(simnet);
 
-  const test = (options: UnitTestOptions<keyof A>) => {
+  const test = (options: UnitTestOptions<A>) => {
     const { fn, ...rest } = options;
     const callback = (
       _chain: _Chain,
-      accounts: Map<keyof A | "deployer", Account>,
+      accounts: Map<keyof A, Account>,
     ) => {
       const chain = new Chain(_chain, accounts);
-      fn(chain, accounts);
+      const accountMap = new AccountMap(simnet.accounts);
+      fn(chain, accountMap);
     };
     return Clarinet.test({
       ...rest,

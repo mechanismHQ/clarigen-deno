@@ -51,9 +51,9 @@ export function generateContractMeta(contract: SessionContract) {
 }
 
 export function generateSingleFile(
-  config: Session,
+  session: Session,
 ) {
-  const contractDefs = config.contracts.map((contract) => {
+  const contractDefs = session.contracts.map((contract) => {
     const meta = generateContractMeta(contract);
     const id = contract.contract_id.split(".")[1];
     const keyName = toCamelCase(id);
@@ -67,8 +67,24 @@ export const contracts = {
   ${contractDefs.join(",\n")}
 } as const;
 
+${generateAccounts(session)}
+
+export const simnet = {
+  contracts,
+  accounts,
+} as const;
+
 `;
   return file;
+}
+
+export function generateAccounts(session: Session) {
+  const accounts = Object.fromEntries(session.accounts.map((account) => {
+    const { name, ...rest } = account;
+    return [name, rest];
+  }));
+
+  return `export const accounts = ${JSON.stringify(accounts)} as const;`;
 }
 
 // deno-lint-ignore no-explicit-any

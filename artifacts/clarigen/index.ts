@@ -1,5 +1,3 @@
-
-
 export type ClarityAbiTypeBuffer = { buffer: { length: number } };
 export type ClarityAbiTypeStringAscii = { "string-ascii": { length: number } };
 export type ClarityAbiTypeStringUtf8 = { "string-utf8": { length: number } };
@@ -145,27 +143,112 @@ export function err<Ok = never, T = unknown>(value: T): ResponseErr<Ok, T> {
 export type OkType<R> = R extends ResponseOk<infer V, unknown> ? V : never;
 export type ErrType<R> = R extends ResponseErr<unknown, infer V> ? V : never;
 
-
-
 export const contracts = {
   tester: {
-  "functions": {
-    num: {"name":"num","access":"public","args":[{"name":"n","type":"uint128"}],"outputs":{"type":{"response":{"ok":"uint128","error":"none"}}}} as TypedAbiFunction<[n: number | bigint], Response<bigint, null>>,
-    retError: {"name":"ret-error","access":"public","args":[{"name":"with-err","type":"bool"}],"outputs":{"type":{"response":{"ok":"bool","error":"uint128"}}}} as TypedAbiFunction<[withErr: boolean], Response<boolean, bigint>>,
-    getTup: {"name":"get-tup","access":"read_only","args":[],"outputs":{"type":{"tuple":[{"name":"a","type":"uint128"},{"name":"b","type":"bool"},{"name":"c","type":{"tuple":[{"name":"d","type":{"string-ascii":{"length":4}}}]}}]}}} as TypedAbiFunction<[], {
-  "a": bigint;
-  "b": boolean;
-  "c": {
-  "d": string
-    }
-    }>,
-    square: {"name":"square","access":"read_only","args":[{"name":"n","type":"uint128"}],"outputs":{"type":"uint128"}} as TypedAbiFunction<[n: number | bigint], bigint>
+    "functions": {
+      num: {
+        "name": "num",
+        "access": "public",
+        "args": [{ "name": "n", "type": "uint128" }],
+        "outputs": {
+          "type": { "response": { "ok": "uint128", "error": "none" } },
+        },
+      } as TypedAbiFunction<[n: number | bigint], Response<bigint, null>>,
+      retError: {
+        "name": "ret-error",
+        "access": "public",
+        "args": [{ "name": "with-err", "type": "bool" }],
+        "outputs": {
+          "type": { "response": { "ok": "bool", "error": "uint128" } },
+        },
+      } as TypedAbiFunction<[withErr: boolean], Response<boolean, bigint>>,
+      getTup: {
+        "name": "get-tup",
+        "access": "read_only",
+        "args": [],
+        "outputs": {
+          "type": {
+            "tuple": [{ "name": "a", "type": "uint128" }, {
+              "name": "b",
+              "type": "bool",
+            }, {
+              "name": "c",
+              "type": {
+                "tuple": [{
+                  "name": "d",
+                  "type": { "string-ascii": { "length": 4 } },
+                }],
+              },
+            }],
+          },
+        },
+      } as TypedAbiFunction<[], {
+        "a": bigint;
+        "b": boolean;
+        "c": {
+          "d": string;
+        };
+      }>,
+      square: {
+        "name": "square",
+        "access": "read_only",
+        "args": [{ "name": "n", "type": "uint128" }],
+        "outputs": { "type": "uint128" },
+      } as TypedAbiFunction<[n: number | bigint], bigint>,
+    },
+    "maps": {},
+    "variables": {},
+    constants: {},
+    "fungible_tokens": [],
+    "non_fungible_tokens": [],
+    contractName: "tester",
   },
-  "maps": {
-    
-  },
-  "fungible_tokens":[],"non_fungible_tokens":[],
-  contractName: 'tester',
-  }
 } as const;
 
+export const accounts = {
+  "deployer": {
+    "address": "ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM",
+    "balance": 100000000000000,
+  },
+  "wallet_1": {
+    "address": "ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5",
+    "balance": 100000000000000,
+  },
+  "wallet_2": {
+    "address": "ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG",
+    "balance": 100000000000000,
+  },
+  "wallet_3": {
+    "address": "ST2JHG361ZXG51QTKY2NQCVBPPRRE2KZB1HR05NNC",
+    "balance": 100000000000000,
+  },
+  "wallet_4": {
+    "address": "ST2NEB84ASENDXKYGJPQW86YXQCEFEX2ZQPG87ND",
+    "balance": 100000000000000,
+  },
+  "wallet_5": {
+    "address": "ST2REHHS5J3CERCRBEPMGH7921Q6PYKAADT7JP2VB",
+    "balance": 100000000000000,
+  },
+  "wallet_6": {
+    "address": "ST3AM1A56AK2C1XAFJ4115ZSV26EB49BVQ10MGCS0",
+    "balance": 100000000000000,
+  },
+  "wallet_7": {
+    "address": "ST3PF13W7Z0RRM42A8VZRVFQ75SV1K26RXEP8YGKJ",
+    "balance": 100000000000000,
+  },
+  "wallet_8": {
+    "address": "ST3NBRSFKX28FQ2ZJ1MAKX58HKHSDGNV5N7R21XCP",
+    "balance": 100000000000000,
+  },
+  "wallet_9": {
+    "address": "STNHKEPYEPJ8ET55ZZ0M5A34J0R3N5FM2CMMMAZ6",
+    "balance": 100000000000000,
+  },
+} as const;
+
+export const simnet = {
+  contracts,
+  accounts,
+} as const;

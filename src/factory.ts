@@ -1,5 +1,5 @@
 import { transformArgsToCV } from "./encoder.ts";
-import { ClarityAbiFunction, TypedAbiFunction } from "./types.ts";
+import { ClarityAbiFunction, TypedAbi, TypedAbiFunction } from "./types.ts";
 
 export interface ContractCallTyped<Args, R> {
   _r?: R;
@@ -13,14 +13,7 @@ export type ContractFunctions = {
   [key: string]: TypedAbiFunction<unknown[], unknown>;
 };
 
-export type AllContracts = {
-  [contractName: string]: {
-    functions: ContractFunctions;
-    contractName: string;
-    // deno-lint-ignore no-explicit-any
-    [key: string]: any;
-  };
-};
+export type AllContracts = Record<string, TypedAbi>;
 
 export type ContractCallFunction<Args extends unknown[], R> = (
   ...args: Args
@@ -40,33 +33,72 @@ export type ContractsToContractCalls<T> = T extends AllContracts ? {
 }
   : never;
 
+export type FullContract<T> = T extends TypedAbi
+  ? FunctionsToContractCalls<T["functions"]> & T & { identifier: string }
+  : never;
+
+export type ContractFactory<T extends AllContracts> = {
+  [key in keyof T]: FullContract<T[key]>;
+};
+
 type UnknownContractCallFunction = ContractCallFunction<unknown[], unknown>;
 
-export function contractsFactory<T extends AllContracts>(
-  contracts: T,
-): ContractsToContractCalls<T> {
-  const result = {} as Record<
-    keyof T,
-    Record<string, UnknownContractCallFunction>
-  >;
-  Object.keys(contracts).forEach((contractName) => {
-    result[contractName as keyof typeof contracts] = {} as Record<
-      string,
-      UnknownContractCallFunction
-    >;
-    const contract = contracts[contractName];
-    Object.keys(contracts[contractName].functions).forEach((fnName) => {
-      const fn = (..._args: unknown[]) => {
-        const foundFunction = contract.functions[fnName];
+export interface Account {
+  address: string;
+  balance: number;
+}
+export type Accounts = Readonly<{
+  deployer: Account;
+  [name: string]: Account;
+}>;
+
+export type Simnet<C extends AllContracts, A extends Accounts> = Readonly<{
+  contracts: C;
+  accounts: A;
+}>;
+
+export function contractFactory<T extends TypedAbi>(
+  abi: T,
+  identifier: string,
+) {
+  const full = { ...abi } as FullContract<T>;
+  full.identifier = identifier;
+  return {
+    ...functionsFactory(abi.functions, abi.contractName),
+    ...full,
+  };
+}
+
+export function functionsFactory<T extends ContractFunctions>(
+  functions: T,
+  contractName: string,
+): FunctionsToContractCalls<T> {
+  return Object.fromEntries(
+    Object.entries(functions).map(([fnName, foundFunction]) => {
+      const fn: FnToContractCall<typeof foundFunction> = (
+        ..._args: unknown[]
+      ) => {
         const args = transformArgsToCV(foundFunction, _args);
         return {
-          contract: contract.contractName,
+          contract: contractName,
           fn: foundFunction,
           args,
         };
       };
-      result[contractName][fnName] = fn;
-    });
-  });
-  return result as ContractsToContractCalls<T>;
+      return [fnName, fn];
+    }),
+  ) as FunctionsToContractCalls<T>;
+}
+
+export function contractsFactory<C extends AllContracts, A extends Accounts>(
+  simnet: Simnet<C, A>,
+): ContractFactory<C> {
+  const { accounts, contracts } = simnet;
+  const deployer = accounts.deployer.address;
+  return Object.fromEntries(
+    Object.entries(contracts).map(([contractName, contract]) => {
+      const identifier = `${deployer}.${contract.contractName}`;
+      return [contractName, contractFactory(contract, identifier)];
+    }),
+  ) as ContractFactory<C>;
 }

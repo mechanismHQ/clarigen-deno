@@ -1,14 +1,21 @@
+// deno-lint-ignore-file no-explicit-any
 import type {
   ClarityAbiFunction,
   ClarityAbiType,
+  ClarityAbiTypeBool,
   ClarityAbiTypeBuffer,
+  ClarityAbiTypeInt128,
   ClarityAbiTypeList,
+  ClarityAbiTypeNone,
   ClarityAbiTypeOptional,
   ClarityAbiTypePrimitive,
+  ClarityAbiTypePrincipal,
   ClarityAbiTypeResponse,
   ClarityAbiTypeStringAscii,
   ClarityAbiTypeStringUtf8,
+  ClarityAbiTypeTraitReference,
   ClarityAbiTypeTuple,
+  ClarityAbiTypeUInt128,
   Response,
 } from "./types.ts";
 import { err, ok } from "./types.ts";
@@ -106,7 +113,27 @@ function unwrap(input: string, prefix = "") {
   return input.slice(prefix.length + 2, -1);
 }
 
-export function cvToValue<T = any>(input: string, type: ClarityAbiType): T {
+export type AbiPrimitiveTo<T extends ClarityAbiTypePrimitive> = T extends
+  ClarityAbiTypeInt128 ? bigint
+  : T extends ClarityAbiTypeUInt128 ? bigint
+  : T extends ClarityAbiTypeBool ? boolean
+  : T extends ClarityAbiTypePrincipal ? string
+  : T extends ClarityAbiTypeTraitReference ? string
+  : T extends ClarityAbiTypeNone ? never
+  : T;
+
+export type AbiTypeTo<T extends ClarityAbiType, A = any> = T extends
+  ClarityAbiTypePrimitive ? AbiPrimitiveTo<T> : A;
+
+export function cvToValue<AbiType extends ClarityAbiType>(
+  input: string,
+  type: AbiType,
+): AbiTypeTo<AbiType>;
+export function cvToValue<T = any>(input: string, type: ClarityAbiType): T;
+export function cvToValue<T = any>(
+  input: string,
+  type: ClarityAbiType,
+): T {
   if (isClarityAbiTuple(type)) {
     const decoded = input.expectTuple();
 

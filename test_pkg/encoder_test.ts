@@ -1,35 +1,58 @@
 import { assertEquals } from "https://deno.land/std@0.144.0/testing/asserts.ts";
 import { types } from "https://deno.land/x/clarinet@v0.28.0/index.ts";
-import { cvToValue, hexToBytes } from "../src/encoder.ts";
+import { cvToValue, hexToBytes, valueToCV } from "../src/encoder.ts";
 import { ClarityAbiType } from "../src/types.ts";
 
 function expectValue(input: string, type: ClarityAbiType, expected: any) {
   const decoded = cvToValue(input, type);
   assertEquals(decoded, expected);
+  return expected;
 }
 
-Deno.test("decoding cv", () => {
-  expectValue(types.ascii("asdf"), { "string-ascii": { length: 1 } }, "asdf");
-  expectValue(types.utf8("asdf"), { "string-utf8": { length: 1 } }, "asdf");
+function expectDecodeEncode(
+  input: string,
+  type: ClarityAbiType,
+  expected: any,
+) {
+  expectValue(input, type, expected);
+  const encoded = valueToCV(expected, type);
+  assertEquals(encoded, input);
+}
 
-  expectValue(types.bool(true), "bool", true);
-  expectValue(types.bool(false), "bool", false);
+Deno.test("encoding and decoding cv", () => {
+  expectDecodeEncode(
+    types.ascii("asdf"),
+    { "string-ascii": { length: 1 } },
+    "asdf",
+  );
+  expectDecodeEncode(
+    types.utf8("asdf"),
+    { "string-utf8": { length: 1 } },
+    "asdf",
+  );
 
-  expectValue(types.uint(100), "uint128", 100n);
-  expectValue(types.int(123), "int128", 123n);
+  expectDecodeEncode(types.bool(true), "bool", true);
+  expectDecodeEncode(types.bool(false), "bool", false);
 
-  expectValue(types.principal("asdf"), "principal", "asdf");
-  expectValue(types.principal("asdf"), "trait_reference", "asdf");
+  expectDecodeEncode(types.uint(100), "uint128", 100n);
+  expectDecodeEncode(types.int(123), "int128", 123n);
+
+  expectDecodeEncode(types.principal("asdf"), "principal", "asdf");
+  expectDecodeEncode(types.principal("asdf"), "trait_reference", "asdf");
 
   const buff = hexToBytes("aaff");
-  expectValue(types.buff(buff), { "buffer": { length: 1 } }, buff);
+  expectDecodeEncode(types.buff(buff), { "buffer": { length: 1 } }, buff);
 
-  expectValue(types.none(), { optional: "bool" }, null);
-  expectValue(types.some(types.bool(true)), { optional: "bool" }, true);
+  expectDecodeEncode(types.none(), { optional: "bool" }, null);
+  expectDecodeEncode(types.some(types.bool(true)), { optional: "bool" }, true);
 
-  expectValue(types.none(), "none", null);
+  expectDecodeEncode(types.none(), "none", null);
 
   const list = "[u128, u233]";
+  const listNative = [128n, 233n];
+  const listType = { "list": { type: "uint128", length: 2 } } as const;
+  expectValue(list, listType, listNative);
 
-  expectValue(list, { "list": { type: "uint128", length: 2 } }, [128n, 233n]);
+  const listEncoded = valueToCV(listNative, listType);
+  assertEquals(types.list(listNative.map((n) => types.uint(n))), listEncoded);
 });

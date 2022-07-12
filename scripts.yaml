@@ -1,0 +1,14 @@
+scripts:
+  clarigen:
+    - cmd: clarinet run src/cli/run.ts --allow-write --allow-wallets
+    - cmd: deno fmt ./artifacts
+
+  clarigen-watch:
+    cmd: clarinet run src/cli/run.ts --allow-write --allow-wallets
+    watch: ./contracts
+
+  deployments:
+    cmd: src/cli/gen-deployments.ts
+    allow:
+      - read
+      - write

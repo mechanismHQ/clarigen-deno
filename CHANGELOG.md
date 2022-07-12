@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.3.0
+
+### Minor Changes
+
+- 7cf0c8f: Updates generated files for Clarinet unit test environments
+
 ## 0.2.4
 
 ### Patch Changes
