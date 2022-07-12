@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.3.4
+
+### Patch Changes
+
+- [`65582f9`](https://github.com/mechanismHQ/clarigen-deno/commit/65582f9c64c2df9d5043ddd756b8d96228112eee) Thanks [@hstove](https://github.com/hstove)! - fix: changeset action
+
 ## 0.3.3
 
 ### Patch Changes
