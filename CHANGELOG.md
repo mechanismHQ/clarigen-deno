@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.3.1
+
+### Patch Changes
+
+- b66cb90: Fixed - removed accounts from index file
+
 ## 0.3.0
 
 ### Minor Changes
