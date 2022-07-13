@@ -1,4 +1,4 @@
-import { Command } from '../../deps.ts';
+import { Command, getLevelByName } from '../../deps.ts';
 import { runClarinet } from '../clarinet-wrapper.ts';
 import { generateDenoFile } from '../files/deno.ts';
 import { generateBaseFile } from '../files/base.ts';
@@ -12,7 +12,8 @@ type ActionArgs = Parameters<Parameters<typeof defaultCommand['action']>[0]>;
 
 type Options = ActionArgs[0];
 
-export async function defaultAction({ quiet }: Options) {
+export async function defaultAction(opts: Options) {
+  log.debug(`Starting default command with options: %j`, opts);
   const [session, config] = await Promise.all([
     runClarinet(),
     Config.load(),
@@ -29,8 +30,7 @@ export async function defaultAction({ quiet }: Options) {
     await afterESM(config);
   }
   if (
-    !config.supports(OutputType.ESM) && !config.supports(OutputType.Deno) &&
-    !quiet
+    !config.supports(OutputType.ESM) && !config.supports(OutputType.Deno)
   ) {
     log.warning(
       '[Clarigen] no config for ESM or Deno outputs. Not outputting any generated types.',
@@ -39,7 +39,14 @@ export async function defaultAction({ quiet }: Options) {
 }
 
 export const defaultCommand = new Command()
-  .option('-q --quiet', 'Suppress any warnings')
+  .globalOption('-q, --quiet [quiet]', 'Suppress any warnings')
+  .globalOption('--verbose [verbose]', 'Include more diagnostic logging', {
+    action: ({ verbose, quiet }) => {
+      if (quiet) log.level = getLevelByName('ERROR');
+      if (verbose) log.level = getLevelByName('DEBUG');
+    },
+    conflicts: ['quiet'],
+  })
   .name('clarigen')
   .description('Generate types for your Clarity contracts')
   .version(VERSION)

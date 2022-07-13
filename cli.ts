@@ -1,9 +1,11 @@
-import { defaultCommand } from './commands/default.ts';
-import { initCommand } from './commands/init.ts';
-import { DenoLandProvider, UpgradeCommand } from '../deps.ts';
+import { defaultCommand } from './src/cli/commands/default.ts';
+import { initCommand } from './src/cli/commands/init.ts';
+import { sessionInfoCommand } from "./src/cli/commands/session-info.ts";
+import { DenoLandProvider, UpgradeCommand } from './src/deps.ts';
 
 const baseCommand = defaultCommand
   .command('init', initCommand)
+  .command('session-info', sessionInfoCommand)
   .command(
     'upgrade',
     new UpgradeCommand({

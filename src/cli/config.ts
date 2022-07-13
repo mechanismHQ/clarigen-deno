@@ -1,5 +1,6 @@
 import { dirname, join, parseToml, stringifyToml } from '../deps.ts';
-import { cwdResolve, fileExists } from './utils.ts';
+import { log } from './logger.ts';
+import { cwdRelative, cwdResolve, fileExists } from './utils.ts';
 
 export const CONFIG_FILE = 'Clarigen.toml' as const;
 
@@ -62,6 +63,8 @@ export class Config {
     const dir = dirname(path);
     await Deno.mkdir(dir, { recursive: true });
     await Deno.writeTextFile(path, contents);
+    log.debug(`Generated ${type} file at ${cwdRelative(path)}`);
+    return path;
   }
 
   supports(type: OutputType) {

@@ -1,4 +1,4 @@
-import { ClarinetAccount } from '../deps.ts';
+import { ClarinetAccount } from '../clarinet-deps.ts';
 import { ClarityAbi } from '../types.ts';
 
 export interface SessionContract {

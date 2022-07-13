@@ -1,4 +1,4 @@
-import { resolve } from '../deps.ts';
+import { relative, resolve } from '../deps.ts';
 
 export const toCamelCase = (
   input: string | number | symbol,
@@ -51,4 +51,8 @@ export async function fileExists(filename: string): Promise<boolean> {
 
 export function cwdResolve(...paths: string[]) {
   return resolve(Deno.cwd(), ...paths);
+}
+
+export function cwdRelative(path: string) {
+  return relative(Deno.cwd(), path);
 }

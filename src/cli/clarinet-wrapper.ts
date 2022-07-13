@@ -1,4 +1,5 @@
 import { resolve } from '../deps.ts';
+import { log } from './logger.ts';
 import { Session } from './session.ts';
 import { spawn } from './spawn.ts';
 
@@ -22,8 +23,10 @@ export async function runClarinet() {
       const sessionJSON = result.stdout.split('\n')[1];
       const session: Session = JSON.parse(sessionJSON);
       return session;
-    } catch (_) {}
+    } catch (_) {
+      log.debug(`Error parsing session: ${result.stdout}`);
+    }
   }
-  const log = result.stderr || result.stdout;
-  throw new Error(`Error running 'clarinet run':\n${log}`);
+  const err = result.stderr || result.stdout;
+  throw new Error(`Error running 'clarinet run':\n${err}`);
 }

@@ -33,7 +33,7 @@ scripts:
   check:
     pll:
       - deno check src/index.ts
-      - deno check src/cli/commands/clarigen.ts
+      - deno check cli.ts
       - deno check test_pkg/*
       - deno lint
 
@@ -54,8 +54,10 @@ scripts:
       - clarinet test
 
   main:
-    cmd: src/cli/clarigen.ts
+    cmd: cli.ts
     allow:
       - all
 
   lock: deno cache --lock=lock.json --lock-write src/deps.ts
+
+  refresh: deno cache --reload --lock=lock.json --lock-write src/deps.ts
