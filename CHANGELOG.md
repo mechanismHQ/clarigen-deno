@@ -1,5 +1,15 @@
 # clarigen-deno
 
+## 0.4.0
+
+### Minor Changes
+
+- [`52d697e`](https://github.com/mechanismHQ/clarigen-deno/commit/52d697e7188b40d9e2df7faa4b449420444aee41) Thanks [@hstove](https://github.com/hstove)! - Clarigen now comes with a fully-featured CLI, powered by Deno and Clarinet
+
+### Patch Changes
+
+- [`555b763`](https://github.com/mechanismHQ/clarigen-deno/commit/555b76332ecf26153f02488f12ad47704f5ef48a) Thanks [@hstove](https://github.com/hstove)! - Fixed an issue with clarinet scripts importing Cliffy modules
+
 ## 0.3.7
 
 ### Patch Changes
