@@ -1,7 +1,17 @@
-export async function spawn(cmd: string[] | string) {
+interface Result {
+  status: Deno.ProcessStatus;
+  stdout: string;
+  stderr: string;
+}
+
+export async function spawn(
+  cmd: string[] | string,
+  cwd?: string,
+): Promise<Result> {
   const _cmd = typeof cmd === 'string' ? cmd.split(' ') : cmd;
   const process = Deno.run({
     cmd: _cmd,
+    cwd,
     stderr: 'piped',
     stdout: 'piped',
   });

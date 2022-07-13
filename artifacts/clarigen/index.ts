@@ -217,7 +217,15 @@ export const contracts = {
         'outputs': { 'type': 'uint128' },
       } as TypedAbiFunction<[n: TypedAbiArg<number | bigint, 'n'>], bigint>,
     },
-    'maps': {},
+    'maps': {
+      demoMap: {
+        'name': 'demo-map',
+        'key': { 'tuple': [{ 'name': 'a', 'type': 'uint128' }] },
+        'value': 'bool',
+      } as TypedAbiMap<{
+        'a': number | bigint;
+      }, boolean>,
+    },
     'variables': {
       ERR_UNAUTHORIZED: {
         name: 'ERR_UNAUTHORIZED',

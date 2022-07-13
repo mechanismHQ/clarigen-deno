@@ -1,5 +1,5 @@
-import { assertEquals } from 'https://deno.land/std@0.144.0/testing/asserts.ts';
-import { types } from 'https://deno.land/x/clarinet@v0.28.0/index.ts';
+import { assertEquals } from '../src/deps.ts';
+import { types } from '../src/deps.ts';
 import { cvToValue, hexToBytes, valueToCV } from '../src/encoder.ts';
 import { ClarityAbiType } from '../src/types.ts';
 import { tupleMock, tupleType } from './mocks.ts';

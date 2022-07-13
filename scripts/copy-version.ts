@@ -1,4 +1,4 @@
-import { resolve } from 'https://deno.land/std@0.144.0/path/mod.ts';
+import { resolve } from '../src/deps.ts';
 
 const packageJsonPath = resolve(Deno.cwd(), 'package.json');
 const packageContents = await Deno.readTextFile(packageJsonPath);

@@ -1,5 +1,5 @@
 import { ClarityAbiFunction, ClarityAbiTypeTuple } from '../src/types.ts';
-import { types } from 'https://deno.land/x/clarinet@v0.28.0/index.ts';
+import { types } from '../src/deps.ts';
 
 export const tupleType: ClarityAbiTypeTuple = {
   tuple: [

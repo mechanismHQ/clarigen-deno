@@ -20,7 +20,7 @@ import type {
   ResponseErr,
   ResponseOk,
 } from './types.ts';
-import { types } from 'https://deno.land/x/clarinet@v0.28.0/index.ts';
+import { types } from './deps.ts';
 import { toCamelCase, toKebabCase } from './cli/utils.ts';
 
 export function ok<T, Err = never>(value: T): ResponseOk<T, Err> {
@@ -217,8 +217,6 @@ export function cvToValue<T = any>(
   } else if (type === 'bool') {
     return (input === 'true') as unknown as T;
   } else if (type === 'uint128') {
-    // if (!input) console.log("no input", input);
-    // if (input.charAt(0) !== "u") console.log("weird uint", input);
     return BigInt(input.slice(1)) as unknown as T;
   } else if (type === 'int128') {
     return BigInt(input) as unknown as T;

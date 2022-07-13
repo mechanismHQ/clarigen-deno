@@ -1,5 +1,5 @@
-// import { getSession } from './index.ts';
-// import 'https://deno.land/x/clarinet@v0.31.0/index.ts';
+// import { getSession } from './session.ts';
+// import '../deps.ts';
 // import { cvToValue } from '../encoder.ts';
 
 // const _session = getSession();

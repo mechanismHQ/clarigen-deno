@@ -2,6 +2,8 @@
 
 (define-constant ERR_UNAUTHORIZED (err u400))
 
+(define-map demo-map { a: uint } bool)
+
 (define-read-only (square (n uint)) (* n n))
 
 (define-read-only (get-tup) {

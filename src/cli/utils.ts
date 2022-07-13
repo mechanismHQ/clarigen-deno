@@ -1,4 +1,4 @@
-import { resolve } from 'https://deno.land/std@0.144.0/path/mod.ts';
+import { resolve } from '../deps.ts';
 
 export const toCamelCase = (
   input: string | number | symbol,

@@ -1,4 +1,4 @@
-import { Command } from 'https://deno.land/x/cliffy@v0.24.2/command/mod.ts';
+import { Command } from '../../deps.ts';
 import { runClarinet } from '../clarinet-wrapper.ts';
 import { generateDenoFile } from '../files/deno.ts';
 import { generateBaseFile } from '../files/base.ts';
@@ -6,6 +6,7 @@ import { Config, OutputType } from '../config.ts';
 import { generateESMFile } from '../files/esm.ts';
 import { afterESM, denoFmt } from '../format.ts';
 import { VERSION } from '../version.ts';
+import { log } from '../logger.ts';
 
 type ActionArgs = Parameters<Parameters<typeof defaultCommand['action']>[0]>;
 
@@ -31,7 +32,7 @@ export async function defaultAction({ quiet }: Options) {
     !config.supports(OutputType.ESM) && !config.supports(OutputType.Deno) &&
     !quiet
   ) {
-    console.warn(
+    log.warning(
       '[Clarigen] no config for ESM or Deno outputs. Not outputting any generated types.',
     );
   }

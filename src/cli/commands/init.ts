@@ -1,16 +1,6 @@
-import { Command } from 'https://deno.land/x/cliffy@v0.24.2/command/mod.ts';
-import {
-  dirname,
-  join,
-  resolve,
-} from 'https://deno.land/std@0.144.0/path/mod.ts';
-import { cwdResolve, fileExists } from '../utils.ts';
-import {
-  CONFIG_FILE,
-  configFilePath,
-  defaultConfigFile,
-  saveConfig,
-} from '../config.ts';
+import { Command, resolve } from '../../deps.ts';
+import { fileExists } from '../utils.ts';
+import { CONFIG_FILE, configFilePath } from '../config.ts';
 
 async function getBaseFile() {
   const __dirname = new URL('.', import.meta.url).pathname;

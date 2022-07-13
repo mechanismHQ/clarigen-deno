@@ -1,12 +1,12 @@
 // deno-lint-ignore-file
 import {
-  Account,
-  Chain,
+  assertEquals,
   Clarinet,
+  ClarinetAccount,
+  ClarinetChain,
   Tx,
   types,
-} from 'https://deno.land/x/clarinet@v0.28.0/index.ts';
-import { assertEquals } from 'https://deno.land/std@0.90.0/testing/asserts.ts';
+} from '../src/deps.ts';
 import {
   ClarityAbiFunction,
   ContractCallTyped,

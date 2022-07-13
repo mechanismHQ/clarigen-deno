@@ -1,4 +1,4 @@
-import { Tx } from 'https://deno.land/x/clarinet@v0.28.0/index.ts';
+import { Tx } from './deps.ts';
 import { ContractCallTyped } from './factory-types.ts';
 import { ClarityAbiFunction } from './types.ts';
 

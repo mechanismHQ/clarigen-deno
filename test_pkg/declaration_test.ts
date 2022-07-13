@@ -4,7 +4,7 @@ import {
   jsTypeFromAbiType,
 } from '../src/cli/declaration.ts';
 import { ClarityAbiTypeTuple } from '../src/types.ts';
-import { assertEquals } from 'https://deno.land/std@0.144.0/testing/asserts.ts';
+import { assertEquals } from '../src/deps.ts';
 import { tupleMock } from './mocks.ts';
 import { encodeVariables } from '../src/cli/files/base.ts';
 

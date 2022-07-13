@@ -1,4 +1,4 @@
-import { Account } from 'https://deno.land/x/clarinet@v0.31.0/index.ts';
+import { ClarinetAccount } from '../deps.ts';
 import { ClarityAbi } from '../types.ts';
 
 export interface SessionContract {
@@ -8,7 +8,7 @@ export interface SessionContract {
   dependencies: string[];
 }
 
-export type SessionAccount = Omit<Account, 'mnemonic' | 'derivation'>;
+export type SessionAccount = Omit<ClarinetAccount, 'mnemonic' | 'derivation'>;
 
 export interface Session {
   session_id: number;

@@ -1,9 +1,9 @@
-import { parse } from 'https://deno.land/std@0.95.0/encoding/yaml.ts';
+import { parseYaml } from '../../deps.ts';
 import { cwdResolve } from '../utils.ts';
 
 export async function parseDeployment(path: string) {
   const contents = await Deno.readTextFile(path);
-  const parsed = parse(contents);
+  const parsed = parseYaml(contents);
   return parsed as Plan;
 }
 

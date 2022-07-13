@@ -1,10 +1,10 @@
 import {
   Block,
-  Chain as _Chain,
   Clarinet,
+  ClarinetChain as _Chain,
   ReadOnlyFn,
   TxReceipt,
-} from 'https://deno.land/x/clarinet@v0.31.0/index.ts';
+} from './deps.ts';
 import { cvToValue } from './encoder.ts';
 import { Account, Accounts, contractsFactory, Simnet } from './factory.ts';
 import { AllContracts, ContractCallTyped } from './factory-types.ts';

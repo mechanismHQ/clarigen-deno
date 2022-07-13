@@ -1,8 +1,4 @@
-import {
-  parse,
-  stringify,
-} from 'https://deno.land/std@0.133.0/encoding/toml.ts';
-import { dirname, join } from 'https://deno.land/std@0.144.0/path/mod.ts';
+import { dirname, join, parseToml, stringifyToml } from '../deps.ts';
 import { cwdResolve, fileExists } from './utils.ts';
 
 export const CONFIG_FILE = 'Clarigen.toml' as const;
@@ -92,7 +88,7 @@ export function configFilePath() {
 }
 
 export async function saveConfig(config: ConfigFile) {
-  const configToml = stringify({ ...config }, { keyAlignment: false });
+  const configToml = stringifyToml({ ...config }, { keyAlignment: false });
   await Deno.writeTextFile(configFilePath(), configToml);
 }
 
@@ -104,7 +100,7 @@ export async function getConfig(): Promise<ConfigFile> {
   const path = configFilePath();
   if (await fileExists(path)) {
     const toml = await Deno.readTextFile(configFilePath());
-    sessionConfig = parse(toml) as unknown as ConfigFile;
+    sessionConfig = parseToml(toml) as unknown as ConfigFile;
   } else {
     sessionConfig = defaultConfigFile;
   }

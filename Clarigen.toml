@@ -16,4 +16,5 @@ output = "esm"
 # `esm.after` - script to run after ESM types are generated.
 # examples:
 # after = "yarn prettier ./esm/index.ts"
-after = "echo 'yay'"
+# after = "echo 'yay'"
+after = "exit 1"

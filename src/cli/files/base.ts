@@ -1,5 +1,5 @@
 import { abiFunctionType, jsTypeFromAbiType } from '../declaration.ts';
-import type { Session, SessionContract } from '../index.ts';
+import type { Session, SessionContract } from '../session.ts';
 import { encodeVariableName, toCamelCase } from '../utils.ts';
 import { types } from '../type-stub.ts';
 import { ClarityAbiVariable } from '../../types.ts';
@@ -19,7 +19,7 @@ export function generateContractMeta(contract: SessionContract) {
 
   const mapLines = maps.map((map) => {
     let mapLine = `${toCamelCase(map.name)}: `;
-    const keyType = jsTypeFromAbiType(map.key);
+    const keyType = jsTypeFromAbiType(map.key, true);
     const valType = jsTypeFromAbiType(map.value);
     mapLine += JSON.stringify(map);
     mapLine += ` as TypedAbiMap<${keyType}, ${valType}>`;

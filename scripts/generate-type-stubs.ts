@@ -1,4 +1,4 @@
-import { resolve } from 'https://deno.land/std@0.144.0/path/mod.ts';
+import { resolve } from '../src/deps.ts';
 
 const sourceFile = resolve(Deno.cwd(), 'src/types.ts');
 const sourceCode = await Deno.readTextFile(sourceFile);
