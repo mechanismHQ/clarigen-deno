@@ -1,6 +1,6 @@
-import { defaultCommand } from './default.ts';
-import { initCommand } from './init.ts';
-import { DenoLandProvider, UpgradeCommand } from '../../deps.ts';
+import { defaultCommand } from './commands/default.ts';
+import { initCommand } from './commands/init.ts';
+import { DenoLandProvider, UpgradeCommand } from '../deps.ts';
 
 const baseCommand = defaultCommand
   .command('init', initCommand)

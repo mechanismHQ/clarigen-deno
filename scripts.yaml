@@ -54,7 +54,7 @@ scripts:
       - clarinet test
 
   main:
-    cmd: src/cli/commands/clarigen.ts
+    cmd: src/cli/clarigen.ts
     allow:
       - all
 
