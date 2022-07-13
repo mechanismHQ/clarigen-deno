@@ -6,7 +6,7 @@ import {
 import { ClarityAbiTypeTuple } from '../src/types.ts';
 import { assertEquals } from 'https://deno.land/std@0.144.0/testing/asserts.ts';
 import { tupleMock } from './mocks.ts';
-import { encodeVariables } from '../src/cli/single.ts';
+import { encodeVariables } from '../src/cli/files/base.ts';
 
 Deno.test('encoding tuple types', () => {
   const tupleType: ClarityAbiTypeTuple = {

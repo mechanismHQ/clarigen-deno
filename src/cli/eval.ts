@@ -1,10 +1,8 @@
-import { getSession } from './index.ts';
-import 'https://deno.land/x/clarinet@v0.31.0/index.ts';
+// import { getSession } from './index.ts';
+// import 'https://deno.land/x/clarinet@v0.31.0/index.ts';
 // import { cvToValue } from '../encoder.ts';
 
-const session = getSession();
-
-console.log(session.accounts);
+// const _session = getSession();
 
 // const [contract] = session.contracts;
 

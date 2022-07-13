@@ -1,11 +1,10 @@
 scripts:
   clarigen:
-    - cmd: clarinet run src/cli/run.ts --allow-write --allow-wallets
-    - cmd: deno fmt ./artifacts
+    - cmd: vr main
 
   clarigen-watch:
-    cmd: clarinet run src/cli/run.ts --allow-write --allow-wallets
-    watch: ./contracts
+    cmd: vr main
+    watch: ./contracts/*.clar
 
   deployments:
     cmd: src/cli/gen-deployments.ts
@@ -23,12 +22,37 @@ scripts:
       - read
       - write
 
+  copy-version:
+    cmd:
+      - scripts/copy-version.ts
+      - deno fmt src/cli/version.ts
+    allow:
+      - read
+      - write
+
+  check:
+    pll:
+      - deno check src/index.ts
+      - deno check src/cli/commands/clarigen.ts
+      - deno check test_pkg/*
+
   build:
     cmd:
+      - vr check
+      - vr copy-version
       - vr type-stubs
       - vr clarigen
+
+  release:
+    - sh scripts/check-git.sh
+    - echo "not dirty" # todo
 
   test-all:
     pll:
       - deno test test_pkg
       - clarinet test
+
+  main:
+    cmd: src/cli/commands/clarigen.ts
+    allow:
+      - all

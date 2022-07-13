@@ -1,8 +1,8 @@
-import { abiFunctionType, jsTypeFromAbiType } from './declaration.ts';
-import type { Session, SessionContract } from './index.ts';
-import { encodeVariableName, toCamelCase } from './utils.ts';
-import { types } from './type-stub.ts';
-import { ClarityAbiVariable } from '../types.ts';
+import { abiFunctionType, jsTypeFromAbiType } from '../declaration.ts';
+import type { Session, SessionContract } from '../index.ts';
+import { encodeVariableName, toCamelCase } from '../utils.ts';
+import { types } from '../type-stub.ts';
+import { ClarityAbiVariable } from '../../types.ts';
 
 export function generateContractMeta(contract: SessionContract) {
   const abi = contract.contract_interface;
@@ -41,7 +41,7 @@ export function generateContractMeta(contract: SessionContract) {
   }`;
 }
 
-export function generateSingleFile(
+export function generateBaseFile(
   session: Session,
 ) {
   const contractDefs = session.contracts.map((contract) => {

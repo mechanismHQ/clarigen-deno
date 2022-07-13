@@ -4,3 +4,4 @@ settings/Testnet.toml
 history.txt
 .yalc/
 node_modules
+esm

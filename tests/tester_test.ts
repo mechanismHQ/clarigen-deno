@@ -1,6 +1,6 @@
 import { assertEquals } from 'https://deno.land/std@0.90.0/testing/asserts.ts';
 import { types } from 'https://deno.land/x/clarinet@v0.31.0/index.ts';
-import { accounts, simnet } from '../artifacts/clarigen/deno/index.ts';
+import { accounts, simnet } from '../artifacts/clarigen/index.ts';
 import { factory, ok, tx, txErr, txOk } from '../src/index.ts';
 
 // addr by compiled accounts

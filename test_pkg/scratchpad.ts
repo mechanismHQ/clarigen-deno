@@ -27,7 +27,7 @@ import {
   txOk,
   TxValueType,
 } from '../src/index.ts';
-import { accounts, simnet } from '../artifacts/clarigen/deno/index.ts';
+import { accounts, simnet } from '../artifacts/clarigen/index.ts';
 
 const { tester } = contractsFactory(simnet);
 

@@ -3,7 +3,7 @@ import { contractsFactory } from '../src/factory.ts';
 import {
   contracts as _contracts,
   simnet,
-} from '../artifacts/clarigen/deno/index.ts';
+} from '../artifacts/clarigen/index.ts';
 import { types } from 'https://deno.land/x/clarinet@v0.31.0/index.ts';
 
 const testerDef = _contracts.tester;
