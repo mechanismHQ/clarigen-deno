@@ -22,12 +22,6 @@ export {
   parse as parseToml,
   stringify as stringifyToml,
 } from 'https://deno.land/std@0.133.0/encoding/toml.ts';
-export { Command } from 'https://deno.land/x/cliffy@v0.24.2/command/mod.ts';
-export {
-  DenoLandProvider,
-  GithubProvider,
-  UpgradeCommand,
-} from 'https://deno.land/x/cliffy@v0.24.2/command/upgrade/mod.ts';
 export { colors } from 'https://deno.land/x/cliffy@v0.24.2/ansi/colors.ts';
 export { parse as parseYaml } from 'https://deno.land/std@0.95.0/encoding/yaml.ts';
-export { assertEquals } from 'https://deno.land/std@0.144.0/testing/asserts.ts';
+export { assertEquals } from 'https://deno.land/std@0.97.0/testing/asserts.ts';

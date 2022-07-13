@@ -4,7 +4,7 @@ import {
   ClarinetChain as _Chain,
   ReadOnlyFn,
   TxReceipt,
-} from './deps.ts';
+} from './clarinet-deps.ts';
 import { cvToValue } from './encoder.ts';
 import { Account, Accounts, contractsFactory, Simnet } from './factory.ts';
 import { AllContracts, ContractCallTyped } from './factory-types.ts';

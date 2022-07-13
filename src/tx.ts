@@ -1,4 +1,4 @@
-import { Tx } from './deps.ts';
+import { Tx } from './clarinet-deps.ts';
 import { ContractCallTyped } from './factory-types.ts';
 import { ClarityAbiFunction } from './types.ts';
 

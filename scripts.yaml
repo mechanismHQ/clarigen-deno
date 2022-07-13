@@ -46,7 +46,11 @@ scripts:
 
   release:
     - sh scripts/check-git.sh
-    - echo "not dirty" # todo
+    - yarn changeset version
+    - git add .
+    - 'git commit -m "chore: version"'
+    - yarn changeset tag
+    - git push origin --follow-tags
 
   test-all:
     pll:

@@ -1,4 +1,5 @@
-import { Command, getLevelByName } from '../../deps.ts';
+import { getLevelByName } from '../../deps.ts';
+import { Command } from '../cli-deps.ts';
 import { runClarinet } from '../clarinet-wrapper.ts';
 import { generateDenoFile } from '../files/deno.ts';
 import { generateBaseFile } from '../files/base.ts';

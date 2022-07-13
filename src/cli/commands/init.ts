@@ -1,4 +1,5 @@
-import { Command, resolve } from '../../deps.ts';
+import { resolve } from '../../deps.ts';
+import { Command } from '../cli-deps.ts';
 import { fileExists } from '../utils.ts';
 import { CONFIG_FILE, configFilePath } from '../config.ts';
 

@@ -1,5 +1,5 @@
 import { assertEquals } from '../src/deps.ts';
-import { types } from '../src/deps.ts';
+import { types } from '../src/clarinet-deps.ts';
 import { accounts, simnet } from '../artifacts/clarigen/index.ts';
 import { factory, ok, tx, txErr, txOk } from '../src/index.ts';
 
