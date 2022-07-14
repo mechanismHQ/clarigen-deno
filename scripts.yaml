@@ -35,6 +35,7 @@ scripts:
       - deno check src/index.ts
       - deno check cli.ts
       - deno check test_pkg/*
+      - deno check tests/tester_test.ts
       - deno lint
 
   build:

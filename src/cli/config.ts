@@ -1,31 +1,19 @@
-import { dirname, join, parseToml, stringifyToml } from '../deps.ts';
+import {
+  boolean,
+  dirname,
+  join,
+  parseToml,
+  Schema,
+  string,
+  stringifyToml,
+  Type,
+  unknown,
+} from '../deps.ts';
+import { ClarinetConfig, getClarinetConfig } from './clarinet-config.ts';
 import { log } from './logger.ts';
 import { cwdRelative, cwdResolve, fileExists } from './utils.ts';
 
 export const CONFIG_FILE = 'Clarigen.toml' as const;
-
-export interface ConfigFile {
-  // output: {
-  //   deno?: string;
-  //   esm?: string;
-  //   docs?: string;
-  // };
-  // hooks?: {
-  //   afterESM?: string;
-  //   afterDeno?: string;
-  // };
-  [OutputType.ESM]?: {
-    output: string;
-    after: string;
-  };
-  [OutputType.Deno]?: {
-    output: string;
-  };
-  [OutputType.Docs]?: {
-    output: string;
-  };
-  clarinet: string;
-}
 
 export enum OutputType {
   Deno = 'deno',
@@ -33,20 +21,40 @@ export enum OutputType {
   Docs = 'docs',
 }
 
+const ConfigFileSchema = Schema({
+  clarinet: string,
+  [OutputType.ESM]: Schema({
+    output: string,
+    include_accounts: boolean.optional(),
+    after: string.optional(),
+  }).optional(),
+  [OutputType.Deno]: Schema({
+    output: string.optional(),
+  }).optional(),
+  [OutputType.Docs]: Schema({
+    output: string.optional(),
+  }).optional(),
+});
+
+export type ConfigFile = Type<typeof ConfigFileSchema>;
+
 export const defaultConfigFile: ConfigFile = {
   clarinet: './Clarinet.toml',
 };
 
 export class Config {
   public configFile: ConfigFile;
+  public clarinet: ClarinetConfig;
 
-  constructor(config: ConfigFile) {
+  constructor(config: ConfigFile, clarinet: ClarinetConfig) {
     this.configFile = config;
+    this.clarinet = clarinet;
   }
 
   public static async load() {
     const config = await getConfig();
-    return new this(config);
+    const clarinet = await getClarinetConfig(config.clarinet);
+    return new this(config, clarinet);
   }
 
   outputResolve(type: OutputType, filePath?: string) {
@@ -75,14 +83,18 @@ export class Config {
     return this.configFile[type];
   }
 
-  deno() {
+  get deno() {
     return this.configFile[OutputType.Deno];
   }
-  esm() {
+  get esm() {
     return this.configFile[OutputType.ESM];
   }
-  docs() {
+  get docs() {
     return this.configFile[OutputType.Docs];
+  }
+
+  clarinetFile() {
+    return cwdResolve(this.configFile.clarinet);
   }
 }
 
@@ -103,7 +115,7 @@ export async function getConfig(): Promise<ConfigFile> {
   const path = configFilePath();
   if (await fileExists(path)) {
     const toml = await Deno.readTextFile(configFilePath());
-    sessionConfig = parseToml(toml) as unknown as ConfigFile;
+    sessionConfig = unknown.schema(ConfigFileSchema)(parseToml(toml));
   } else {
     sessionConfig = defaultConfigFile;
   }

@@ -17,7 +17,7 @@ await logger.setup({
           prefix ? `${prefix}: ` : ''
         }${logRecord.msg}`;
         if (logRecord.args.length > 0) {
-          return sprintf(base, logRecord.args);
+          return sprintf(base, ...logRecord.args);
         }
         return base;
       }

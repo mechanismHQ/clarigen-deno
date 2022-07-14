@@ -1,14 +1,10 @@
 import { Session } from '../session.ts';
+import { generateAccountsCode } from './accounts.ts';
 
 export function generateDenoFile(session: Session, baseFile: string) {
-  const accounts = Object.fromEntries(session.accounts.map((account) => {
-    const { name, ...rest } = account;
-    return [name, rest];
-  }));
-
   return `${baseFile}
 
-export const accounts = ${JSON.stringify(accounts)} as const;
+${generateAccountsCode(session)}
 
 export const simnet = {
   accounts,

@@ -8,11 +8,14 @@ import {
   types,
 } from '../src/deps.ts';
 import {
+  AllContracts,
   ClarityAbiFunction,
   ContractCallTyped,
+  ContractFactory,
   contractsFactory,
   ErrType,
   ExpectType,
+  FullContract,
   FunctionsToContractCalls,
   OkType,
   Receipts,
@@ -28,6 +31,51 @@ import {
   TxValueType,
 } from '../src/index.ts';
 import { accounts, simnet } from '../artifacts/clarigen/index.ts';
+import { contracts, deployments, project } from '../esm/index.ts';
+import {
+  ContractDeployments,
+  DeploymentNetwork,
+} from '../src/cli/files/esm.ts';
+
+type DeploymentsForContracts<C extends AllContracts> = {
+  [K in keyof C]: ContractDeployments;
+};
+
+type Project<C extends AllContracts, D extends DeploymentsForContracts<C>> = {
+  contracts: C;
+  deployments: D;
+};
+
+type PFactory<P extends Project<any, any>, N extends DeploymentNetwork> = {
+  [ContractName in keyof P['contracts']]:
+    P['deployments'][ContractName][N] extends string
+      ? FullContract<P['contracts'][ContractName]>
+      : undefined;
+};
+
+type MyProject = PFactory<typeof project, 'devnet'>;
+
+type CDFactory<
+  D extends DeploymentsForContracts<C>,
+  C extends AllContracts,
+  N extends DeploymentNetwork,
+> = {
+  // [ContractName in keyof C]: D[ContractName][N];
+  [ContractName in keyof C]: D[ContractName][N] extends string
+    ? FullContract<C[ContractName]>
+    : undefined;
+};
+
+type MyFactory = CDFactory<typeof deployments, typeof contracts, 'devnet'>;
+
+function factoryFromDeployments<C extends AllContracts>(
+  _contracts: C,
+  _deployments: DeploymentsForContracts<C>,
+) {
+  return true;
+}
+
+factoryFromDeployments(contracts, deployments);
 
 const { tester } = contractsFactory(simnet);
 

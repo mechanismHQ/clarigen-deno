@@ -17,4 +17,4 @@ output = "esm"
 # examples:
 # after = "yarn prettier ./esm/index.ts"
 # after = "echo 'yay'"
-after = "exit 1"
+after = "deno fmt ./esm/index.ts"

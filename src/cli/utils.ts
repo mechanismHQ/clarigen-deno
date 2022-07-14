@@ -56,3 +56,7 @@ export function cwdResolve(...paths: string[]) {
 export function cwdRelative(path: string) {
   return relative(Deno.cwd(), path);
 }
+
+export function getContractName(identifier: string) {
+  return toCamelCase(identifier.split('.')[1]);
+}

@@ -1,7 +1,8 @@
 import { resolve } from '../../deps.ts';
 import { Command } from '../cli-deps.ts';
-import { fileExists } from '../utils.ts';
+import { cwdRelative, fileExists } from '../utils.ts';
 import { CONFIG_FILE, configFilePath } from '../config.ts';
+import { log } from '../logger.ts';
 
 async function getBaseFile() {
   const __dirname = new URL('.', import.meta.url).pathname;
@@ -22,4 +23,5 @@ export const initCommand = new Command()
     }
 
     await Deno.writeTextFile(path, baseFile);
+    log.info(`Generated a config file at ${cwdRelative(path)}`);
   });

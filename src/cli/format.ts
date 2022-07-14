@@ -20,8 +20,9 @@ export async function denoFmt(config: Config) {
 }
 
 export async function afterESM(config: Config) {
-  const hook = config.esm()?.after;
+  const hook = config.esm?.after;
   if (!hook) return;
+  log.debug('Running esm.after script: %j', hook);
 
   try {
     const result = await spawn(hook);

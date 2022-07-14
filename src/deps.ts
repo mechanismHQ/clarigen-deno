@@ -25,3 +25,12 @@ export {
 export { colors } from 'https://deno.land/x/cliffy@v0.24.2/ansi/colors.ts';
 export { parse as parseYaml } from 'https://deno.land/std@0.95.0/encoding/yaml.ts';
 export { assertEquals } from 'https://deno.land/std@0.97.0/testing/asserts.ts';
+export {
+  array,
+  boolean,
+  object,
+  Schema,
+  string,
+  unknown,
+} from 'https://denoporter.sirjosh.workers.dev/v1/deno.land/x/computed_types/src/index.ts';
+export type { Type } from 'https://denoporter.sirjosh.workers.dev/v1/deno.land/x/computed_types/src/index.ts';
