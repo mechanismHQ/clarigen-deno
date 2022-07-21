@@ -9,7 +9,7 @@ import {
 import { cvToValue } from './encoder.ts';
 import { Account, Accounts, contractsFactory, Simnet } from './factory.ts';
 import { AllContracts, ContractCallTyped } from './factory-types.ts';
-import { ExpectType, TxCall } from './tx.ts';
+import { ExpectType, tx, TxCall, txErr, txOk } from './tx.ts';
 import { ClarityAbiFunction, ErrType, OkType, Response } from './types.ts';
 
 type Call<R> = ContractCallTyped<unknown, R>;
@@ -168,6 +168,27 @@ export class Chain {
   ): Receipt<T> {
     const [receipt] = this.mine(tx);
     return receipt;
+  }
+
+  tx<A, R>(
+    payload: ContractCallTyped<A, R>,
+    sender: string,
+  ): Receipt<TxCall<R>> {
+    return this.mineOne(tx(payload, sender));
+  }
+
+  txOk<A, R>(
+    payload: ContractCallTyped<A, R>,
+    sender: string,
+  ): Receipt<TxCall<R, true>> {
+    return this.mineOne(txOk(payload, sender));
+  }
+
+  txErr<A, R>(
+    payload: ContractCallTyped<A, R>,
+    sender: string,
+  ): Receipt<TxCall<R, false>> {
+    return this.mineOne(txErr(payload, sender));
   }
 
   // sub-chain accessors
