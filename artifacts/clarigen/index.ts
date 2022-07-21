@@ -136,17 +136,29 @@ export type OkType<R> = R extends ResponseOk<infer V, unknown> ? V : never;
 export type ErrType<R> = R extends ResponseErr<unknown, infer V> ? V : never;
 
 export const contracts = {
-  ftTrait: {
-    'functions': {},
-    'maps': {},
-    'variables': {},
-    constants: {},
-    'fungible_tokens': [],
-    'non_fungible_tokens': [],
-    contractName: 'ft-trait',
-  },
   tester: {
     'functions': {
+      complexArgs: {
+        'name': 'complex-args',
+        'access': 'public',
+        'args': [
+          { 'name': 'numba', 'type': 'int128' },
+          { 'name': 'opt-numba', 'type': { 'optional': 'int128' } },
+          { 'name': 'opt-unumba', 'type': { 'optional': 'uint128' } },
+          { 'name': 'buffa', 'type': { 'buffer': { 'length': 10 } } },
+        ],
+        'outputs': {
+          'type': { 'response': { 'ok': 'bool', 'error': 'none' } },
+        },
+      } as TypedAbiFunction<
+        [
+          numba: TypedAbiArg<number | bigint, 'numba'>,
+          optNumba: TypedAbiArg<number | bigint | null, 'optNumba'>,
+          optUnumba: TypedAbiArg<number | bigint | null, 'optUnumba'>,
+          buffa: TypedAbiArg<Uint8Array, 'buffa'>,
+        ],
+        Response<boolean, null>
+      >,
       num: {
         'name': 'num',
         'access': 'public',
@@ -251,6 +263,15 @@ export const contracts = {
     'fungible_tokens': [],
     'non_fungible_tokens': [],
     contractName: 'tester',
+  },
+  ftTrait: {
+    'functions': {},
+    'maps': {},
+    'variables': {},
+    constants: {},
+    'fungible_tokens': [],
+    'non_fungible_tokens': [],
+    contractName: 'ft-trait',
   },
   counter: {
     'functions': {

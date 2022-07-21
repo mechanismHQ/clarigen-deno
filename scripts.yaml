@@ -48,6 +48,7 @@ scripts:
   release:
     - sh scripts/check-git.sh
     - yarn changeset version
+    - vr build
     - git add .
     - 'git commit -m "chore: version"'
     - yarn changeset tag
