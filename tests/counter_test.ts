@@ -1,6 +1,7 @@
 import { assertEquals } from 'https://deno.land/std@0.90.0/testing/asserts.ts';
 import { simnet } from '../artifacts/clarigen/index.ts';
 import { factory, txOk } from '../src/index.ts';
+// import { describe, it } from 'https://deno.land/std@0.149.0/testing/bdd.ts';
 
 const { contracts: { counter }, test } = factory(simnet);
 
@@ -14,6 +15,21 @@ test({
     assertEquals(receipt.value, 3n);
   },
 });
+
+// More custom test runner with `Chain`
+
+// TODO: doesnt work in Clarinet's Deno version
+// describe('BDD-style testing', () => {
+//   const { chain, accounts, contracts: { counter } } = Chain.fromSimnet(simnet);
+//   const alice = accounts.get('wallet_1').address;
+
+//   it('can increment', () => {
+//     const receipt = chain.mineOne(
+//       txOk(counter.increment(2), alice),
+//     );
+//     assertEquals(receipt.value, 3n);
+//   });
+// });
 
 // From clarinet examples:
 //
