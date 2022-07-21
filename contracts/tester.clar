@@ -23,3 +23,12 @@
 )
 
 (define-public (num (n uint)) (ok n))
+
+(define-public (complex-args
+  (numba int)
+  (opt-numba (optional int))
+  (opt-unumba (optional uint))
+  (buffa (buff 10))
+  )
+  (ok true)
+)

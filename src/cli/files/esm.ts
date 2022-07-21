@@ -1,13 +1,18 @@
-import { parseYaml } from '../../deps.ts';
+import { dirname, join, parseYaml } from '../../deps.ts';
 import { Config } from '../config.ts';
 import {
+  Batch,
   DeploymentPlan,
+  getContractTxs,
   getDeploymentContract,
+  getDeploymentTxPath,
   getIdentifier,
+  SimnetDeploymentPlan,
+  Transaction,
 } from '../deployments.ts';
 // import { log } from '../logger.ts';
 import { Session } from '../session.ts';
-import { cwdResolve, getContractName, toCamelCase } from '../utils.ts';
+import { cwdRelative, cwdResolve, getContractName } from '../utils.ts';
 import { generateAccountsCode } from './accounts.ts';
 
 export async function parseDeployment(path: string) {
@@ -29,10 +34,10 @@ type DeploymentsMap = {
   [key in DeploymentNetwork]: Plan;
 };
 
-export async function getDeployments(): Promise<DeploymentsMap> {
+export async function getDeployments(config: Config): Promise<DeploymentsMap> {
   const entries = await Promise.all(DEPLOYMENT_NETWORKS.map(async (network) => {
     const file = `default.${network}-plan.yaml`;
-    const path = cwdResolve('deployments', file);
+    const path = join(dirname(config.clarinetFile()), 'deployments', file);
     let plan: Plan;
     try {
       plan = await parseDeployment(path);
@@ -47,24 +52,21 @@ export async function generateESMFile({
   session,
   config,
 }: { baseFile: string; session: Session; config: Config }) {
-  const deployments = await getDeployments();
+  const deployments = await getDeployments(config);
   const contractDeployments = collectContractDeployments(
     session,
     deployments,
     config,
   );
 
-  const accounts = config.esm?.include_accounts
-    ? `\n${generateAccountsCode(session)}\n`
-    : '';
+  const simnet = generateSimnetCode(config, deployments, session);
 
   return `${baseFile}
 export const deployments = ${JSON.stringify(contractDeployments)} as const;
-${accounts}
+${simnet}
 export const project = {
   contracts,
   deployments,
-  ${config.esm?.include_accounts ? 'accounts,' : ''}
 } as const;
   `;
 }
@@ -107,6 +109,7 @@ export function collectContractDeployments(
             return [network, null];
           }
           try {
+            const contractName = contract.contract_id.split('.')[1];
             const tx = getDeploymentContract(contractName, deployment);
             const id = getIdentifier(tx);
             return [network, id];
@@ -137,4 +140,46 @@ export function collectContractDeployments(
   });
 
   return full;
+}
+
+export function collectDeploymentFiles(
+  deployments: DeploymentsMap,
+  clarinetFolder: string,
+) {
+  if (!deployments.simnet) return [];
+  const simnet = deployments.simnet as SimnetDeploymentPlan;
+  const txs = getContractTxs(simnet.plan.batches as Batch<Transaction>[]);
+  const entries = txs.map((tx) => {
+    const id = getIdentifier(tx);
+    const contractFile = getDeploymentTxPath(tx);
+    return {
+      identifier: id,
+      file: cwdRelative(join(clarinetFolder, contractFile)),
+    };
+  });
+  return entries;
+}
+
+function generateSimnetCode(
+  config: Config,
+  deployments: DeploymentsMap,
+  session: Session,
+) {
+  if (!config.esm?.include_accounts) return '';
+
+  const clarinetFolder = dirname(config.clarinetFile());
+
+  const files = collectDeploymentFiles(deployments, clarinetFolder);
+  const accounts = generateAccountsCode(session);
+
+  return `
+export const simnetDeployment = ${JSON.stringify(files)};
+
+${accounts}
+
+export const simnet = {
+  deployment: simnetDeployment,
+  accounts,
+};
+`;
 }

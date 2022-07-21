@@ -4,7 +4,14 @@ import { cwdResolve } from './utils.ts';
 export const ClarinetSchema = Schema({
   project: {
     requirements: array.of({ contract_id: string }).optional(),
+    cache_location: Schema({ path: string }).optional(),
   },
+  contracts: Schema.record(
+    string,
+    Schema({
+      path: string,
+    }),
+  ).optional(),
 });
 
 export type ClarinetConfig = Type<typeof ClarinetSchema>;

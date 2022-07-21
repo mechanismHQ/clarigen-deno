@@ -7,6 +7,7 @@ export {
 export type {
   Account as ClarinetAccount,
   Block,
+  Contract,
   ReadOnlyFn,
   TxReceipt,
 } from 'https://deno.land/x/clarinet@v0.31.0/index.ts';

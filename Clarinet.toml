@@ -10,6 +10,10 @@ contract_id = "SP3DX3H4FEYZJZ586MFBS25ZW3HZDMEW92260R2PR.ft-trait"
 
 [project.cache_location]
 path = ".requirements"
+
+[contracts.counter]
+path = "contracts/counter.clar"
+
 [contracts.tester]
 path = "contracts/tester.clar"
 

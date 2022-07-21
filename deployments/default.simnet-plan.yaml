@@ -43,6 +43,14 @@ plan:
     - id: 0
       transactions:
         - emulated-contract-publish:
+            contract-name: ft-trait
+            emulated-sender: SP3DX3H4FEYZJZ586MFBS25ZW3HZDMEW92260R2PR
+            path: ".requirements/SP3DX3H4FEYZJZ586MFBS25ZW3HZDMEW92260R2PR.ft-trait.clar"
+        - emulated-contract-publish:
             contract-name: tester
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: /Users/hankstoever/stacker/deno-clarigen/contracts/tester.clar
+            path: contracts/tester.clar
+        - emulated-contract-publish:
+            contract-name: counter
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/counter.clar

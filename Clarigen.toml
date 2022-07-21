@@ -12,6 +12,7 @@ output = "artifacts/clarigen"
 [esm]
 # `output` can be a directory or a folder.
 output = "esm"
+include_accounts = true
 
 # `esm.after` - script to run after ESM types are generated.
 # examples:
