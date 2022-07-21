@@ -1,7 +1,7 @@
 import { dirname, resolve } from '../deps.ts';
 import { log } from './logger.ts';
 import { PRINT_LABEL } from './print.ts';
-import { Session } from './session.ts';
+import { Session } from '../session.ts';
 import { spawn } from './spawn.ts';
 import type { Config } from './config.ts';
 

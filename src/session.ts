@@ -1,5 +1,5 @@
-import { ClarinetAccount } from '../clarinet-deps.ts';
-import { ClarityAbi } from '../types.ts';
+import { ClarinetAccount } from './clarinet-deps.ts';
+import { ClarityAbi } from './types.ts';
 
 export interface SessionContract {
   contract_id: string;

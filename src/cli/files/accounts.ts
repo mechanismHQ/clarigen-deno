@@ -1,4 +1,4 @@
-import { Session } from '../session.ts';
+import { Session } from '../../session.ts';
 
 export function generateAccountsCode(session: Session) {
   const accounts = Object.fromEntries(session.accounts.map((account) => {

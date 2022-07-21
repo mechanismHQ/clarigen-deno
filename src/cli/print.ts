@@ -1,4 +1,4 @@
-import { getSession } from './session.ts';
+import { getSession } from '../session.ts';
 
 export const PRINT_LABEL = 'CLARIGEN SESSION: ';
 

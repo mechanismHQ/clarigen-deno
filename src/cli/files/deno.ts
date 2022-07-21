@@ -1,4 +1,4 @@
-import { Session } from '../session.ts';
+import { Session } from '../../session.ts';
 import { generateAccountsCode } from './accounts.ts';
 
 export function generateDenoFile(session: Session, baseFile: string) {

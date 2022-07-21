@@ -1,13 +1,16 @@
 import { abiFunctionType, jsTypeFromAbiType } from '../declaration.ts';
-import type { Session, SessionContract } from '../session.ts';
+import type { Session, SessionContract } from '../../session.ts';
 import { encodeVariableName, toCamelCase } from '../utils.ts';
 import { types } from '../type-stub.ts';
 import { ClarityAbiVariable } from '../../types.ts';
 
-export function generateContractMeta(contract: SessionContract) {
+export function generateContractMeta(
+  contract: SessionContract,
+) {
   const abi = contract.contract_interface;
   const functionLines: string[] = [];
   const { functions, maps, variables, ...rest } = abi;
+
   functions.forEach((func) => {
     let functionLine = `${toCamelCase(func.name)}: `;
     const funcDef = JSON.stringify(func);

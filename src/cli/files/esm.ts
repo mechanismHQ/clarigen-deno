@@ -11,8 +11,8 @@ import {
   Transaction,
 } from '../deployments.ts';
 // import { log } from '../logger.ts';
-import { Session } from '../session.ts';
-import { cwdRelative, cwdResolve, getContractName } from '../utils.ts';
+import { Session } from '../../session.ts';
+import { cwdRelative, getContractName } from '../utils.ts';
 import { generateAccountsCode } from './accounts.ts';
 
 export async function parseDeployment(path: string) {
