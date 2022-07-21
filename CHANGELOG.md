@@ -1,5 +1,15 @@
 # clarigen-deno
 
+## 0.4.1
+
+### Patch Changes
+
+- [`420cd6c`](https://github.com/mechanismHQ/clarigen-deno/commit/420cd6cd21dc6ce5675d77855ef113fb9be726ba) Thanks [@hstove](https://github.com/hstove)! - Adds `--watch` option to main CLI command
+
+* [`420cd6c`](https://github.com/mechanismHQ/clarigen-deno/commit/420cd6cd21dc6ce5675d77855ef113fb9be726ba) Thanks [@hstove](https://github.com/hstove)! - Includes accounts, deployment IDs with ESM
+
+- [`db95d1c`](https://github.com/mechanismHQ/clarigen-deno/commit/db95d1c83af511d1faef905e9c5d87fb19214d19) Thanks [@hstove](https://github.com/hstove)! - Added `simnet` export to ESM, if `include_accounts` is configured.
+
 ## 0.4.0
 
 ### Minor Changes
