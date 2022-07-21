@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.4.2
+
+### Patch Changes
+
+- [`4055962`](https://github.com/mechanismHQ/clarigen-deno/commit/4055962941a091ab12bbdd256be5629e803ba542) Thanks [@hstove](https://github.com/hstove)! - Adds `tx*` helpers to `Chain` for simpler DX
+
 ## 0.4.1
 
 ### Patch Changes
