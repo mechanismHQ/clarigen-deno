@@ -1,9 +1,15 @@
 import { assertEquals } from 'https://deno.land/std@0.90.0/testing/asserts.ts';
-import { simnet } from '../artifacts/clarigen/index.ts';
-import { factory, txOk } from '../src/index.ts';
-// import { describe, it } from 'https://deno.land/std@0.149.0/testing/bdd.ts';
+import { accounts, simnet } from '../artifacts/clarigen/index.ts';
+import { Chain, contractsFactory, factory, txOk } from '../src/index.ts';
+import {
+  beforeAll,
+  describe,
+  it,
+  run,
+} from 'https://deno.land/x/dspec@v0.2.0/mod.ts';
 
-const { contracts: { counter }, test } = factory(simnet);
+const { counter } = contractsFactory(simnet);
+const { test } = factory(simnet);
 
 test({
   name: 'Ensure counter works',
@@ -18,159 +24,34 @@ test({
 
 // More custom test runner with `Chain`
 
-// TODO: doesnt work in Clarinet's Deno version
-// describe('BDD-style testing', () => {
-//   const { chain, accounts, contracts: { counter } } = Chain.fromSimnet(simnet);
-//   const alice = accounts.get('wallet_1').address;
+describe('BDD-style testing', () => {
+  let chain: Chain;
+  beforeAll(() => {
+    chain = Chain.fromSimnet(simnet).chain;
+  });
+  // const { chain, accounts, contracts: { counter } } = Chain.fromSimnet(simnet);
+  const alice = accounts.wallet_1.address;
 
-//   it('can increment', () => {
-//     const receipt = chain.mineOne(
-//       txOk(counter.increment(2), alice),
-//     );
-//     assertEquals(receipt.value, 3n);
-//   });
-// });
+  it('can increment', () => {
+    assertEquals(chain.sessionId, 2);
+    const receipt = chain.mineOne(
+      txOk(counter.increment(2), alice),
+    );
+    const count = chain.rovOk(counter.readCounter());
+    assertEquals(count, 3n);
+    assertEquals(receipt.value, 3n);
+  });
 
-// From clarinet examples:
-//
-// Clarinet.test({
-//   name:
-//     'Ensure that counter can be incremented multiples per block, accross multiple blocks',
-//   fn(
-//     chain: ClarinetChain,
-//     accounts: Map<string, ClarinetAccount>,
-//     contracts: Map<string, Contract>,
-//   ) {
-//     let wallet_1 = accounts.get('wallet_1')!;
-//     let wallet_2 = accounts.get('wallet_2')!;
+  it('can decrement', () => {
+    assertEquals(chain.sessionId, 2);
+    const count = chain.rovOk(counter.readCounter());
+    assertEquals(count, 3n);
+    const receipt = chain.mineOne(
+      txOk(counter.decrement(1n), alice),
+    );
+    assertEquals(receipt.value, 2n);
+    assertEquals(chain.blockHeight, 3);
+  });
+});
 
-//     let block = chain.mineBlock([
-//       Tx.contractCall(
-//         'counter',
-//         'increment',
-//         [types.uint(1)],
-//         wallet_1.address,
-//       ),
-//       Tx.contractCall(
-//         'counter',
-//         'increment',
-//         [types.uint(4)],
-//         wallet_1.address,
-//       ),
-//       Tx.contractCall(
-//         'counter',
-//         'increment',
-//         [types.uint(10)],
-//         wallet_1.address,
-//       ),
-//     ]);
-//     assertEquals(block.height, 2);
-//     block.receipts[0].result
-//       .expectOk()
-//       .expectUint(2);
-//     block.receipts[1].result
-//       .expectOk()
-//       .expectUint(6);
-//     block.receipts[2].result
-//       .expectOk()
-//       .expectUint(16);
-
-//     block = chain.mineBlock([
-//       Tx.contractCall(
-//         'counter',
-//         'increment',
-//         [types.uint(1)],
-//         wallet_1.address,
-//       ),
-//       Tx.contractCall(
-//         'counter',
-//         'increment',
-//         [types.uint(4)],
-//         wallet_1.address,
-//       ),
-//       Tx.contractCall(
-//         'counter',
-//         'increment',
-//         [types.uint(10)],
-//         wallet_1.address,
-//       ),
-//       Tx.transferSTX(1, wallet_2.address, wallet_1.address),
-//     ]);
-
-//     assertEquals(block.height, 3);
-//     block.receipts[0].result
-//       .expectOk()
-//       .expectUint(17);
-//     block.receipts[1].result
-//       .expectOk()
-//       .expectUint(21);
-//     block.receipts[2].result
-//       .expectOk()
-//       .expectUint(31);
-
-//     let result = chain.getAssetsMaps();
-//     assertEquals(result.assets['STX'][wallet_1.address], 99999999999999);
-
-//     let call = chain.callReadOnlyFn(
-//       'counter',
-//       'read-counter',
-//       [],
-//       wallet_1.address,
-//     );
-//     call.result
-//       .expectOk()
-//       .expectUint(31);
-
-//     '0x0001020304'.expectBuff(new Uint8Array([0, 1, 2, 3, 4]));
-//     'ST1HTBVD3JG9C05J7HBJTHGR0GGW7KXW28M5JS8QE.plaid-token'.expectPrincipal(
-//       'ST1HTBVD3JG9C05J7HBJTHGR0GGW7KXW28M5JS8QE.plaid-token',
-//     );
-//   },
-// });
-
-// Clarinet.test({
-//   name: 'Test with pre-setup',
-//   preDeployment: (
-//     chain: ClarinetChain,
-//   ) => {
-//     chain.mineEmptyBlock(100);
-//   },
-//   fn(
-//     chain: ClarinetChain,
-//     accounts: Map<string, ClarinetAccount>,
-//   ) {
-//     let wallet_1 = accounts.get('wallet_1')!;
-//     let wallet_2 = accounts.get('wallet_2')!;
-
-//     let block = chain.mineBlock([
-//       Tx.contractCall(
-//         'counter',
-//         'increment',
-//         [types.uint(1)],
-//         wallet_1.address,
-//       ),
-//       Tx.contractCall(
-//         'counter',
-//         'increment',
-//         [types.uint(4)],
-//         wallet_1.address,
-//       ),
-//       Tx.contractCall(
-//         'counter',
-//         'increment',
-//         [types.uint(10)],
-//         wallet_1.address,
-//       ),
-//     ]);
-//     assertEquals(block.height, 102);
-//     block.receipts[0].result
-//       .expectOk()
-//       .expectUint(2);
-//     block.receipts[1].result
-//       .expectOk()
-//       .expectUint(6);
-//     block.receipts[2].result
-//       .expectOk()
-//       .expectUint(16);
-//   },
-// });
+run();
