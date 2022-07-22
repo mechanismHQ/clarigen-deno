@@ -1,6 +1,6 @@
 # tester
 
-[`tester.clar`](../../contracts/tester.clar)
+[`tester.clar`](../contracts/tester.clar)
 
 Test contract for testing Clarigen
 
@@ -22,7 +22,7 @@ Test contract for testing Clarigen
 
 ### square
 
-[View in file](../../contracts/tester.clar#L7)
+[View in file](../contracts/tester.clar#L7)
 
 `(define-read-only (square ((n uint)) uint)`
 
@@ -43,7 +43,7 @@ Test contract for testing Clarigen
 
 ### get-tup
 
-[View in file](../../contracts/tester.clar#L9)
+[View in file](../contracts/tester.clar#L9)
 
 `(define-read-only (get-tup () (tuple (a uint) (bool-prop bool) (tuple-prop (tuple (sub-prop (string-ascii 4))))))`
 
@@ -64,7 +64,7 @@ Test contract for testing Clarigen
 
 ### merge-tuple
 
-[View in file](../../contracts/tester.clar#L17)
+[View in file](../contracts/tester.clar#L17)
 
 `(define-read-only (merge-tuple ((i (tuple (min-height uint)))) (tuple (max-height uint) (min-height uint)))`
 
@@ -87,7 +87,7 @@ Test contract for testing Clarigen
 
 ### ret-error
 
-[View in file](../../contracts/tester.clar#L21)
+[View in file](../contracts/tester.clar#L21)
 
 `(define-public (ret-error ((with-err bool)) (response bool uint))`
 
@@ -110,7 +110,7 @@ Test contract for testing Clarigen
 
 ### num
 
-[View in file](../../contracts/tester.clar#L28)
+[View in file](../contracts/tester.clar#L28)
 
 `(define-public (num ((n uint)) (response uint none))`
 
@@ -133,7 +133,7 @@ Return a number
 
 ### complex-args
 
-[View in file](../../contracts/tester.clar#L30)
+[View in file](../contracts/tester.clar#L30)
 
 `(define-public (complex-args ((numba int) (opt-numba (optional int)) (opt-unumba (optional uint)) (buffa (buff 10))) (response bool none))`
 

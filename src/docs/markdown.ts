@@ -7,7 +7,7 @@ import {
   // Comments,
   createContractDocInfo,
 } from './index.ts';
-import { SessionContract } from '../session.ts';
+import { Session, SessionContract } from '../session.ts';
 import { getContractName } from '../cli/utils.ts';
 
 export function generateMarkdown(
@@ -128,4 +128,18 @@ ${readOnly.map(tocLine).join('\n')}
 **Private functions:**
 
 ${privates.map(tocLine).join('\n')}`;
+}
+
+export function generateReadme(session: Session) {
+  const contractLines = session.contracts.map((contract) => {
+    const name = getContractName(contract.contract_id, false);
+    const fileName = `${name}.md`;
+    return `- [\`${name}\`](${fileName})`;
+  });
+  const fileContents = `# Contracts
+  
+  ${contractLines.join('\n')}
+  `;
+
+  return fileContents;
 }

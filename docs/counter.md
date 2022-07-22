@@ -1,6 +1,6 @@
 # counter
 
-[`counter.clar`](../../contracts/counter.clar)
+[`counter.clar`](../contracts/counter.clar)
 
 counter let's get started with smart contracts
 
@@ -19,7 +19,7 @@ counter let's get started with smart contracts
 
 ### increment
 
-[View in file](../../contracts/counter.clar#L5)
+[View in file](../contracts/counter.clar#L5)
 
 `(define-public (increment ((step uint)) (response uint none))`
 
@@ -45,7 +45,7 @@ counter let's get started with smart contracts
 
 ### decrement
 
-[View in file](../../contracts/counter.clar#L12)
+[View in file](../contracts/counter.clar#L12)
 
 `(define-public (decrement ((step uint)) (response uint none))`
 
@@ -71,7 +71,7 @@ counter let's get started with smart contracts
 
 ### read-counter
 
-[View in file](../../contracts/counter.clar#L19)
+[View in file](../contracts/counter.clar#L19)
 
 `(define-read-only (read-counter () (response uint none))`
 

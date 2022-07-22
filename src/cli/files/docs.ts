@@ -1,6 +1,6 @@
 import { Config, OutputType } from '../config.ts';
 import { Session } from '../../session.ts';
-import { generateMarkdown } from '../../docs/markdown.ts';
+import { generateMarkdown, generateReadme } from '../../docs/markdown.ts';
 import { getContractName } from '../utils.ts';
 import { relative } from '../../deps.ts';
 import { log } from '../logger.ts';
@@ -20,17 +20,17 @@ export async function generateDocs(
     );
   }
   log.debug(`Generating docs at path \`${docsBase}\``);
+  const docsBaseFolder = config.outputResolve(OutputType.Docs, './')!;
   const paths = await Promise.all(session.contracts.map(async (contract) => {
     const name = getContractName(contract.contract_id, false);
     const docFile = `${name}.md`;
     // location of
     const contractPathDef = config.clarinet.contracts?.[name]?.path;
-    const docPathFull = config.outputResolve(OutputType.Docs, docFile)!;
     let contractFile: string | undefined;
     // if we have the contract file, make a relative link
     if (contractPathDef) {
       const contractPathFull = config.joinFromClarinet(contractPathDef);
-      contractFile = relative(docPathFull, contractPathFull);
+      contractFile = relative(docsBaseFolder, contractPathFull);
     } else {
       // TODO: probably a requirement
       log.debug(
@@ -41,11 +41,15 @@ export async function generateDocs(
     const md = generateMarkdown({ contract, contractFile });
 
     // log.debug(`Writing docs markdown file at ${cwdRelative(docPathFull)}`);
-    const path = await config.writeOutput(OutputType.Docs, md, docFile);
+    const path = (await config.writeOutput(OutputType.Docs, md, docFile))!;
     return path;
   }));
 
-  await runDenoFmt(paths.filter((p) => typeof p === 'string') as string[]);
+  const readme = generateReadme(session);
+
+  paths.push((await config.writeOutput(OutputType.Docs, readme, 'README.md'))!);
+
+  await runDenoFmt(paths);
 }
 
 function warnNoDocs() {
