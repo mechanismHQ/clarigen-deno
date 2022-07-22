@@ -22,6 +22,9 @@
   (if with-err (err u1) (ok true))
 )
 
+;; Return a number
+;; 
+;; @param n; the number, of course
 (define-public (num (n uint)) (ok n))
 
 (define-public (complex-args

@@ -13,6 +13,7 @@ export type { LevelName } from 'https://deno.land/std@0.97.0/log/levels.ts';
 export { getLevelByName } from 'https://deno.land/std@0.97.0/log/levels.ts';
 export * from './clarinet-deps.ts';
 export {
+  basename,
   dirname,
   join,
   relative,
@@ -24,7 +25,11 @@ export {
 } from 'https://deno.land/std@0.133.0/encoding/toml.ts';
 export { colors } from 'https://deno.land/x/cliffy@v0.24.2/ansi/colors.ts';
 export { parse as parseYaml } from 'https://deno.land/std@0.95.0/encoding/yaml.ts';
-export { assertEquals } from 'https://deno.land/std@0.97.0/testing/asserts.ts';
+export {
+  assert,
+  assertEquals,
+  assertThrows,
+} from 'https://deno.land/std@0.97.0/testing/asserts.ts';
 export {
   array,
   boolean,

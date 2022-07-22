@@ -257,6 +257,39 @@ export function hexToBytes(hex: string): Uint8Array {
   return array;
 }
 
+export function getTypeString(val: ClarityAbiType): string {
+  if (isClarityAbiPrimitive(val)) {
+    if (val === 'int128') {
+      return 'int';
+    } else if (val === 'uint128') {
+      return 'uint';
+    }
+    return val;
+  } else if (isClarityAbiBuffer(val)) {
+    return `(buff ${val.buffer.length})`;
+  } else if (isClarityAbiStringAscii(val)) {
+    return `(string-ascii ${val['string-ascii'].length})`;
+  } else if (isClarityAbiStringUtf8(val)) {
+    return `(string-utf8 ${val['string-utf8'].length})`;
+  } else if (isClarityAbiResponse(val)) {
+    return `(response ${getTypeString(val.response.ok)} ${
+      getTypeString(val.response.error)
+    })`;
+  } else if (isClarityAbiOptional(val)) {
+    return `(optional ${getTypeString(val.optional)})`;
+  } else if (isClarityAbiTuple(val)) {
+    return `(tuple ${
+      val.tuple.map((t) => `(${t.name} ${getTypeString(t.type)})`).join(' ')
+    })`;
+  } else if (isClarityAbiList(val)) {
+    return `(list ${val.list.length} ${getTypeString(val.list.type)})`;
+  } else {
+    throw new Error(
+      `Type string unsupported for Clarity type: ${JSON.stringify(val)}`,
+    );
+  }
+}
+
 const byteToHexCache: string[] = new Array(0xff);
 
 for (let n = 0; n <= 0xff; ++n) {

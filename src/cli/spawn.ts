@@ -20,6 +20,7 @@ export async function spawn(
     process.status(),
     process.output(),
     process.stderrOutput(),
+    process.close(),
   ]);
 
   const decoder = new TextDecoder();
