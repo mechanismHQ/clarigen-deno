@@ -2,21 +2,25 @@ import { Config, OutputType } from './config.ts';
 import { spawn } from './spawn.ts';
 import { log } from './logger.ts';
 
-export async function denoFmt(config: Config) {
-  const file = config.outputResolve(OutputType.Deno);
-  if (file === null) return;
-
-  const cmd = ['deno', 'fmt', file];
+export async function runDenoFmt(files: string[]) {
+  const cmd = ['deno', 'fmt', ...files];
+  // log.debug(`Running \`deno fmt ${files.join(' ')}\``);
   try {
-    const result = await spawn(cmd);
+    const result = await spawn(cmd, Deno.cwd());
     if (result.status.success) {
-      // console.debug('Formatted', file);
+      // console.debug('Formatted', files);
     } else {
       log.warning(`Deno fmt error: ${result.stderr}`);
     }
   } catch (error) {
     log.warning(`Deno fmt error: ${(error as Error).message}`);
   }
+}
+
+export async function denoFmt(config: Config) {
+  const file = config.outputResolve(OutputType.Deno);
+  if (file === null) return;
+  await runDenoFmt([file]);
 }
 
 export async function afterESM(config: Config) {

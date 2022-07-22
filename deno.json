@@ -4,7 +4,7 @@
       "singleQuote": true
     },
     "files": {
-      "include": ["src/", "test_pkg/", "artifacts/", "tests/", "scripts/", "cli.ts", "scratch/"]
+      "include": ["src/", "test_pkg/", "artifacts/", "tests/", "scripts/", "cli.ts", "scratch/", "docs"]
     }
   },
   "lint": {

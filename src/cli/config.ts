@@ -61,8 +61,12 @@ export class Config {
     const path = this.configFile[type]?.output;
     if (typeof path === 'undefined') return null;
     const base = cwdResolve(path, filePath || '');
-    if (base.endsWith('.ts')) return base;
-    return join(base, './index.ts');
+    if (typeof filePath === 'undefined') {
+      if (base.endsWith('.ts')) return base;
+      return join(base, './index.ts');
+    } else {
+      return base;
+    }
   }
 
   async writeOutput(type: OutputType, contents: string, filePath?: string) {
@@ -95,6 +99,11 @@ export class Config {
 
   clarinetFile() {
     return cwdResolve(this.configFile.clarinet);
+  }
+
+  joinFromClarinet(filePath: string) {
+    const baseDir = dirname(this.clarinetFile());
+    return join(baseDir, filePath);
   }
 }
 

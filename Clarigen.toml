@@ -19,3 +19,9 @@ include_accounts = true
 # after = "yarn prettier ./esm/index.ts"
 # after = "echo 'yay'"
 after = "deno fmt ./esm/index.ts"
+
+# Set where you'd like generated contract docs
+# Generate docs by running `clarigen docs`
+[docs]
+# `output` should be a folder
+output = "docs"
