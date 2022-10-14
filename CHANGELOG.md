@@ -1,5 +1,12 @@
 # clarigen-deno
 
+## 0.4.5
+
+### Patch Changes
+
+- [`89ce01f`](https://github.com/mechanismHQ/clarigen-deno/commit/89ce01f44610a4f641dac4fbae0e97e4a9bb9469) Thanks [@hstove](https://github.com/hstove)! - - Fixed a bug where an error would throw if there was no `output` in the `esm` section of config
+  - Added `chain.burnBlockHeight`
+
 ## 0.4.4
 
 ### Patch Changes
