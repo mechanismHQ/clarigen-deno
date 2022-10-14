@@ -4,12 +4,12 @@
       "singleQuote": true
     },
     "files": {
-      "include": ["src/", "test_pkg/", "artifacts/", "tests/", "scripts/", "cli.ts", "scratch/", "docs"]
+      "include": ["src/", "test_pkg/", "artifacts/", "tests/", "scripts/", "cli.ts", "scratch/", "docs", "mod.ts"]
     }
   },
   "lint": {
     "files": {
-      "include": ["src/", "test_pkg/", "artifacts/", "tests/", "scripts/", "cli.ts"]
+      "include": ["src/", "test_pkg/", "artifacts/", "tests/", "scripts/", "cli.ts", "mod.ts"]
     },
     "rules": {
       "tags": ["recommended"],
