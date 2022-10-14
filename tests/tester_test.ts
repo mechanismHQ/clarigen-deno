@@ -42,6 +42,8 @@ test({
     assertEquals(tup.tupleProp.subProp, 'asdf');
 
     const n = chain.rovOk(tester.num(2));
+    // testing TS types
+    assertEquals(n * 2n, 4n);
     assertEquals(n, 2n);
 
     try {
@@ -52,6 +54,8 @@ test({
 
     const err = chain.rovErr(tester.retError(true));
     assertEquals(err, 1n);
+    // testing TS types
+    assertEquals(err * 2n, 2n);
 
     // without block wrapper
     const [numReceipt] = chain.mine(txOk(tester.num(2), alice));

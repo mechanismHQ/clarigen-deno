@@ -1,50 +1,43 @@
 import { assertEquals } from 'https://deno.land/std@0.90.0/testing/asserts.ts';
-import { accounts, simnet } from '../artifacts/clarigen/index.ts';
-import { Chain, contractsFactory, factory, txOk } from '../src/index.ts';
-import {
-  beforeAll,
-  describe,
-  it,
-  run,
-} from 'https://deno.land/x/dspec@v0.2.0/mod.ts';
+import { simnet } from '../artifacts/clarigen/index.ts';
+import { Chain, factory, txOk } from '../src/index.ts';
+import { describe, it } from 'https://deno.land/std@0.159.0/testing/bdd.ts';
 
-const { counter } = contractsFactory(simnet);
-const { test } = factory(simnet);
+const { test, contracts: { counter } } = factory(simnet);
 
 test({
   name: 'Ensure counter works',
   fn(chain, accounts) {
-    const alice = accounts.get('wallet_1').address;
+    const alice = accounts.addr('wallet_1');
     const receipt = chain.mineOne(
       txOk(counter.increment(2), alice),
     );
     assertEquals(receipt.value, 3n);
+
+    const currentCount = chain.rov(counter.getCounter());
+    assertEquals(currentCount, 3n);
   },
 });
 
-// More custom test runner with `Chain`
+// BDD-style testing with `Chain`
 
 describe('BDD-style testing', () => {
-  let chain: Chain;
-  beforeAll(() => {
-    chain = Chain.fromSimnet(simnet).chain;
-  });
-  // const { chain, accounts, contracts: { counter } } = Chain.fromSimnet(simnet);
-  const alice = accounts.wallet_1.address;
+  const { chain, accounts } = Chain.fromSimnet(simnet);
+  const alice = accounts.addr('wallet_1');
 
   it('can increment', () => {
-    assertEquals(chain.sessionId, 2);
+    assertEquals(chain.sessionId, 1);
     const receipt = chain.mineOne(
       txOk(counter.increment(2), alice),
     );
-    const count = chain.rovOk(counter.readCounter());
+    const count = chain.rov(counter.getCounter());
     assertEquals(count, 3n);
     assertEquals(receipt.value, 3n);
   });
 
   it('can decrement', () => {
-    assertEquals(chain.sessionId, 2);
-    const count = chain.rovOk(counter.readCounter());
+    assertEquals(chain.sessionId, 1);
+    const count = chain.rov(counter.getCounter());
     assertEquals(count, 3n);
     const receipt = chain.mineOne(
       txOk(counter.decrement(1n), alice),
@@ -53,5 +46,3 @@ describe('BDD-style testing', () => {
     assertEquals(chain.blockHeight, 3);
   });
 });
-
-run();

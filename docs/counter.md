@@ -2,7 +2,8 @@
 
 [`counter.clar`](../contracts/counter.clar)
 
-counter let's get started with smart contracts
+The counter contract maintains a single global counter variable. Users can
+change the counter by calling `increment` and `decrement`.
 
 **Public functions:**
 
@@ -11,76 +12,91 @@ counter let's get started with smart contracts
 
 **Read-only functions:**
 
-- [`read-counter`](#read-counter)
+- [`get-counter`](#get-counter)
 
 **Private functions:**
 
 ## Functions
 
+### get-counter
+
+[View in file](../contracts/counter.clar#L9)
+
+`(define-read-only (get-counter () uint)`
+
+Get the current counter
+
+<details>
+  <summary>Source code:</summary>
+
+```clarity
+(define-read-only (get-counter)
+  (var-get counter)
+)
+```
+
+</details>
+
 ### increment
 
-[View in file](../contracts/counter.clar#L5)
+[View in file](../contracts/counter.clar#L18)
 
 `(define-public (increment ((step uint)) (response uint none))`
+
+Increment the counter.
+
+@returns the new value of the counter
 
 <details>
   <summary>Source code:</summary>
 
 ```clarity
 (define-public (increment (step uint))
-    (let ((new-val (+ step (var-get counter)))) 
-        ;; #[allow(unchecked_data)]
-        (var-set counter new-val)
-        (print { object: "counter", action: "incremented", value: new-val })
-        (ok new-val)))
+  (let (
+    (new-val (+ step (var-get counter)))
+  ) 
+  ;; #[allow(unchecked_data)]
+  (var-set counter new-val)
+  (print { object: "counter", action: "incremented", value: new-val })
+  (ok new-val))
+)
 ```
 
 </details>
 
 **Parameters:**
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| step | uint |             |
+| Name | Type | Description                             |
+| ---- | ---- | --------------------------------------- |
+| step | uint | The interval to increase the counter by |
 
 ### decrement
 
-[View in file](../contracts/counter.clar#L12)
+[View in file](../contracts/counter.clar#L31)
 
 `(define-public (decrement ((step uint)) (response uint none))`
+
+Decrement the counter
 
 <details>
   <summary>Source code:</summary>
 
 ```clarity
 (define-public (decrement (step uint))
-    (let ((new-val (- (var-get counter) step))) 
-        ;; #[allow(unchecked_data)]
-        (var-set counter new-val)
-        (print { object: "counter", action: "decremented", value: new-val })
-        (ok new-val)))
+  (let (
+    (new-val (- (var-get counter) step))
+  ) 
+  ;; #[allow(unchecked_data)]
+  (var-set counter new-val)
+  (print { object: "counter", action: "decremented", value: new-val })
+  (ok new-val))
+)
 ```
 
 </details>
 
 **Parameters:**
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| step | uint |             |
-
-### read-counter
-
-[View in file](../contracts/counter.clar#L19)
-
-`(define-read-only (read-counter () (response uint none))`
-
-<details>
-  <summary>Source code:</summary>
-
-```clarity
-(define-read-only (read-counter)
-    (ok (var-get counter)))
-```
-
-</details>
+| Name | Type | Description                             |
+| ---- | ---- | --------------------------------------- |
+| step | uint | The interval to increase the counter by |

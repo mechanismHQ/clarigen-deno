@@ -5,3 +5,4 @@ history.txt
 .yalc/
 node_modules
 esm
+.cache

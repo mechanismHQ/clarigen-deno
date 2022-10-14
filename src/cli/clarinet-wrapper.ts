@@ -1,11 +1,12 @@
 import { dirname, resolve } from '../deps.ts';
 import { log } from './logger.ts';
-import { PRINT_LABEL } from './print.ts';
 import { Session } from '../session.ts';
 import { spawn } from './spawn.ts';
 import type { Config } from './config.ts';
 
 const SCRIPT_PATH = 'print.ts';
+
+export const PRINT_LABEL = 'CLARIGEN SESSION: ';
 
 export async function runClarinet(config: Config) {
   const __dirname = new URL('.', import.meta.url).pathname;

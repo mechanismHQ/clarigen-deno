@@ -12,7 +12,7 @@ scripts:
       - read
       - write
 
-  test: deno test test_pkg
+  test: deno test -A test_pkg
 
   type-stubs:
     cmd:

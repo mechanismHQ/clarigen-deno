@@ -1,6 +1,5 @@
 import { getSession } from '../session.ts';
-
-export const PRINT_LABEL = 'CLARIGEN SESSION: ';
+import { PRINT_LABEL } from './clarinet-wrapper.ts';
 
 function printSession() {
   const result = getSession();
@@ -8,6 +7,4 @@ function printSession() {
   console.log([PRINT_LABEL, JSON.stringify(result)].join(''));
 }
 
-if (import.meta.main) {
-  printSession();
-}
+printSession();

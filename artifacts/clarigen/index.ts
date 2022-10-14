@@ -136,6 +136,51 @@ export type OkType<R> = R extends ResponseOk<infer V, unknown> ? V : never;
 export type ErrType<R> = R extends ResponseErr<unknown, infer V> ? V : never;
 
 export const contracts = {
+  counter: {
+    'functions': {
+      decrement: {
+        'name': 'decrement',
+        'access': 'public',
+        'args': [{ 'name': 'step', 'type': 'uint128' }],
+        'outputs': {
+          'type': { 'response': { 'ok': 'uint128', 'error': 'none' } },
+        },
+      } as TypedAbiFunction<
+        [step: TypedAbiArg<number | bigint, 'step'>],
+        Response<bigint, null>
+      >,
+      increment: {
+        'name': 'increment',
+        'access': 'public',
+        'args': [{ 'name': 'step', 'type': 'uint128' }],
+        'outputs': {
+          'type': { 'response': { 'ok': 'uint128', 'error': 'none' } },
+        },
+      } as TypedAbiFunction<
+        [step: TypedAbiArg<number | bigint, 'step'>],
+        Response<bigint, null>
+      >,
+      getCounter: {
+        'name': 'get-counter',
+        'access': 'read_only',
+        'args': [],
+        'outputs': { 'type': 'uint128' },
+      } as TypedAbiFunction<[], bigint>,
+    },
+    'maps': {},
+    'variables': {
+      counter: {
+        name: 'counter',
+        type: 'uint128',
+        access: 'variable',
+      } as TypedAbiVariable<bigint>,
+    },
+    constants: {},
+    'fungible_tokens': [],
+    'non_fungible_tokens': [],
+    'clarity_version': 'Clarity1',
+    contractName: 'counter',
+  },
   tester: {
     'functions': {
       complexArgs: {
@@ -262,53 +307,8 @@ export const contracts = {
     constants: {},
     'fungible_tokens': [],
     'non_fungible_tokens': [],
+    'clarity_version': 'Clarity1',
     contractName: 'tester',
-  },
-  counter: {
-    'functions': {
-      decrement: {
-        'name': 'decrement',
-        'access': 'public',
-        'args': [{ 'name': 'step', 'type': 'uint128' }],
-        'outputs': {
-          'type': { 'response': { 'ok': 'uint128', 'error': 'none' } },
-        },
-      } as TypedAbiFunction<
-        [step: TypedAbiArg<number | bigint, 'step'>],
-        Response<bigint, null>
-      >,
-      increment: {
-        'name': 'increment',
-        'access': 'public',
-        'args': [{ 'name': 'step', 'type': 'uint128' }],
-        'outputs': {
-          'type': { 'response': { 'ok': 'uint128', 'error': 'none' } },
-        },
-      } as TypedAbiFunction<
-        [step: TypedAbiArg<number | bigint, 'step'>],
-        Response<bigint, null>
-      >,
-      readCounter: {
-        'name': 'read-counter',
-        'access': 'read_only',
-        'args': [],
-        'outputs': {
-          'type': { 'response': { 'ok': 'uint128', 'error': 'none' } },
-        },
-      } as TypedAbiFunction<[], Response<bigint, null>>,
-    },
-    'maps': {},
-    'variables': {
-      counter: {
-        name: 'counter',
-        type: 'uint128',
-        access: 'variable',
-      } as TypedAbiVariable<bigint>,
-    },
-    constants: {},
-    'fungible_tokens': [],
-    'non_fungible_tokens': [],
-    contractName: 'counter',
   },
   ftTrait: {
     'functions': {},
@@ -317,6 +317,7 @@ export const contracts = {
     constants: {},
     'fungible_tokens': [],
     'non_fungible_tokens': [],
+    'clarity_version': 'Clarity1',
     contractName: 'ft-trait',
   },
 } as const;

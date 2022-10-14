@@ -69,6 +69,14 @@ function validateResponse<T>(
 }
 
 type ValOf<A extends Accounts, K extends keyof A> = A[K];
+
+type AddressesOf<
+  A extends Accounts,
+  Keys extends (keyof A)[],
+> = {
+  [K in keyof Keys]: A[Keys[K]]['address'];
+};
+
 export class AccountMap<A extends Accounts> extends Map {
   public a: A;
   constructor(accounts: A) {
@@ -78,6 +86,20 @@ export class AccountMap<A extends Accounts> extends Map {
 
   get<K extends keyof A>(key: K): ValOf<A, K> {
     return this.a[key];
+  }
+
+  addr<K extends keyof A>(key: K): ValOf<A, K>['address'] {
+    return this.a[key].address;
+  }
+
+  addresses<Keys extends (keyof A)[]>(
+    ...keys: Keys
+  ): AddressesOf<A, Keys> {
+    const vals = keys.map((k) => this.a[k].address) as AddressesOf<
+      A,
+      Keys
+    >;
+    return vals;
   }
 }
 
@@ -126,12 +148,18 @@ export class Chain {
     return receipt.value;
   }
 
-  rovOk<R>(payload: Call<R>, sender?: string): OkType<R> {
+  rovOk<Ok, R extends Response<Ok, any>>(
+    payload: Call<R>,
+    sender?: string,
+  ): OkType<R> {
     const receipt = this.ro(payload, sender);
     return validateResponse<OkType<R>>(receipt.result, payload.fn, true);
   }
 
-  rovErr<R>(payload: Call<R>, sender?: string): ErrType<R> {
+  rovErr<Err, R extends Response<any, Err>>(
+    payload: Call<R>,
+    sender?: string,
+  ): ErrType<R> {
     const receipt = this.ro(payload, sender);
     return validateResponse<ErrType<R>>(receipt.result, payload.fn, false);
   }
