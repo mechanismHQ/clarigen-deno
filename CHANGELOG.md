@@ -1,5 +1,13 @@
 # clarigen-deno
 
+## 0.4.3
+
+### Patch Changes
+
+- [`daaf0b5`](https://github.com/mechanismHQ/clarigen-deno/commit/daaf0b58f88e68413aa15120b67ee67310b719f7) Thanks [@hstove](https://github.com/hstove)! - Internally updated to Clarinet v1!
+
+* [`daaf0b5`](https://github.com/mechanismHQ/clarigen-deno/commit/daaf0b58f88e68413aa15120b67ee67310b719f7) Thanks [@hstove](https://github.com/hstove)! - Updated the types for `rovOk` and `rovErr` to properly throw type errors if the function doesn't return a `response`
+
 ## 0.4.2
 
 ### Patch Changes
