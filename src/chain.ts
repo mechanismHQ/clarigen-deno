@@ -229,6 +229,13 @@ export class Chain {
     return this.chain.blockHeight;
   }
 
+  // N.B.: in Clarinet v1, `burn-block-height` is one
+  // less than `burn-block`. This is undocumented and may
+  // change.
+  public get burnBlockHeight() {
+    return this.blockHeight - 1;
+  }
+
   mineEmptyBlock(count: number | bigint = 1) {
     return this.chain.mineEmptyBlock(Number(count));
   }

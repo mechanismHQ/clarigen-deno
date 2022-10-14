@@ -24,7 +24,7 @@ export enum OutputType {
 const ConfigFileSchema = Schema({
   clarinet: string,
   [OutputType.ESM]: Schema({
-    output: string,
+    output: string.optional(),
     include_accounts: boolean.optional(),
     after: string.optional(),
   }).optional(),
