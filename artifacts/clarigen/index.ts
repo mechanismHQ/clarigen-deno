@@ -178,7 +178,7 @@ export const contracts = {
     constants: {},
     'fungible_tokens': [],
     'non_fungible_tokens': [],
-    'clarity_version': 'Clarity1',
+    'clarity_version': 'Clarity2',
     contractName: 'counter',
   },
   ftTrait: {

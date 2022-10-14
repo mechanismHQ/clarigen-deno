@@ -56,7 +56,7 @@ scripts:
 
   test-all:
     pll:
-      - deno test test_pkg
+      - deno test -A test_pkg
       - clarinet test
 
   main:

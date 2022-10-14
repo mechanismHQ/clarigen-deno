@@ -13,6 +13,7 @@ path = ".requirements"
 
 [contracts.counter]
 path = "contracts/counter.clar"
+clarity_version = 2
 
 [contracts.tester]
 path = "contracts/tester.clar"
