@@ -1,5 +1,5 @@
 import { Config, OutputType } from '../src/cli/config.ts';
-import { cwdRelative } from '../src/cli/utils.ts';
+import { cwdRelative } from '../src/cli/cli-utils.ts';
 import { assert, assertEquals } from '../src/deps.ts';
 
 Deno.test({

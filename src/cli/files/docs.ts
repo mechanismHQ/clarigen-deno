@@ -1,7 +1,7 @@
 import { Config, OutputType } from '../config.ts';
 import { Session } from '../../session.ts';
 import { generateMarkdown, generateReadme } from '../../docs/markdown.ts';
-import { getContractName } from '../utils.ts';
+import { getContractName } from '../cli-utils.ts';
 import { relative } from '../../deps.ts';
 import { log } from '../logger.ts';
 import { runDenoFmt } from '../format.ts';

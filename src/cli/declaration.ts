@@ -9,7 +9,7 @@ import {
   isClarityAbiTuple,
 } from '../encoder.ts';
 import { ClarityAbiArg, ClarityAbiFunction, ClarityAbiType } from '../types.ts';
-import { toCamelCase } from './utils.ts';
+import { toCamelCase } from './cli-utils.ts';
 
 export const jsTypeFromAbiType = (
   val: ClarityAbiType,

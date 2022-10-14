@@ -2,7 +2,7 @@ import { Config, configFilePath } from './config.ts';
 import { generate } from './generate.ts';
 import { colors, dirname, join } from '../deps.ts';
 import { log } from './logger.ts';
-import { cwdRelative } from './utils.ts';
+import { cwdRelative } from './cli-utils.ts';
 
 const runDelay = 3000;
 let lastRun = new Date().getTime();

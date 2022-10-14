@@ -12,7 +12,7 @@ import {
 } from '../deployments.ts';
 // import { log } from '../logger.ts';
 import { Session } from '../../session.ts';
-import { cwdRelative, getContractName } from '../utils.ts';
+import { cwdRelative, getContractName, sortContracts } from '../cli-utils.ts';
 import { generateAccountsCode } from './accounts.ts';
 
 export async function parseDeployment(path: string) {
@@ -100,7 +100,7 @@ export function collectContractDeployments(
   config: Config,
 ): FullContractDeployments {
   const full = Object.fromEntries(
-    session.contracts.map((contract) => {
+    sortContracts(session.contracts).map((contract) => {
       const contractName = getContractName(contract.contract_id);
       const contractDeployments = Object.fromEntries(
         DEPLOYMENT_NETWORKS.map((network) => {

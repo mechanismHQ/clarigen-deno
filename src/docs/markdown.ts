@@ -8,7 +8,7 @@ import {
   createContractDocInfo,
 } from './index.ts';
 import { Session, SessionContract } from '../session.ts';
-import { getContractName } from '../cli/utils.ts';
+import { getContractName, sortContracts } from '../cli/cli-utils.ts';
 
 export function generateMarkdown(
   { contract, contractFile }: {
@@ -131,7 +131,7 @@ ${privates.map(tocLine).join('\n')}`;
 }
 
 export function generateReadme(session: Session) {
-  const contractLines = session.contracts.map((contract) => {
+  const contractLines = sortContracts(session.contracts).map((contract) => {
     const name = getContractName(contract.contract_id, false);
     const fileName = `${name}.md`;
     return `- [\`${name}\`](${fileName})`;

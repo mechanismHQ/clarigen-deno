@@ -21,7 +21,7 @@ import type {
   ResponseOk,
 } from './types.ts';
 import { types } from './clarinet-deps.ts';
-import { toCamelCase, toKebabCase } from './cli/utils.ts';
+import { toCamelCase, toKebabCase } from './utils.ts';
 
 export function ok<T, Err = never>(value: T): ResponseOk<T, Err> {
   return {

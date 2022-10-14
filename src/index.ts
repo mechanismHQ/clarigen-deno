@@ -6,3 +6,4 @@ export * from './runner.ts';
 export * from './factory-types.ts';
 export * from './session.ts';
 export * from './chain.ts';
+export * from './utils.ts';

@@ -1,5 +1,3 @@
-import { relative, resolve } from '../deps.ts';
-
 export const toCamelCase = (
   input: string | number | symbol,
   titleCase?: boolean,
@@ -26,35 +24,6 @@ export function toKebabCase(
     );
   if (!matches) return input;
   return matches.join('-').toLowerCase();
-}
-
-export function encodeVariableName(name: string) {
-  if (/^[A-Z\-_]*$/.test(name)) return name.replaceAll('-', '_');
-  return toCamelCase(name);
-}
-
-export async function fileExists(filename: string): Promise<boolean> {
-  try {
-    await Deno.stat(filename);
-    // successful, file or directory must exist
-    return true;
-  } catch (error) {
-    if (error instanceof Deno.errors.NotFound) {
-      // file or directory does not exist
-      return false;
-    } else {
-      // unexpected error, maybe permissions, pass it along
-      throw error;
-    }
-  }
-}
-
-export function cwdResolve(...paths: string[]) {
-  return resolve(Deno.cwd(), ...paths);
-}
-
-export function cwdRelative(path: string) {
-  return relative(Deno.cwd(), path);
 }
 
 export function getContractName(identifier: string, camelCase = true) {

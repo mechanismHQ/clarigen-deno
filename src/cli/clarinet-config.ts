@@ -1,5 +1,5 @@
 import { array, parseToml, Schema, string, Type, unknown } from '../deps.ts';
-import { cwdResolve } from './utils.ts';
+import { cwdResolve } from './cli-utils.ts';
 
 export const ClarinetSchema = Schema({
   project: {

@@ -136,16 +136,6 @@ export type OkType<R> = R extends ResponseOk<infer V, unknown> ? V : never;
 export type ErrType<R> = R extends ResponseErr<unknown, infer V> ? V : never;
 
 export const contracts = {
-  ftTrait: {
-    'functions': {},
-    'maps': {},
-    'variables': {},
-    constants: {},
-    'fungible_tokens': [],
-    'non_fungible_tokens': [],
-    'clarity_version': 'Clarity1',
-    contractName: 'ft-trait',
-  },
   counter: {
     'functions': {
       decrement: {
@@ -190,6 +180,16 @@ export const contracts = {
     'non_fungible_tokens': [],
     'clarity_version': 'Clarity1',
     contractName: 'counter',
+  },
+  ftTrait: {
+    'functions': {},
+    'maps': {},
+    'variables': {},
+    constants: {},
+    'fungible_tokens': [],
+    'non_fungible_tokens': [],
+    'clarity_version': 'Clarity1',
+    contractName: 'ft-trait',
   },
   tester: {
     'functions': {

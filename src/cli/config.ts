@@ -11,7 +11,7 @@ import {
 } from '../deps.ts';
 import { ClarinetConfig, getClarinetConfig } from './clarinet-config.ts';
 import { log } from './logger.ts';
-import { cwdRelative, cwdResolve, fileExists } from './utils.ts';
+import { cwdRelative, cwdResolve, fileExists } from './cli-utils.ts';
 
 export const CONFIG_FILE = 'Clarigen.toml' as const;
 

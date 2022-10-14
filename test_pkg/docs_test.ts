@@ -1,9 +1,9 @@
 import { runClarinet } from '../src/cli/clarinet-wrapper.ts';
 import { Config } from '../src/cli/config.ts';
-import { getContractName } from '../src/cli/utils.ts';
+import { getContractName } from '../src/cli/cli-utils.ts';
 import { assert, assertEquals } from '../src/dev-deps.ts';
 import { createContractDocInfo } from '../src/docs/index.ts';
-import { generateMarkdown } from '../src/docs/markdown.ts';
+import { generateMarkdown, generateReadme } from '../src/docs/markdown.ts';
 
 Deno.test({
   name: 'Generating contract docs',
@@ -64,5 +64,27 @@ Return a number`));
       assert(!md.includes(`[${contractName}]`));
       assert(!md.includes('[View in file]'));
     });
+  },
+});
+
+Deno.test({
+  name: 'Ordering is always the same for README',
+  async fn() {
+    let file: string | undefined;
+    const count = 10;
+    const config = await Config.load();
+    async function testReadme() {
+      const session = await runClarinet(config);
+      const readme = generateReadme(session);
+      if (file) {
+        assertEquals(readme, file);
+      }
+      file = readme;
+    }
+    const runs: Promise<void>[] = [];
+    for (let i = 0; i < count; i++) {
+      runs.push(testReadme());
+    }
+    await Promise.all(runs);
   },
 });
