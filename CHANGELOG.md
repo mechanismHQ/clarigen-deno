@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.4.6
+
+### Patch Changes
+
+- [`6636047`](https://github.com/mechanismHQ/clarigen-deno/commit/66360473428f53887504032cfc7b210e237a32fa) Thanks [@hstove](https://github.com/hstove)! - When generating files, contracts are sorted by name. This prevents git changes due to the indeterminant way that Clarinet outputs contract order
+
 ## 0.4.5
 
 ### Patch Changes
