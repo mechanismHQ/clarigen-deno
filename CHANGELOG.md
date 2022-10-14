@@ -4,6 +4,8 @@
 
 ### Patch Changes
 
+- Added a new `docs` command to the CLI! This will parse your contracts and automatically generate documentation for each of your contracts. Included in the docs are comments and rich type information.
+
 - [`daaf0b5`](https://github.com/mechanismHQ/clarigen-deno/commit/daaf0b58f88e68413aa15120b67ee67310b719f7) Thanks [@hstove](https://github.com/hstove)! - Internally updated to Clarinet v1!
 
 * [`daaf0b5`](https://github.com/mechanismHQ/clarigen-deno/commit/daaf0b58f88e68413aa15120b67ee67310b719f7) Thanks [@hstove](https://github.com/hstove)! - Updated the types for `rovOk` and `rovErr` to properly throw type errors if the function doesn't return a `response`
