@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.4.4
+
+### Patch Changes
+
+- [`3d737d0`](https://github.com/mechanismHQ/clarigen-deno/commit/3d737d0f24c0092f50459e02d4ecf8777cbc0a2f) Thanks [@hstove](https://github.com/hstove)! - Adds a top-level `mod.ts` file for easier imports
+
 ## 0.4.3
 
 ### Patch Changes
