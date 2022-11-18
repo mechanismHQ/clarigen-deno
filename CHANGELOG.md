@@ -1,5 +1,13 @@
 # clarigen-deno
 
+## 0.4.7
+
+### Patch Changes
+
+- [`7c9073e`](https://github.com/mechanismHQ/clarigen-deno/commit/7c9073eb668925377022256bdc13a6258aee9d04) Thanks [@hstove](https://github.com/hstove)! - Fixed an issue with `clarigen --watch`, where the "file watcher" would be triggered multiple times in a row, where it should have been debounced.
+
+* [`fa41cd0`](https://github.com/mechanismHQ/clarigen-deno/commit/fa41cd0fe5e540b09c34eea179dc6db2b8ab0f13) Thanks [@hstove](https://github.com/hstove)! - Fixed an issue with contracts that have an NFT where the "key" is a tuple type
+
 ## 0.4.6
 
 ### Patch Changes
