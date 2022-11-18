@@ -115,9 +115,9 @@ type P2 = Rs2<typeof payloads>;
 type R1 = TxValueType<typeof ok>;
 // type GetType<T> = T extends TxCallOk<infer R> ? OkType<R> : never;
 type GetType<T> = T extends TxCallOk<infer R> ? OkType<R>
-  : // : T extends TxCallErr<infer R> ? ErrType<R>
+  // : T extends TxCallErr<infer R> ? ErrType<R>
   // : T extends TxCall<infer R, any> ? R
-  never;
+  : never;
 type T3 = GetType<typeof ok>;
 type isOk<T> = T extends TxCallOk<Response<unknown, unknown>> ? true : false;
 type R3 = isOk<typeof ok>;
@@ -158,8 +158,8 @@ type ArgsTuple<T extends ArgsArr<unknown, string>> = {
 
 type ArgsRecordUnion<T extends Arg<unknown, string>> = T extends
   Arg<infer A, infer N> ? {
-  [K in T as N]: A;
-}
+    [K in T as N]: A;
+  }
   : never;
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends
   (k: infer I) => void ? I
