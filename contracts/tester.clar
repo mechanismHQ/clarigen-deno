@@ -4,6 +4,8 @@
 
 (define-map demo-map { a: uint } bool)
 
+(define-non-fungible-token names { name: (buff 48), namespace: (buff 20) })
+
 (define-read-only (square (n uint)) (* n n))
 
 (define-read-only (get-tup) {

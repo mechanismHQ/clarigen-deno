@@ -13,7 +13,7 @@ export function generateContractMeta(
 ) {
   const abi = contract.contract_interface;
   const functionLines: string[] = [];
-  const { functions, maps, variables, ...rest } = abi;
+  const { functions, maps, variables, non_fungible_tokens, ...rest } = abi;
 
   functions.forEach((func) => {
     let functionLine = `${toCamelCase(func.name)}: `;
@@ -38,11 +38,16 @@ export function generateContractMeta(
 
   const variableLines = encodeVariables(variables);
 
+  const nftLines = non_fungible_tokens.map((nft) => {
+    return `${JSON.stringify(nft)} as ClarityAbiTypeNonFungibleToken`;
+  });
+
   return `{
   ${serializeLines('functions', functionLines)}
   ${serializeLines('maps', mapLines)}
   ${serializeLines('variables', variableLines)}
   constants: {},
+  ${serializeArray('non_fungible_tokens', nftLines)}
   ${otherAbi.slice(1, -1)},
   contractName: '${contractName}',
   }`;
@@ -96,4 +101,10 @@ function serializeLines(key: string, lines: string[]) {
   return `"${key}": {
     ${lines.join(',\n    ')}
   },`;
+}
+
+function serializeArray(key: string, lines: string[]) {
+  return `"${key}": [
+    ${lines.join(',\n    ')}
+  ],`;
 }

@@ -32,8 +32,8 @@ type ArgsTuple<T extends UnknownArgs> = {
 
 type ArgsRecordUnion<T extends TypedAbiArg<unknown, string>> = T extends
   TypedAbiArg<infer A, infer N> ? {
-  [K in T as N]: A;
-}
+    [K in T as N]: A;
+  }
   : never;
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends
   (k: infer I) => void ? I
@@ -63,13 +63,13 @@ export type FnToContractCall<T> = T extends TypedAbiFunction<infer Arg, infer R>
 
 // Contract factory types
 export type FunctionsToContractCalls<T> = T extends ContractFunctions ? {
-  [key in keyof T]: FnToContractCall<T[key]>;
-}
+    [key in keyof T]: FnToContractCall<T[key]>;
+  }
   : never;
 
 export type ContractsToContractCalls<T> = T extends AllContracts ? {
-  [key in keyof T]: FunctionsToContractCalls<T[key]['functions']>;
-}
+    [key in keyof T]: FunctionsToContractCalls<T[key]['functions']>;
+  }
   : never;
 
 export type FullContract<T> = T extends TypedAbi

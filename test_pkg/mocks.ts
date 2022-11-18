@@ -33,10 +33,12 @@ export const tupleMock = {
   encoded: types.tuple(tupleKebab),
   abiFn: {
     name: 'my-tuple',
-    args: [{
-      type: tupleType,
-      name: 'tuple-arg',
-    }],
+    args: [
+      {
+        type: tupleType,
+        name: 'tuple-arg',
+      },
+    ],
     outputs: {
       type: 'bool',
     },
