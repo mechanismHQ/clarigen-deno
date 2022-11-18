@@ -1,4 +1,12 @@
-import { colors, ConsoleHandler, logger, LogRecord, sprintf } from '../deps.ts';
+import {
+  colors,
+  ConsoleHandler,
+  Kia,
+  logger,
+  LogRecord,
+  Spinners,
+  sprintf,
+} from '../deps.ts';
 
 const LEVEL_PREFIX: { [key: number]: string } = {
   [logger.LogLevels.INFO]: colors.blue('info'),
@@ -32,3 +40,11 @@ await logger.setup({
 });
 
 export const log = logger.getLogger();
+
+export function makeSpinner(text: string) {
+  return new Kia({
+    spinner: Spinners.arc,
+    text,
+    prefixText: colors.magenta(`[Clarigen] `),
+  });
+}

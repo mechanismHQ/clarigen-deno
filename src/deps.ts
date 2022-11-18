@@ -39,3 +39,5 @@ export {
   unknown,
 } from 'https://denoporter.sirjosh.workers.dev/v1/deno.land/x/computed_types/src/index.ts';
 export type { Type } from 'https://denoporter.sirjosh.workers.dev/v1/deno.land/x/computed_types/src/index.ts';
+export { default as Kia } from 'https://deno.land/x/kia@0.4.1b/mod.ts';
+export { Spinners } from 'https://deno.land/x/kia@0.4.1b/spinners.ts';

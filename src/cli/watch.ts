@@ -6,11 +6,18 @@ import { cwdRelative } from './cli-utils.ts';
 
 const runDelay = 3000;
 let lastRun = new Date().getTime();
+let isRunning = false;
 
 export function shouldRun(_event: Deno.FsEvent) {
-  const isDelayed = new Date().getTime() - lastRun > runDelay;
+  const isDelayed = (new Date().getTime() - lastRun) > runDelay;
+  let filesOk = false;
+  _event.paths.forEach((f) => {
+    if (f.endsWith('.clar') || f.endsWith('.toml')) {
+      filesOk = true;
+    }
+  });
   lastRun = new Date().getTime();
-  return isDelayed;
+  return isDelayed && filesOk && !isRunning;
 }
 
 export function logFsEvent(event: Deno.FsEvent) {
@@ -33,11 +40,23 @@ export async function watch() {
   const watcher = Deno.watchFs(paths);
   for await (const event of watcher) {
     if (shouldRun(event)) {
+      isRunning = true;
       logFsEvent(event);
       const start = new Date().getTime();
-      await generate();
-      const diff = new Date().getTime() - start;
-      log.debug(colors.black('Done in %.3fs'), diff / 1000);
+      setTimeout(async () => {
+        try {
+          await generate();
+        } catch (error) {
+          if ('message' in error) {
+            log.error(error.message);
+          } else {
+            log.error(error);
+          }
+        }
+        const diff = new Date().getTime() - start;
+        log.debug(colors.black('Done in %.3fs'), diff / 1000);
+        isRunning = false;
+      }, 1);
     }
   }
 }

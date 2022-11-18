@@ -1,7 +1,7 @@
-import { getLevelByName } from '../../deps.ts';
+import { getLevelByName, Kia } from '../../deps.ts';
 import { Command } from '../cli-deps.ts';
 import { VERSION } from '../version.ts';
-import { log } from '../logger.ts';
+import { log, makeSpinner } from '../logger.ts';
 import { generate } from '../generate.ts';
 import { watch } from '../watch.ts';
 
@@ -12,6 +12,15 @@ type Options = ActionArgs[0];
 export async function defaultAction(opts: Options) {
   log.debug(`Starting default command with options: %j`, opts);
   if (opts.watch) {
+    let spinner: Kia | undefined;
+    if (log.level > getLevelByName('DEBUG')) {
+      spinner = makeSpinner('Generating types');
+      spinner.start();
+    }
+    await generate();
+    if (spinner?.isSpinning()) {
+      spinner.succeed('Watching for file changes');
+    }
     await watch();
   } else {
     await generate();
