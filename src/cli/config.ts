@@ -11,7 +11,7 @@ import {
 } from '../deps.ts';
 import { ClarinetConfig, getClarinetConfig } from './clarinet-config.ts';
 import { log } from './logger.ts';
-import { cwdRelative, cwdResolve, fileExists } from './cli-utils.ts';
+import { cwdRelative, cwdResolve, fileExists, writeFile } from './cli-utils.ts';
 
 export const CONFIG_FILE = 'Clarigen.toml' as const;
 
@@ -30,6 +30,7 @@ const ConfigFileSchema = Schema({
   }).optional(),
   [OutputType.Deno]: Schema({
     output: string.optional(),
+    helper: string.optional(),
   }).optional(),
   [OutputType.Docs]: Schema({
     output: string.optional(),
@@ -72,9 +73,7 @@ export class Config {
   async writeOutput(type: OutputType, contents: string, filePath?: string) {
     const path = this.outputResolve(type, filePath);
     if (path === null) return null;
-    const dir = dirname(path);
-    await Deno.mkdir(dir, { recursive: true });
-    await Deno.writeTextFile(path, contents);
+    await writeFile(path, contents);
     log.debug(`Generated ${type} file at ${cwdRelative(path)}`);
     return path;
   }

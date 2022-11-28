@@ -1,4 +1,4 @@
-import { relative, resolve } from '../deps.ts';
+import { dirname, relative, resolve } from '../deps.ts';
 import { SessionContract } from '../session.ts';
 import { getContractName, toCamelCase } from '../utils.ts';
 export { getContractName, toCamelCase, toKebabCase } from '../utils.ts';
@@ -22,6 +22,13 @@ export async function fileExists(filename: string): Promise<boolean> {
       throw error;
     }
   }
+}
+
+export async function writeFile(path: string, contents: string) {
+  const dir = dirname(path);
+  await Deno.mkdir(dir, { recursive: true });
+  await Deno.writeTextFile(path, contents);
+  return path;
 }
 
 export function cwdResolve(...paths: string[]) {

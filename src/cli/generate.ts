@@ -5,19 +5,28 @@ import { Config, OutputType } from './config.ts';
 import { generateESMFile } from './files/esm.ts';
 import { afterESM, denoFmt } from './format.ts';
 import { log } from './logger.ts';
+import { cwdRelative, cwdResolve, writeFile } from './cli-utils.ts';
+import { makeHelper } from './files/deno-helper.ts';
 
 export async function generate() {
   const config = await Config.load();
   const session = await runClarinet(config);
-  const singleFile = generateBaseFile(session);
+  const baseFile = generateBaseFile(session);
   if (config.supports(OutputType.Deno)) {
-    const denoFile = generateDenoFile(session, singleFile);
+    const denoFile = generateDenoFile(session, baseFile);
     await config.writeOutput(OutputType.Deno, denoFile);
     await denoFmt(config);
+    if (config.deno?.helper) {
+      const denoBase = config.outputResolve(OutputType.Deno)!;
+      const helperPath = cwdResolve(config.deno.helper);
+      const helperFile = makeHelper(session.contracts, denoBase, helperPath);
+      await writeFile(helperPath, helperFile);
+      log.debug(`Wrote Deno helper file at ${cwdRelative(helperPath)}`);
+    }
   }
   if (config.supports(OutputType.ESM)) {
     const esmFile = await generateESMFile({
-      baseFile: singleFile,
+      baseFile,
       session,
       config,
     });
