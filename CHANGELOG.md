@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.4.8
+
+### Patch Changes
+
+- [`588876f`](https://github.com/mechanismHQ/clarigen-deno/commit/588876f7862a78f4fbb88cd9046a81eaef54782d) Thanks [@hstove](https://github.com/hstove)! - Adds a `deno.helper` configuration option. If present, a helper file will be generated, which includes helpful and common imports for Clarinet testing environments.
+
 ## 0.4.7
 
 ### Patch Changes
