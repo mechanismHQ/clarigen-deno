@@ -1,5 +1,5 @@
 import { abiFunctionType, jsTypeFromAbiType } from '../declaration.ts';
-import type { Session, SessionContract } from '../../session.ts';
+import type { SessionContract, SessionWithVariables } from '../../session.ts';
 import {
   encodeVariableName,
   sortContracts,
@@ -10,6 +10,7 @@ import { ClarityAbiVariable } from '../../types.ts';
 
 export function generateContractMeta(
   contract: SessionContract,
+  constants: string,
 ) {
   const abi = contract.contract_interface;
   const functionLines: string[] = [];
@@ -46,7 +47,7 @@ export function generateContractMeta(
   ${serializeLines('functions', functionLines)}
   ${serializeLines('maps', mapLines)}
   ${serializeLines('variables', variableLines)}
-  constants: {},
+  constants: ${constants},
   ${serializeArray('non_fungible_tokens', nftLines)}
   ${otherAbi.slice(1, -1)},
   contractName: '${contractName}',
@@ -54,10 +55,14 @@ export function generateContractMeta(
 }
 
 export function generateBaseFile(
-  session: Session,
+  session: SessionWithVariables,
 ) {
-  const contractDefs = sortContracts(session.contracts).map((contract) => {
-    const meta = generateContractMeta(contract);
+  const combined = session.contracts.map((c, i) => ({
+    ...c,
+    constants: session.variables[i],
+  }));
+  const contractDefs = sortContracts(combined).map((contract) => {
+    const meta = generateContractMeta(contract, contract.constants);
     const id = contract.contract_id.split('.')[1];
     const keyName = toCamelCase(id);
     return `${keyName}: ${meta}`;

@@ -16,6 +16,10 @@ export interface Session {
   contracts: SessionContract[];
 }
 
+export interface SessionWithVariables extends Session {
+  variables: string[];
+}
+
 export function getSession(): Session {
   const result = JSON.parse(
     // deno-lint-ignore no-explicit-any

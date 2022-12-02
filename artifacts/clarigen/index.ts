@@ -175,7 +175,9 @@ export const contracts = {
         access: 'variable',
       } as TypedAbiVariable<bigint>,
     },
-    constants: {},
+    constants: {
+      counter: 1n,
+    },
     'non_fungible_tokens': [],
     'fungible_tokens': [],
     'clarity_version': 'Clarity2',
@@ -314,7 +316,12 @@ export const contracts = {
         access: 'constant',
       } as TypedAbiVariable<Response<null, bigint>>,
     },
-    constants: {},
+    constants: {
+      eRR_UNAUTHORIZED: {
+        isOk: false,
+        value: 400n,
+      },
+    },
     'non_fungible_tokens': [
       {
         'name': 'names',

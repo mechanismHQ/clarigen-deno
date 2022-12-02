@@ -1,5 +1,4 @@
 import { dirname, relative, resolve } from '../deps.ts';
-import { SessionContract } from '../session.ts';
 import { getContractName, toCamelCase } from '../utils.ts';
 export { getContractName, toCamelCase, toKebabCase } from '../utils.ts';
 
@@ -41,7 +40,9 @@ export function cwdRelative(path: string) {
 
 // Sort contracts alphabetically by their contract name.
 // Used to preserve ordering when generating files
-export function sortContracts(contracts: SessionContract[]) {
+export function sortContracts<T extends { contract_id: string }>(
+  contracts: T[],
+): T[] {
   const nameSorted = [...contracts].sort((a, b) => {
     if (getContractName(a.contract_id) < getContractName(b.contract_id)) {
       return -1;

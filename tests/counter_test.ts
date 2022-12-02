@@ -19,6 +19,13 @@ test({
   },
 });
 
+test({
+  name: 'Definition includes constants',
+  fn() {
+    assertEquals(counter.constants.counter, 1n);
+  },
+});
+
 // BDD-style testing with `Chain`
 
 describe('BDD-style testing', () => {
