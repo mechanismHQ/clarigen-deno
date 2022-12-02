@@ -1,6 +1,6 @@
 import { VERSION } from '../version.ts';
 import { dirname, relative } from '../../deps.ts';
-import { toCamelCase } from '../cli-utils.ts';
+import { sortContracts, toCamelCase } from '../cli-utils.ts';
 import { getContractName } from '../../utils.ts';
 
 export const IMPORT_URL = `https://deno.land/x/clarigen@${VERSION}/mod.ts`;
@@ -15,7 +15,7 @@ export function makeHelper(
   helperPath: string,
 ) {
   const typeImportPath = relative(dirname(helperPath), typesPath);
-  const contractNames = contracts.map((c) => {
+  const contractNames = sortContracts(contracts).map((c) => {
     const keyName = toCamelCase(getContractName(c.contract_id));
     return keyName;
   });
