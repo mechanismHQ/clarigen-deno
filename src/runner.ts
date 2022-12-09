@@ -20,6 +20,7 @@ export function factory<T extends AllContracts, A extends Accounts>(
   simnet: Simnet<T, A>,
 ) {
   const transformed = contractsFactory(simnet);
+  const accountMap = new AccountMap(simnet.accounts);
 
   const test = (options: UnitTestOptions<A>) => {
     const { fn, ...rest } = options;
@@ -28,7 +29,6 @@ export function factory<T extends AllContracts, A extends Accounts>(
       accounts: Map<keyof A, Account>,
     ) => {
       const chain = new Chain(_chain, accounts);
-      const accountMap = new AccountMap(simnet.accounts);
       fn(chain, accountMap);
     };
     return Clarinet.test({
@@ -40,5 +40,6 @@ export function factory<T extends AllContracts, A extends Accounts>(
   return {
     contracts: transformed,
     test,
+    accounts: accountMap,
   };
 }

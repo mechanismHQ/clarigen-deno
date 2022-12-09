@@ -30,6 +30,7 @@ export function getVariables(contract: SessionContract, sessionId: number) {
   const fullSrc = contract.source + `\n\n${varFn}`;
 
   const deploy = Tx.deployContract(fakeId, fullSrc, deployer);
+  (deploy.deployContract as any).clarityVersion = 2;
 
   const { receipts } = chain.mineBlock([deploy]);
   const result = receipts[0].result;

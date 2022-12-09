@@ -29,12 +29,11 @@ export {
   tx,
   txErr,
   txOk,
-  // } from "../../deno-clarigen/src/index.ts";
 } from "${IMPORT_URL}";
 import { factory } from "${IMPORT_URL}";
 import { simnet } from "./${typeImportPath}";
 
-export const { test, contracts } = factory(simnet);
+export const { test, contracts, accounts } = factory(simnet);
 
 export const {
   ${contractNames.join(',\n  ')}

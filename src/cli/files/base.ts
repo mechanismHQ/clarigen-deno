@@ -89,6 +89,12 @@ export function encodeVariables(variables: ClarityAbiVariable[]) {
   });
 }
 
+(Uint8Array.prototype as any)[Symbol.for('Deno.customInspect')] = function (
+  this: Uint8Array,
+) {
+  return `Uint8Array.from([${this.join(',')}])`;
+};
+
 // deno-lint-ignore no-explicit-any
 export function serialize(obj: any) {
   return Deno.inspect(obj, {
