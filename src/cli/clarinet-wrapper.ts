@@ -1,6 +1,6 @@
 import { dirname, resolve } from '../deps.ts';
 import { log } from './logger.ts';
-import { Session } from '../session.ts';
+import { SessionWithVariables } from '../session.ts';
 import { spawn } from './spawn.ts';
 import type { Config } from './config.ts';
 
@@ -29,7 +29,7 @@ export async function runClarinet(config: Config) {
       );
       if (!sessionLine) throw new Error('Could not locate session.');
       const sessionJSON = sessionLine.slice(PRINT_LABEL.length);
-      const session: Session = JSON.parse(sessionJSON);
+      const session: SessionWithVariables = JSON.parse(sessionJSON);
       return session;
     } catch (_) {
       log.warning(`Error parsing session: ${result.stdout}`);

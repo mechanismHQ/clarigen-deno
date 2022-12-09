@@ -169,13 +169,45 @@ export const contracts = {
     },
     'maps': {},
     'variables': {
+      ERR_TEST: {
+        name: 'ERR_TEST',
+        type: {
+          response: {
+            ok: 'none',
+            error: 'uint128',
+          },
+        },
+        access: 'constant',
+      } as TypedAbiVariable<Response<null, bigint>>,
+      buffConst: {
+        name: 'buff-const',
+        type: {
+          buffer: {
+            length: 4,
+          },
+        },
+        access: 'constant',
+      } as TypedAbiVariable<Uint8Array>,
+      testBuff: {
+        name: 'test-buff',
+        type: 'uint128',
+        access: 'constant',
+      } as TypedAbiVariable<bigint>,
       counter: {
         name: 'counter',
         type: 'uint128',
         access: 'variable',
       } as TypedAbiVariable<bigint>,
     },
-    constants: {},
+    constants: {
+      ERR_TEST: {
+        isOk: false,
+        value: 123n,
+      },
+      buffConst: Uint8Array.from([222, 173, 190, 239]),
+      testBuff: 3735928559n,
+      counter: 1n,
+    },
     'non_fungible_tokens': [],
     'fungible_tokens': [],
     'clarity_version': 'Clarity2',
@@ -314,7 +346,12 @@ export const contracts = {
         access: 'constant',
       } as TypedAbiVariable<Response<null, bigint>>,
     },
-    constants: {},
+    constants: {
+      ERR_UNAUTHORIZED: {
+        isOk: false,
+        value: 400n,
+      },
+    },
     'non_fungible_tokens': [
       {
         'name': 'names',

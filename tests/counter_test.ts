@@ -1,14 +1,13 @@
 import { assertEquals } from 'https://deno.land/std@0.90.0/testing/asserts.ts';
 import { simnet } from '../artifacts/clarigen/index.ts';
-import { Chain, factory, txOk } from '../src/index.ts';
 import { describe, it } from 'https://deno.land/std@0.159.0/testing/bdd.ts';
+import { accounts, Chain, counter, test, txOk } from './helper.ts';
 
-const { test, contracts: { counter } } = factory(simnet);
+const alice = accounts.addr('wallet_1');
 
 test({
   name: 'Ensure counter works',
-  fn(chain, accounts) {
-    const alice = accounts.addr('wallet_1');
+  fn(chain) {
     const receipt = chain.mineOne(
       txOk(counter.increment(2), alice),
     );
@@ -19,11 +18,17 @@ test({
   },
 });
 
+test({
+  name: 'Definition includes constants',
+  fn() {
+    assertEquals(counter.constants.counter, 1n);
+  },
+});
+
 // BDD-style testing with `Chain`
 
 describe('BDD-style testing', () => {
-  const { chain, accounts } = Chain.fromSimnet(simnet);
-  const alice = accounts.addr('wallet_1');
+  const { chain } = Chain.fromSimnet(simnet);
 
   it('can increment', () => {
     assertEquals(chain.sessionId, 1);

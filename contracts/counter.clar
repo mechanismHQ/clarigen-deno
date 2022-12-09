@@ -10,6 +10,10 @@
   (var-get counter)
 )
 
+(define-constant test-buff (buff-to-uint-be 0xdeadbeef))
+(define-constant buff-const 0xdeadbeef)
+(define-constant ERR_TEST (err u123))
+
 ;; Increment the counter.
 ;; 
 ;; @returns the new value of the counter
