@@ -11,8 +11,8 @@ export {
   tx,
   txErr,
   txOk,
-} from "https://deno.land/x/clarigen@v0.4.10/mod.ts";
-import { factory } from "https://deno.land/x/clarigen@v0.4.10/mod.ts";
+} from "https://deno.land/x/clarigen@v0.4.11/mod.ts";
+import { factory } from "https://deno.land/x/clarigen@v0.4.11/mod.ts";
 import { simnet } from "./../artifacts/clarigen/index.ts";
 
 export const { test, contracts, accounts } = factory(simnet);

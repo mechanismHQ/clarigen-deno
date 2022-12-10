@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.4.11
+
+### Patch Changes
+
+- [`15a3f18`](https://github.com/mechanismHQ/clarigen-deno/commit/15a3f1878462255218168087e0accdf8b1beab5d) Thanks [@hstove](https://github.com/hstove)! - Updated `contractFactory` behavior - now all contract calls will have the full identifier - not just the contractName.
+
 ## 0.4.10
 
 ### Patch Changes
