@@ -27,7 +27,7 @@ export function contractFactory<T extends TypedAbi>(
   abi: T,
   identifier: string,
 ) {
-  const full = { ...abi } as FullContract<T>;
+  const full = { ...abi, contractName: identifier } as FullContract<T>;
   full.identifier = identifier;
   return {
     ...functionsFactory(abi.functions, identifier),

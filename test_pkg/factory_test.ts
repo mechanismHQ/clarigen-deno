@@ -1,5 +1,5 @@
 import { assertEquals } from '../src/deps.ts';
-import { contractsFactory } from '../src/factory.ts';
+import { contractFactory, contractsFactory } from '../src/factory.ts';
 import {
   contracts as _contracts,
   simnet,
@@ -17,7 +17,7 @@ Deno.test('contracts factory', () => {
 
   const call = tester.square(2n);
   assertEquals(call.args, [types.uint(2n)]);
-  assertEquals(call.contract, testerDef.contractName);
+  assertEquals(call.contract.split('.')[1], testerDef.contractName);
   assertEquals(call.fn.name, 'square');
 
   const callRecord = tester.square({ n: 2 });
@@ -27,4 +27,17 @@ Deno.test('contracts factory', () => {
   assertEquals(callWithSingleArgTuple.args, [
     types.tuple({ 'min-height': 'u1' }),
   ]);
+});
+
+Deno.test({
+  name: 'contractFactory',
+  fn() {
+    const alice = simnet.accounts.wallet_1.address;
+    const id = `${alice}.${_contracts.counter.contractName}`;
+    const counter = contractFactory(_contracts.counter, id);
+    assertEquals(counter.contractName, id);
+    assertEquals(counter.identifier, id);
+    const fn = counter.getCounter();
+    assertEquals(fn.contract, id);
+  },
 });
