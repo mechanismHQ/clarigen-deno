@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.4.10
+
+### Patch Changes
+
+- [`ecce3ed`](https://github.com/mechanismHQ/clarigen-deno/commit/ecce3ed620097ace3ba62940daffd8852c83b852) Thanks [@hstove](https://github.com/hstove)! - Fixed an issue with `contractFactory`, where the contractName was wrong.
+
 ## 0.4.9
 
 ### Patch Changes
