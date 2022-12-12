@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.4.12
+
+### Patch Changes
+
+- [`02d7542`](https://github.com/mechanismHQ/clarigen-deno/commit/02d754272203c0fc2f2b20259d86bd19c9aa71fd) Thanks [@hstove](https://github.com/hstove)! - Export type "UnknownArgs"
+
 ## 0.4.11
 
 ### Patch Changes
