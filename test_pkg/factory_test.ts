@@ -33,7 +33,7 @@ Deno.test({
   name: 'contractFactory',
   fn() {
     const alice = simnet.accounts.wallet_1.address;
-    const id = `${alice}.${_contracts.counter.contractName}`;
+    const id = `${alice}.fake-counter`;
     const counter = contractFactory(_contracts.counter, id);
     assertEquals(counter.contractName, id);
     assertEquals(counter.identifier, id);
