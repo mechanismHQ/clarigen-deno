@@ -5,14 +5,14 @@ clarinet = "./Clarinet.toml"
 # Comment or remove section to skip Deno types
 [deno]
 # `output` can be a directory or a folder.
-output = "artifacts/clarigen"
+output = "artifacts/clarigen/index.ts"
 helper = "tests/helper.ts"
 
 # Set where you'd like ESM types output.
 # Comment or remove section to skip ESM types
 [esm]
 # `output` can be a directory or a folder.
-output = "esm"
+outputs = ["esm/index.ts", "esm/2.ts"]
 include_accounts = true
 
 # `esm.after` - script to run after ESM types are generated.
@@ -26,3 +26,4 @@ after = "deno fmt ./esm/index.ts"
 [docs]
 # `output` should be a folder
 output = "docs"
+exclude = ["ft-trait"]

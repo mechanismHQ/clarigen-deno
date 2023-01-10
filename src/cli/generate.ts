@@ -17,7 +17,7 @@ export async function generate() {
     await config.writeOutput(OutputType.Deno, denoFile);
     await denoFmt(config);
     if (config.deno?.helper) {
-      const denoBase = config.outputResolve(OutputType.Deno)!;
+      const denoBase = (config.outputResolve(OutputType.Deno)!)[0];
       const helperPath = cwdResolve(config.deno.helper);
       const helperFile = makeHelper(session.contracts, denoBase, helperPath);
       await writeFile(helperPath, helperFile);

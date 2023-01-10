@@ -39,7 +39,7 @@ Get the current counter
 
 ### increment
 
-[View in file](../contracts/counter.clar#L18)
+[View in file](../contracts/counter.clar#L22)
 
 `(define-public (increment ((step uint)) (response uint none))`
 
@@ -72,7 +72,7 @@ Increment the counter.
 
 ### decrement
 
-[View in file](../contracts/counter.clar#L31)
+[View in file](../contracts/counter.clar#L35)
 
 `(define-public (decrement ((step uint)) (response uint none))`
 

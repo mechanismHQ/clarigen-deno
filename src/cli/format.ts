@@ -18,9 +18,9 @@ export async function runDenoFmt(files: string[]) {
 }
 
 export async function denoFmt(config: Config) {
-  const file = config.outputResolve(OutputType.Deno);
-  if (file === null) return;
-  await runDenoFmt([file]);
+  const files = config.outputResolve(OutputType.Deno);
+  if (files === null) return;
+  await runDenoFmt(files);
 }
 
 export async function afterESM(config: Config) {

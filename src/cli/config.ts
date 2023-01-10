@@ -1,4 +1,5 @@
 import {
+  array,
   boolean,
   dirname,
   join,
@@ -25,15 +26,19 @@ const ConfigFileSchema = Schema({
   clarinet: string,
   [OutputType.ESM]: Schema({
     output: string.optional(),
-    include_accounts: boolean.optional(),
+    outputs: array.of(string).optional(),
+    include_accounts: boolean.optional(false),
     after: string.optional(),
   }).optional(),
   [OutputType.Deno]: Schema({
     output: string.optional(),
+    outputs: array.of(string).optional(),
     helper: string.optional(),
   }).optional(),
   [OutputType.Docs]: Schema({
     output: string.optional(),
+    outputs: array.of(string).optional(),
+    exclude: array.of(string).optional(),
   }).optional(),
 });
 
@@ -58,28 +63,33 @@ export class Config {
     return new this(config, clarinet);
   }
 
-  outputResolve(type: OutputType, filePath?: string) {
-    const path = this.configFile[type]?.output;
-    if (typeof path === 'undefined') return null;
-    const base = cwdResolve(path, filePath || '');
-    if (typeof filePath === 'undefined') {
-      if (base.endsWith('.ts')) return base;
-      return join(base, './index.ts');
-    } else {
-      return base;
-    }
+  getOutputs(type: OutputType): string[] {
+    const singlePath = this.configFile[type]?.output;
+    const multiPath = this.configFile[type]?.outputs || [];
+    if (singlePath !== undefined) return [singlePath];
+    return multiPath;
+  }
+
+  outputResolve(type: OutputType, filePath?: string): string[] | null {
+    const outputs = this.getOutputs(type);
+    if (!this.supports(type)) return null;
+    return outputs.map((path) => {
+      return cwdResolve(path, filePath || '');
+    });
   }
 
   async writeOutput(type: OutputType, contents: string, filePath?: string) {
-    const path = this.outputResolve(type, filePath);
-    if (path === null) return null;
-    await writeFile(path, contents);
-    log.debug(`Generated ${type} file at ${cwdRelative(path)}`);
-    return path;
+    const paths = this.outputResolve(type, filePath);
+    if (paths === null) return null;
+    await Promise.all(paths.map(async (path) => {
+      await writeFile(path, contents);
+      log.debug(`Generated ${type} file at ${cwdRelative(path)}`);
+    }));
+    return paths;
   }
 
   supports(type: OutputType) {
-    return !!this.configFile[type]?.output;
+    return this.getOutputs(type).length > 0;
   }
 
   type(type: OutputType) {

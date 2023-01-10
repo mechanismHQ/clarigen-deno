@@ -9,7 +9,8 @@ import { runDenoFmt } from '../format.ts';
 export async function generateDocs(
   { session, config }: { session: Session; config: Config },
 ) {
-  const docsBase = config.configFile[OutputType.Docs]?.output;
+  const docs = config.configFile[OutputType.Docs];
+  const docsBase = docs?.output;
   if (!docsBase) {
     warnNoDocs();
     return;
@@ -19,10 +20,16 @@ export async function generateDocs(
       `Docs output path ('${docsBase}') looks like a file - it needs to be a directory.`,
     );
   }
+  const excluded: Record<string, boolean> = Object.fromEntries(
+    (docs.exclude || []).map((e) => {
+      return [e, true];
+    }),
+  );
   log.debug(`Generating docs at path \`${docsBase}\``);
-  const docsBaseFolder = config.outputResolve(OutputType.Docs, './')!;
+  const docsBaseFolder = (config.outputResolve(OutputType.Docs, './')!)[0];
   const paths = await Promise.all(session.contracts.map(async (contract) => {
     const name = getContractName(contract.contract_id, false);
+    if (excluded[name]) return null;
     const docFile = `${name}.md`;
     // location of
     const contractPathDef = config.clarinet.contracts?.[name]?.path;
@@ -42,14 +49,16 @@ export async function generateDocs(
 
     // log.debug(`Writing docs markdown file at ${cwdRelative(docPathFull)}`);
     const path = (await config.writeOutput(OutputType.Docs, md, docFile))!;
-    return path;
+    return path[0];
   }));
 
   const readme = generateReadme(session);
 
-  paths.push((await config.writeOutput(OutputType.Docs, readme, 'README.md'))!);
+  paths.push(
+    (await config.writeOutput(OutputType.Docs, readme, 'README.md'))![0],
+  );
 
-  await runDenoFmt(paths);
+  await runDenoFmt((paths.filter((s) => s !== null)) as string[]);
 }
 
 function warnNoDocs() {

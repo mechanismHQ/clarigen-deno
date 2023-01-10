@@ -9,7 +9,7 @@ Deno.test({
 
     await t.step('Resolving output files', () => {
       config.configFile.docs = { output: 'docs' };
-      const output = config.outputResolve(OutputType.Docs, 'file.md')!;
+      const output = (config.outputResolve(OutputType.Docs, 'file.md')!)[0];
       assert(output.endsWith('docs/file.md'));
       assertEquals(cwdRelative(output), 'docs/file.md');
     });
