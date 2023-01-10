@@ -52,7 +52,7 @@ export async function generateDocs(
     return path[0];
   }));
 
-  const readme = generateReadme(session);
+  const readme = generateReadme(session, excluded);
 
   paths.push(
     (await config.writeOutput(OutputType.Docs, readme, 'README.md'))![0],

@@ -130,11 +130,17 @@ ${readOnly.map(tocLine).join('\n')}
 ${privates.map(tocLine).join('\n')}`;
 }
 
-export function generateReadme(session: Session) {
-  const contractLines = sortContracts(session.contracts).map((contract) => {
+export function generateReadme(
+  session: Session,
+  excluded: Record<string, boolean>,
+) {
+  const contractLines: string[] = [];
+  sortContracts(session.contracts).forEach((contract) => {
     const name = getContractName(contract.contract_id, false);
+    if (excluded[name]) return;
     const fileName = `${name}.md`;
-    return `- [\`${name}\`](${fileName})`;
+    const line = `- [\`${name}\`](${fileName})`;
+    contractLines.push(line);
   });
   const fileContents = `# Contracts
   
