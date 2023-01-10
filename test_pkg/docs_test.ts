@@ -75,7 +75,7 @@ Deno.test({
     const config = await Config.load();
     async function testReadme() {
       const session = await runClarinet(config);
-      const readme = generateReadme(session);
+      const readme = generateReadme(session, {});
       if (file) {
         assertEquals(readme, file);
       }

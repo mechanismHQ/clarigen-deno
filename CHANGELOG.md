@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.4.14
+
+### Patch Changes
+
+- [`d57411f`](https://github.com/mechanismHQ/clarigen-deno/commit/d57411ffae443611d1950c5b8546c2a6632835df) Thanks [@hstove](https://github.com/hstove)! - When building docs, excluded contracts are not included in the README
+
 ## 0.4.13
 
 ### Patch Changes

@@ -1,7 +1,8 @@
 import { assertEquals } from 'https://deno.land/std@0.90.0/testing/asserts.ts';
 import { simnet } from '../artifacts/clarigen/index.ts';
 import { describe, it } from 'https://deno.land/std@0.159.0/testing/bdd.ts';
-import { accounts, Chain, counter, test, txOk } from './helper.ts';
+import { Chain, txOk } from '../src/index.ts';
+import { accounts, counter, test } from './helper.ts';
 
 const alice = accounts.addr('wallet_1');
 
