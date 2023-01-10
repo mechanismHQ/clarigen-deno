@@ -1,5 +1,24 @@
 # clarigen-deno
 
+## 0.4.13
+
+### Patch Changes
+
+- [`e919d0a`](https://github.com/mechanismHQ/clarigen-deno/commit/e919d0a4162c39fbbcea5a82fb48a89a05a912ff) Thanks [@hstove](https://github.com/hstove)! - You can now output multiple Clarigen generated type files. To do so,
+  use `outputs` with an array of paths, instead of `output`. Example:
+
+  ```toml
+  [esm]
+  outputs = ["src/clarigen.ts", "other/types.ts"]
+  ```
+
+  You can also exclude specific contracts from having documentation generated. To do so, use the `exclude` (array) in your `Clarigen.toml`. Each entry in `exclude` should be the contract name - without file extensions or paths. Example:
+
+  ```toml
+  [docs]
+  exclude = ["ft-trait"]
+  ```
+
 ## 0.4.12
 
 ### Patch Changes
