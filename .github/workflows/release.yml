@@ -17,6 +17,10 @@ jobs:
         with:
           node-version: 16.9.1
           cache: "yarn"
+      - name: Setup Deno
+        uses: jurassiscripts/setup-velociraptor@v2
+        with:
+          checkout: false
 
       - name: Install Dependencies
         run: yarn
@@ -24,6 +28,7 @@ jobs:
       - name: Create Release Pull Request
         uses: changesets/action@v1
         with:
-          publish: echo "Yay!"
+          publish: echo "[changesets/action] publishing"
+          version: vr version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

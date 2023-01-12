@@ -47,12 +47,15 @@ scripts:
 
   release:
     - sh scripts/check-git.sh
-    - yarn changeset version
-    - vr build
+    - vr version
     - git add .
     - 'git commit -m "chore: version"'
     - yarn changeset tag
     - git push origin --follow-tags
+
+  version:
+    - yarn changeset version
+    - vr build
 
   test-all:
     pll:
