@@ -345,11 +345,25 @@ export const contracts = {
         },
         access: 'constant',
       } as TypedAbiVariable<Response<null, bigint>>,
+      ERR_ZERO: {
+        name: 'ERR_ZERO',
+        type: {
+          response: {
+            ok: 'none',
+            error: 'uint128',
+          },
+        },
+        access: 'constant',
+      } as TypedAbiVariable<Response<null, bigint>>,
     },
     constants: {
       ERR_UNAUTHORIZED: {
         isOk: false,
         value: 400n,
+      },
+      ERR_ZERO: {
+        isOk: false,
+        value: 0n,
       },
     },
     'non_fungible_tokens': [

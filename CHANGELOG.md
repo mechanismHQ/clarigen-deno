@@ -1,5 +1,13 @@
 # clarigen-deno
 
+## 0.4.15
+
+### Patch Changes
+
+- [`b73538d`](https://github.com/mechanismHQ/clarigen-deno/commit/b73538d985645987086f6ef8d91ca8c79b92df5c) Thanks [@hstove](https://github.com/hstove)! - The documentation generator has been updated to include maps and variables!
+
+  Previously, generated docs only included functions. Now, all maps and variables are included as well. Additionally, if you include comments directly above any maps, variables, and constants, those comments will be parsed and included in generated documentation.
+
 ## 0.4.14
 
 ### Patch Changes
