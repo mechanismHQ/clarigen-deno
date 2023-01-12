@@ -1,7 +1,7 @@
 import { runClarinet } from '../src/cli/clarinet-wrapper.ts';
 import { Config } from '../src/cli/config.ts';
 import { getContractName } from '../src/cli/cli-utils.ts';
-import { assert, assertEquals } from '../src/dev-deps.ts';
+import { assert, assertEquals, assertStringIncludes } from '../src/dev-deps.ts';
 import { createContractDocInfo } from '../src/docs/index.ts';
 import { generateMarkdown, generateReadme } from '../src/docs/markdown.ts';
 
@@ -38,6 +38,25 @@ Deno.test({
         '  (merge i { max-height: u100000 })',
         ')',
       ]);
+
+      const mergeFn = contractDoc.functions.find((f) =>
+        f.abi.name === 'merge-tuple'
+      )!;
+      const iParam = mergeFn.comments.params.i;
+      assertEquals(
+        iParam.comments.join(' '),
+        'a tuple with a key that has a dash in it',
+      );
+    });
+
+    await t.step('Can parse var/map comments', () => {
+      const contractDoc = createContractDocInfo({
+        contractSrc: contract.source,
+        abi: contract.contract_interface,
+      });
+
+      const map = contractDoc.maps[0];
+      assertEquals(map.comments.text[0], 'A map for storing stuff');
     });
 
     await t.step('Can generate markdown file', () => {
@@ -46,15 +65,18 @@ Deno.test({
         contractFile: 'contracts/tester.clar',
       });
 
-      assert(md.includes(`### num
+      assertStringIncludes(
+        md,
+        `### num
 
-[View in file](contracts/tester.clar#L28)
+[View in file](contracts/tester.clar#L36)
 
 \`(define-public (num ((n uint)) (response uint none))\`
 
-Return a number`));
-      assert(md.includes('# tester'));
-      assert(md.includes('### square'));
+Return a number`,
+      );
+      assertStringIncludes(md, '# tester');
+      assertStringIncludes(md, '### square');
     });
 
     await t.step('Can generate markdown without contractFile', () => {

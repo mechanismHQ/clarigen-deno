@@ -1,5 +1,5 @@
 import { Config, OutputType } from '../config.ts';
-import { Session } from '../../session.ts';
+import { SessionWithVariables } from '../../session.ts';
 import { generateMarkdown, generateReadme } from '../../docs/markdown.ts';
 import { getContractName } from '../cli-utils.ts';
 import { relative } from '../../deps.ts';
@@ -7,7 +7,7 @@ import { log } from '../logger.ts';
 import { runDenoFmt } from '../format.ts';
 
 export async function generateDocs(
-  { session, config }: { session: Session; config: Config },
+  { session, config }: { session: SessionWithVariables; config: Config },
 ) {
   const docs = config.configFile[OutputType.Docs];
   const docsBase = docs?.output;

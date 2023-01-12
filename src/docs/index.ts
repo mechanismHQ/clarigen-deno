@@ -1,16 +1,55 @@
-import { ClarityAbi, ClarityAbiArg, ClarityAbiFunction } from '../types.ts';
+import {
+  ClarityAbi,
+  ClarityAbiArg,
+  ClarityAbiFunction,
+  ClarityAbiMap,
+  ClarityAbiVariable,
+} from '../types.ts';
 
-export const FN_TYPES = ['read-only', 'public', 'private'];
+export const FN_TYPES = [
+  'read-only',
+  'public',
+  'private',
+] as const;
 
-export interface ClaridocFunction {
-  abi: ClarityAbiFunction;
+export const VAR_TYPES = [
+  'map',
+  'data-var',
+  'constant',
+] as const;
+
+type ClarityAbiItem = ClarityAbiFunction | ClarityAbiMap | ClarityAbiVariable;
+
+type ClaridocItemType<
+  T extends ClarityAbiItem,
+> = {
+  abi: T;
+  comments: Comments;
+  startLine: number;
+  source: string[];
+};
+
+export type ClaridocFunction = ClaridocItemType<ClarityAbiFunction>;
+export type ClaridocMap = ClaridocItemType<ClarityAbiMap>;
+export type ClaridocVariable = ClaridocItemType<ClarityAbiVariable>;
+
+export interface ClaridocItem {
+  abi: ClarityAbiItem;
   comments: Comments;
   startLine: number;
   source: string[];
 }
+// export type ClaridocItem = ClaridocFunction | ClaridocMap | ClaridocVariable;
+
+export interface Comments {
+  params: Record<string, ClaridocParam>;
+  text: string[];
+}
 
 export interface ClaridocContract {
   functions: ClaridocFunction[];
+  maps: ClaridocMap[];
+  variables: ClaridocVariable[];
   comments: string[];
 }
 
@@ -29,11 +68,13 @@ export function createContractDocInfo({
   const lines = contractSrc.split('\n');
   let comments: string[] = [];
   let parensCount = 0;
-  let currentFn: ClaridocFunction | undefined;
+  let currentFn: ClaridocItem | undefined;
   // const functions: ClaridocFunction[] = [];
   const contract: ClaridocContract = {
     comments: [],
     functions: [],
+    variables: [],
+    maps: [],
   };
   lines.forEach((line, lineNumber) => {
     // Are we processing a function?
@@ -42,7 +83,8 @@ export function createContractDocInfo({
       parensCount = traceParens(line, parensCount);
       if (parensCount === 0) {
         // end of fn
-        contract.functions.push(currentFn);
+        pushItem(contract, currentFn);
+        // contract.functions.push(currentFn);
         currentFn = undefined;
       }
       return;
@@ -61,15 +103,17 @@ export function createContractDocInfo({
     }
 
     // Is this the start of a fn?
-    const name = getFnName(line);
+    // const name = getFnName(line);
+    const name = findItemNameFromLine(line);
     if (typeof name === 'undefined') {
       // Not a comment or fn start, clear comments.
       comments = [];
     } else {
       // New function found.
-      const abiFn = abi.functions.find((fn) => {
-        return fn.name === name;
-      });
+      // const abiFn = abi.functions.find((fn) => {
+      //   return fn.name === name;
+      // })
+      const abiFn = findAbiItemByName(abi, name);
       if (!abiFn) {
         console.debug(
           `[claridoc]: Unable to find ABI for function \`${name}\`. Probably a bug.`,
@@ -86,13 +130,73 @@ export function createContractDocInfo({
       };
       if (parensCount === 0) {
         // end of fn - single line fn
-        contract.functions.push(currentFn);
+        // contract.functions.push(currentFn);
+        pushItem(contract, currentFn);
         currentFn = undefined;
       }
       comments = [];
     }
   });
   return contract;
+}
+
+function pushItem(contract: ClaridocContract, item: ClaridocItem) {
+  if ('args' in item.abi) {
+    contract.functions.push(item as ClaridocFunction);
+  } else if ('key' in item.abi) {
+    contract.maps.push(item as ClaridocMap);
+  } else if ('access' in item.abi) {
+    contract.variables.push(item as ClaridocVariable);
+  }
+}
+
+function findItemNameFromLine(
+  line: string,
+): string | undefined {
+  const fnType = FN_TYPES.find((type) => {
+    return line.startsWith(`(define-${type}`);
+  });
+  if (fnType) {
+    const prefix = `(define-${fnType} (`;
+    const startString = line.slice(prefix.length);
+    const match = /[\w|\-]+/.exec(startString);
+    if (!match) {
+      console.debug(
+        `[claridocs]: Unable to determine function name from line:\n  \`${line}\``,
+      );
+      return;
+    }
+    return match[0];
+  }
+  for (const type of VAR_TYPES) {
+    const prefix = `(define-${type} `;
+    if (!line.startsWith(prefix)) continue;
+
+    const startString = line.slice(prefix.length);
+    const match = /[\w|\-]+/.exec(startString);
+    if (!match) {
+      console.debug(
+        `[claridocs]: Unable to determine ${type} name from line:\n  \`${line}\``,
+      );
+      return;
+    }
+    return match[0];
+  }
+  return undefined;
+}
+
+function findAbiItemByName(
+  abi: ClarityAbi,
+  name: string,
+): ClarityAbiItem | undefined {
+  const fn = abi.functions.find((fn) => {
+    return fn.name === name;
+  });
+  if (fn) return fn;
+  const map = abi.maps.find((m) => m.name === name);
+  if (map) return map;
+  const v = abi.variables.find((v) => v.name === name);
+  return v;
 }
 
 export function isComment(line: string) {
@@ -125,14 +229,9 @@ export function traceParens(line: string, count: number) {
   return newCount;
 }
 
-export interface Comments {
-  params: Record<string, ClaridocParam>;
-  text: string[];
-}
-
 export function parseComments(
   comments: string[],
-  abi: ClarityAbiFunction,
+  abi: ClarityAbiItem,
 ): Comments {
   // const params: Record<string, ClaridocParam> = {};
   let curParam: string | undefined;
@@ -154,6 +253,7 @@ export function parseComments(
       return;
     }
 
+    if (!('args' in abi)) return;
     const [_full, name, _separator, rest] = paramMatches;
     const arg = abi.args.find((arg) => arg.name === name);
     if (!arg) {
@@ -167,13 +267,16 @@ export function parseComments(
     };
   });
 
-  abi.args.forEach((arg) => {
-    if (!parsed.params[arg.name]) {
-      parsed.params[arg.name] = {
-        abi: arg,
-        comments: [],
-      };
-    }
-  });
+  if ('args' in abi) {
+    abi.args.forEach((arg) => {
+      if (!parsed.params[arg.name]) {
+        parsed.params[arg.name] = {
+          abi: arg,
+          comments: [],
+        };
+      }
+    });
+  }
+
   return parsed;
 }

@@ -7,5 +7,7 @@
   "deno.config": "./deno.json",
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
-  }
+  },
+  "deno.inlayHints.variableTypes.enabled": false,
+  "deno.inlayHints.parameterTypes.enabled": false,
 }

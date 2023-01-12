@@ -28,6 +28,7 @@ export { parse as parseYaml } from 'https://deno.land/std@0.95.0/encoding/yaml.t
 export {
   assert,
   assertEquals,
+  assertStringIncludes,
   assertThrows,
 } from 'https://deno.land/std@0.97.0/testing/asserts.ts';
 export {

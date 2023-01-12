@@ -1,7 +1,11 @@
 ;; Test contract for testing Clarigen
 
+;; Generic error
 (define-constant ERR_UNAUTHORIZED (err u400))
+;; other error
+(define-constant ERR_ZERO (err u0))
 
+;; A map for storing stuff
 (define-map demo-map { a: uint } bool)
 
 (define-read-only (square (n uint)) (* n n))
@@ -14,6 +18,10 @@
   }
 })
 
+;; Test for type casting in TS
+;; 
+;; @param i; a tuple
+;; with a key that has a dash in it
 (define-read-only (merge-tuple (i { min-height: uint }))
   (merge i { max-height: u100000 })
 )
