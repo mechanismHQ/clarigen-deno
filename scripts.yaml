@@ -1,6 +1,8 @@
 scripts:
   clarigen:
-    - cmd: vr main
+    cmd:
+      - mkdir -p esm
+      - vr main
 
   clarigen-watch:
     cmd: vr main

@@ -83,6 +83,8 @@
     "https://deno.land/std@0.97.0/testing/_diff.ts": "961eaf6d9f5b0a8556c9d835bbc6fa74f5addd7d3b02728ba7936ff93364f7a3",
     "https://deno.land/std@0.97.0/testing/asserts.ts": "341292d12eebc44be4c3c2ca101ba8b6b5859cef2fa69d50c217f9d0bfbcfd1f",
     "https://deno.land/x/clarinet@v1.0.3/index.ts": "b78a7ad58dc6e8558ff4b97bd66b30310dd2b4dbc2f6ec6d078b15bdb6cdbb85",
+    "https://deno.land/x/clarinet@v1.3.1/index.ts": "b40a40234b26c481d794024829dd968da5f66528f434e7ac3bd45c6aa15d3e66",
+    "https://deno.land/x/clarinet@v1.3.1/types.ts": "fd51aa8db0a9da24da837ce34c848d83c84ab42e9cda6345602ed8efbcef107d",
     "https://deno.land/x/cliffy@v0.24.2/_utils/distance.ts": "02af166952c7c358ac83beae397aa2fbca4ad630aecfcd38d92edb1ea429f004",
     "https://deno.land/x/cliffy@v0.24.2/ansi/colors.ts": "084fc3fe9309d8286f9961d6bd87de19437c3ece07ac55841039fa2994f5adce",
     "https://deno.land/x/cliffy@v0.24.2/command/_errors.ts": "979a5d3f91b9da60a5871a14c4d7aa88ad4e3258da2df7b83bf40d00949ca944",
