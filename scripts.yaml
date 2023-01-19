@@ -45,7 +45,7 @@ scripts:
       - vr check
       - vr copy-version
       - vr type-stubs
-      - vr clarigen
+      # - vr clarigen
 
   release:
     - sh scripts/check-git.sh

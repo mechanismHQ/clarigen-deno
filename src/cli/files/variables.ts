@@ -32,6 +32,7 @@ export function getVariables(contract: SessionContract, sessionId: number) {
 
   const deploy = Tx.deployContract(fakeId, fullSrc, deployer);
   (deploy.deployContract as any).clarityVersion = 2;
+  (deploy.deployContract as any).epoch = '2.1';
 
   const { receipts } = chain.mineBlock([deploy]);
   const result = receipts[0].result;
@@ -55,11 +56,7 @@ export function convertVariables(contract: SessionContract, vars: string) {
 
 export function mapVariables(session: Session) {
   return session.contracts.map((contract) => {
-    try {
-      const varString = getVariables(contract, session.session_id);
-      return convertVariables(contract, varString);
-    } catch (_error) {
-      return '{}';
-    }
+    const varString = getVariables(contract, session.session_id);
+    return convertVariables(contract, varString);
   });
 }

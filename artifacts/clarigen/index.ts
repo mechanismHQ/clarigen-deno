@@ -199,7 +199,15 @@ export const contracts = {
         access: 'variable',
       } as TypedAbiVariable<bigint>,
     },
-    constants: '{}',
+    constants: {
+      ERR_TEST: {
+        isOk: false,
+        value: 123n,
+      },
+      buffConst: Uint8Array.from([222, 173, 190, 239]),
+      testBuff: 3735928559n,
+      counter: 1n,
+    },
     'non_fungible_tokens': [],
     'fungible_tokens': [],
     'clarity_version': 'Clarity2',
