@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.4.16
+
+### Patch Changes
+
+- [`50e8996`](https://github.com/mechanismHQ/clarigen-deno/commit/50e8996558ac3a04b70fb8f11ccad704c4def778) Thanks [@hstove](https://github.com/hstove)! - Updated `clarinet` deno package dependency to 1.3.1
+
 ## 0.4.15
 
 ### Patch Changes
