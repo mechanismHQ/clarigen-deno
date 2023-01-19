@@ -14,6 +14,7 @@ path = ".requirements"
 [contracts.counter]
 path = "contracts/counter.clar"
 clarity_version = 2
+epoch = 2.1
 
 [contracts.tester]
 path = "contracts/tester.clar"
