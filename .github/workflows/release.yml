@@ -28,7 +28,7 @@ jobs:
       - name: Create Release Pull Request
         uses: changesets/action@v1
         with:
-          publish: echo "[changesets/action] publishing"
+          publish: vr ci-publish
           version: vr version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

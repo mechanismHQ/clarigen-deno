@@ -59,6 +59,10 @@ scripts:
     - yarn changeset version
     - vr build
 
+  ci-publish:
+    - yarn changeset tag
+    - git push origin --follow-tags
+
   test-all:
     pll:
       - deno test -A test_pkg
