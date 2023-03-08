@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.5.1
+
+### Patch Changes
+
+- [`174a74a`](https://github.com/mechanismHQ/clarigen-deno/commit/174a74a4d3e76a2ace4619766a0a3bdd8a48e2f8) Thanks [@hstove](https://github.com/hstove)! - Fixes an issue when getting contract variables/constants for project requirements
+
 ## 0.5.0
 
 ### Minor Changes
