@@ -36,5 +36,6 @@ export async function runClarinet(config: Config) {
     }
   }
   const err = result.stderr || result.stdout;
+  log.error(`Error running clarinet. STDOUT: \n${result.stdout}`);
   throw new Error(`Error running 'clarinet run':\n${err}`);
 }

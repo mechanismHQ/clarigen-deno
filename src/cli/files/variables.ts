@@ -3,22 +3,41 @@ import { cvToValue } from '../../encoder.ts';
 import { Session, SessionContract } from '../../session.ts';
 import { ClarityAbiTypeTuple } from '../../types.ts';
 import { getContractName } from '../../utils.ts';
+import { log } from '../logger.ts';
+
+function deployContract({
+  chain,
+  source,
+  name,
+  deployer,
+}: {
+  chain: ClarinetChain;
+  source: string;
+  name: string;
+  deployer: string;
+}) {
+  const deploy = Tx.deployContract(name, source, deployer);
+  (deploy.deployContract as any).clarityVersion = 2;
+  (deploy.deployContract as any).epoch = '2.1';
+  return chain.mineBlock([deploy]);
+}
 
 export function getVariables(contract: SessionContract, sessionId: number) {
   const chain = new ClarinetChain(sessionId);
 
-  const deployer = 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM';
+  const [deployer] = contract.contract_id.split('.');
   const fakeId = `${getContractName(contract.contract_id)}-vars`;
+  log.info(`Deploying ${contract.contract_id} for variables.`);
 
   if (contract.contract_interface.variables.length === 0) {
-    const deploy = Tx.deployContract(
-      getContractName(contract.contract_id, false),
-      contract.source,
-      deployer,
+    log.info(
+      `Contract ${
+        getContractName(
+          contract.contract_id,
+          false,
+        )
+      } has no variables`,
     );
-    (deploy.deployContract as any).clarityVersion = 2;
-    (deploy.deployContract as any).epoch = '2.1';
-    chain.mineBlock([deploy]);
     return '{}';
   }
 
@@ -40,11 +59,12 @@ export function getVariables(contract: SessionContract, sessionId: number) {
   const fullSrc = contract.source + `\n\n${varFn}`;
   chain.switchEpoch('2.1');
 
-  const deploy = Tx.deployContract(fakeId, fullSrc, deployer);
-  (deploy.deployContract as any).clarityVersion = 2;
-  (deploy.deployContract as any).epoch = '2.1';
-
-  const { receipts } = chain.mineBlock([deploy]);
+  const { receipts } = deployContract({
+    chain,
+    deployer,
+    name: fakeId,
+    source: fullSrc,
+  });
   const result = receipts[0].result;
 
   return result;

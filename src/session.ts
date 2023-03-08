@@ -26,7 +26,6 @@ export function getSession(): Session {
     (Deno as any).core.opSync('api/v1/new_session', {
       name: 'Clarigen: session',
       loadDeployment: true,
-      // deploymentPath: "./deployments/default.simnet-plan.yaml",
     }),
   );
   return result;
