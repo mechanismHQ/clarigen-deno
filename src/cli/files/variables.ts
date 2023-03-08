@@ -10,7 +10,17 @@ export function getVariables(contract: SessionContract, sessionId: number) {
   const deployer = 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM';
   const fakeId = `${getContractName(contract.contract_id)}-vars`;
 
-  if (contract.contract_interface.variables.length === 0) return '{}';
+  if (contract.contract_interface.variables.length === 0) {
+    const deploy = Tx.deployContract(
+      getContractName(contract.contract_id, false),
+      contract.source,
+      deployer,
+    );
+    (deploy.deployContract as any).clarityVersion = 2;
+    (deploy.deployContract as any).epoch = '2.1';
+    chain.mineBlock([deploy]);
+    return '{}';
+  }
 
   let varFn = `{\n`;
 

@@ -86,9 +86,10 @@ export interface ClarityAbiTypeFungibleToken {
   name: string;
 }
 
-export interface ClarityAbiTypeNonFungibleToken {
+export interface ClarityAbiTypeNonFungibleToken<T = unknown> {
   name: string;
   type: ClarityAbiType;
+  _t?: T;
 }
 
 export interface ClarityAbi {
@@ -96,7 +97,7 @@ export interface ClarityAbi {
   variables: ClarityAbiVariable[];
   maps: ClarityAbiMap[];
   fungible_tokens: ClarityAbiTypeFungibleToken[];
-  non_fungible_tokens: ClarityAbiTypeNonFungibleToken[];
+  non_fungible_tokens: ClarityAbiTypeNonFungibleToken<unknown>[];
 }
 
 export type TypedAbi = Readonly<{
@@ -113,7 +114,7 @@ export type TypedAbi = Readonly<{
     [key: string]: unknown;
   };
   fungible_tokens: Readonly<ClarityAbiTypeFungibleToken[]>;
-  non_fungible_tokens: Readonly<ClarityAbiTypeNonFungibleToken[]>;
+  non_fungible_tokens: Readonly<ClarityAbiTypeNonFungibleToken<unknown>[]>;
   contractName: string;
   contractFile?: string;
 }>;

@@ -86,9 +86,10 @@ export interface ClarityAbiTypeFungibleToken {
   name: string;
 }
 
-export interface ClarityAbiTypeNonFungibleToken {
+export interface ClarityAbiTypeNonFungibleToken<T = unknown> {
   name: string;
   type: ClarityAbiType;
+  _t?: T;
 }
 
 export interface ClarityAbi {
@@ -96,7 +97,7 @@ export interface ClarityAbi {
   variables: ClarityAbiVariable[];
   maps: ClarityAbiMap[];
   fungible_tokens: ClarityAbiTypeFungibleToken[];
-  non_fungible_tokens: ClarityAbiTypeNonFungibleToken[];
+  non_fungible_tokens: ClarityAbiTypeNonFungibleToken<unknown>[];
 }
 
 export type TypedAbi = Readonly<{
@@ -113,7 +114,7 @@ export type TypedAbi = Readonly<{
     [key: string]: unknown;
   };
   fungible_tokens: Readonly<ClarityAbiTypeFungibleToken[]>;
-  non_fungible_tokens: Readonly<ClarityAbiTypeNonFungibleToken[]>;
+  non_fungible_tokens: Readonly<ClarityAbiTypeNonFungibleToken<unknown>[]>;
   contractName: string;
   contractFile?: string;
 }>;
@@ -210,6 +211,7 @@ export const contracts = {
     },
     'non_fungible_tokens': [],
     'fungible_tokens': [],
+    'epoch': 'Epoch21',
     'clarity_version': 'Clarity2',
     contractName: 'counter',
   },
@@ -220,6 +222,7 @@ export const contracts = {
     constants: {},
     'non_fungible_tokens': [],
     'fungible_tokens': [],
+    'epoch': 'Epoch20',
     'clarity_version': 'Clarity1',
     contractName: 'ft-trait',
   },
@@ -375,9 +378,13 @@ export const contracts = {
             { 'name': 'namespace', 'type': { 'buffer': { 'length': 20 } } },
           ],
         },
-      } as ClarityAbiTypeNonFungibleToken,
+      } as ClarityAbiTypeNonFungibleToken<{
+        'name': Uint8Array;
+        'namespace': Uint8Array;
+      }>,
     ],
     'fungible_tokens': [],
+    'epoch': 'Epoch20',
     'clarity_version': 'Clarity1',
     contractName: 'tester',
   },

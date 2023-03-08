@@ -49,6 +49,6 @@ describe('BDD-style testing', () => {
       txOk(counter.decrement(1n), alice),
     );
     assertEquals(receipt.value, 2n);
-    assertEquals(chain.blockHeight, 3);
+    assertEquals(chain.blockHeight, 4);
   });
 });
