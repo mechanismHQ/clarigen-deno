@@ -1,5 +1,13 @@
 # clarigen-deno
 
+## 0.5.0
+
+### Minor Changes
+
+- [`22a2ea7`](https://github.com/mechanismHQ/clarigen-deno/commit/22a2ea78c02ddf83b5b20e0bb5d22ce93b9e4bd2) Thanks [@hstove](https://github.com/hstove)! - Updates the `ClarityAbiNonFungibleToken` type to include a JS-native type.
+
+  Fixed an issue when fetching variables in projects that use requirements.
+
 ## 0.4.16
 
 ### Patch Changes
