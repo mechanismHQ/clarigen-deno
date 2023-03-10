@@ -4,10 +4,6 @@ scripts:
       - mkdir -p esm
       - vr main
 
-  clarigen-watch:
-    cmd: vr main
-    watch: ./contracts/*.clar
-
   deployments:
     cmd: src/cli/gen-deployments.ts
     allow:
@@ -20,6 +16,7 @@ scripts:
     cmd:
       - scripts/generate-type-stubs.ts
       - deno fmt src/cli/type-stub.ts
+      - deno fmt src/cli/files/init-config.ts
     allow:
       - read
       - write
