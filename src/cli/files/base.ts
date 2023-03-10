@@ -40,10 +40,7 @@ export function generateContractMeta(
   const variableLines = encodeVariables(variables);
 
   const nftLines = non_fungible_tokens.map((nft) => {
-    const keyType = jsTypeFromAbiType(nft.type);
-    return `${
-      JSON.stringify(nft)
-    } as ClarityAbiTypeNonFungibleToken<${keyType}>`;
+    return JSON.stringify(nft);
   });
 
   return `{
