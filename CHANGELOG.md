@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.5.3
+
+### Patch Changes
+
+- [`4904ab9`](https://github.com/mechanismHQ/clarigen-deno/commit/4904ab949d74f7d16a432e4687aafdba65a95b92) Thanks [@hstove](https://github.com/hstove)! - Fixes `clarigen init` command due to .toml files not being included from deno.land package manager
+
 ## 0.5.2
 
 ### Patch Changes
