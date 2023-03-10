@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.5.4
+
+### Patch Changes
+
+- [`127a4ad`](https://github.com/mechanismHQ/clarigen-deno/commit/127a4ad0b2a975d062b4006237e41922f043c75d) Thanks [@hstove](https://github.com/hstove)! - Fixes an issue when running the Clarinet wrapper using externally-installed cli
+
 ## 0.5.3
 
 ### Patch Changes
