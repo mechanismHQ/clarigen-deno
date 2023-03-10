@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.5.2
+
+### Patch Changes
+
+- [`868684c`](https://github.com/mechanismHQ/clarigen-deno/commit/868684c4cba2a8bae6ec066511483ebc0cb5348a) Thanks [@hstove](https://github.com/hstove)! - Fixes issues with ABI types when using conditionals to infer Clarity type
+
 ## 0.5.1
 
 ### Patch Changes
