@@ -1,5 +1,11 @@
 # clarigen-deno
 
+## 0.5.5
+
+### Patch Changes
+
+- [`aaa12d6`](https://github.com/mechanismHQ/clarigen-deno/commit/aaa12d647d5d510fe45105b1a1db611e046a9901) Thanks [@hstove](https://github.com/hstove)! - Fixed an issue where a project's requirements didn't have the correct contract identifier for simnet environment
+
 ## 0.5.4
 
 ### Patch Changes
