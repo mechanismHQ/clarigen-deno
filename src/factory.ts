@@ -21,6 +21,7 @@ export type Accounts = Readonly<{
 export type Simnet<C extends AllContracts, A extends Accounts> = Readonly<{
   contracts: C;
   accounts: A;
+  identifiers?: Record<string, string>;
 }>;
 
 export function contractFactory<T extends TypedAbi>(
@@ -63,7 +64,8 @@ export function contractsFactory<C extends AllContracts, A extends Accounts>(
   const deployer = accounts.deployer.address;
   return Object.fromEntries(
     Object.entries(contracts).map(([contractName, contract]) => {
-      const identifier = `${deployer}.${contract.contractName}`;
+      const identifier = simnet.identifiers?.[contractName] ??
+        `${deployer}.${contract.contractName}`;
       return [contractName, contractFactory(contract, identifier)];
     }),
   ) as ContractFactory<C>;
